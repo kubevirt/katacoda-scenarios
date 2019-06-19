@@ -1,0 +1,264 @@
+Upgrading
+=========
+Migrating from 8.x to 9.0
+-------------------------
+The Python requests module is now required.
+
+Several checks have been moved to plugins (see below).
+Plugins have to be enabled in the configuration file.
+
+The following commandline and configuration options have been deprecated
+and do not have any effect:
+--anchors, anchors: moved to plugin AnchorCheck
+--check-css, checkcss: moved to plugin CssSyntaxCheck
+--check-html, checkhtml: moved to plugin HtmlSyntaxCheck
+--complete: feature removed
+--cookies, sendcookies, storecookies: cookies are sent/stored per default
+--pause, wait: replaced with numrequestspersecond
+--scan-virus, scanvirus: moved to plugin VirusCheck
+--warning-regex: moved to plugin RegexCheck
+--warning-size-bytes, warnsizebytes: feature removed
+warnsslcertdaysvalid: moved to plugin SslCertificationCheck
+
+The "html" logger generates HTML5 documents now.
+
+The following warnings have been removed:
+- http-auth-unauthorized: removed
+- http-auth-unknonwn: removed
+- http-decompress-error: removed
+- http-robots-denied: downgraded to info
+- http-moved-permanent: downgraded to info
+- http-unsupported-encoding: removed
+- https-certificate-error: is an error now
+- mail-unverified-address: removed
+- mail-no-connection: removed
+- syntax-css: moved to plugin
+- syntax-html: moved to plugin
+- url-anchor-not-found: moved to plugin
+- url-content-size-unequal: removed
+- url-warnregex-found: moved to plugin
+
+Migrating from 8.4 to 8.5
+--------------------------
+Custom output loggers have been changed.
+See doc/web/content/faq.md for an example with custom loggers.
+
+Migrating from 8.0 to 8.1
+-------------------------
+All loggers have an additional output field "modified".
+If these loggers are not configured with specific output parts,
+the output format will change.
+For example existing SQL tables can be altered with:
+alter table linkcheck add (modified varchar(256));
+
+The default User-Agent string used by LinkChecker is now
+Mozilla/5.0 (compatible; LinkChecker/8.1; +http://linkchecker.sourceforge.net/)
+
+Migrating from 7.9 to 8.0
+-------------------------
+Python 2.7.2 or newer is required (Python 3.x is not supported though).
+
+Migrating from 7.6 to 7.7
+-------------------------
+The deprecated options --check-html-w3 and --check-css-w3
+have been removed from the commandline client.
+
+Migrating from 7.3 to 7.4
+-------------------------
+Python 2.7 or newer is required (Python 3.x is not supported though).
+
+The deprecated options --interactive, --priority and --allow-root
+have been removed from the commandline client.
+
+Migrating from 7.0 to 7.1
+-------------------------
+The FastCGI module lc.fcgi has been removed.
+The lc.cgi module can be used instead.
+
+Migrating from 6.x to 7.0
+-------------------------
+The system configuration file support has been removed.
+There is now only one user-configurable configuration file.
+On Unix systems it is at $HOME/.linkchecker/linkcheckerrc
+and on Windows systems at %HOMEPATH%\.linkchecker\linkcheckerrc
+
+Migrating from 6.6 to 6.7
+-------------------------
+The machine readable output formats xml, csv and sql now report
+the recursion level of each URL.
+
+Migrating from 6.4 to 6.5
+-------------------------
+Only applies if a custom output loggers has been programmed:
+The URL data model for output loggers has changed. The list of
+warning messages is now a list of tuples (tagname, warningmessage).
+
+Migrating from 5.5 to 6.0
+-------------------------
+Python 2.6 or newer is required (Python 3.x is not supported though).
+
+The deprecated --no-proxy-for and --no-anchor-caching options have been
+removed.
+
+The configuration file now requires multiline syntax for the options
+"nofollow", "ignore" and "entry".
+
+Migrating from 5.2 to 5.3
+-------------------------
+The --password option now reads a password from stdin instead
+taking it from the commandline. This prevents reading the password
+from the commandline string with tools like ``ps``.
+
+Migrating from 5.1 to 5.2
+-------------------------
+The --no-proxy-for option has been deprecated and will be removed
+in a future release. Also, the "noproxyfor" entries in configuration
+files will not be evaluated anymore.
+You should use the $no_proxy environment variable instead, which
+specifies a comma-separated list of domains that are not contacted
+over proxies.
+
+Migrating from 5.0 to 5.1
+-------------------------
+The --no-anchor-caching option has been deprecated and will be removed
+in a future release. This option should not be used anymore.
+
+The exit code of the linkchecker script will be zero now if all
+warnings have been ignored.
+
+Migrating from 4.x to 5.0
+-------------------------
+Python >= 2.5 is now required.
+
+The CGI script access control has been removed. Please use the access
+control of your webserver to restrict access to the CGI script.
+An example configuration file for the Apache weberver has been included
+in the distribution.
+
+Migrating from 4.4 to 4.5
+-------------------------
+Configuration file entries that were enumerated (``ignoreX``,
+``nofollowX``, ``noproxyX`` and ``entryX``) now have a new multiline
+syntax. For example the old configuration:
+
+::
+
+  ignore1=^mailto:
+  ignore2=^nntp:
+
+should be written as:
+
+::
+
+  ignore=
+    ^mailto:
+    # this is a comment
+    ^nntp:
+
+Note the leading spac(es) at the beginning of each line after
+``ignore=``.
+If an indented line starts with a comment sign, it will be ignored.
+
+Migrating from 4.2 to 4.3
+-------------------------
+The deprecated ``--disable-psyco`` option has been removed.
+
+Migrating from 4.1 to 4.2
+-------------------------
+If run under Unix system as the 'root' user, LinkChecker drops
+privileges and runs under the 'nobody' user account.
+The new option --allow-root prevents this, ie. enables the old
+pre-4.2 behaviour.
+
+Migrating from 3.x to 4.0
+-------------------------
+The Python API of the linkcheck module has changed. If you were
+using the library directly instead of the commandline or CGI
+interfaces, you will have to adjust your code.
+
+The default intern pattern matches now both http and https. When
+checking a site ``http://example.com/``, all URLs of the form
+``https://example.com/`` will now also be checked recursively.
+
+LinkChecker now honors a "Crawl-delay" entry in robots.txt files.
+The delay makes LinkChecker pause between requests to the corresponding
+server, so your checking time might increase if the server enforces
+such a delay through its robots.txt file.
+
+URLs with invalid syntax are now cached, and they get matched now by
+the --ingore-url option.
+
+Migrating from 3.0 to 3.1
+-------------------------
+
+The ``xml`` output logger has been renamed to ``gxml``.
+
+
+Migrating from 2.x to 3.0
+-------------------------
+The --warnings option is deprecated since warnings are now printed
+per default. A new --no-warnings has been added if one wants to
+have the old behaviour. Additionally, some old warnings about have
+been removed.
+
+The previously deprecated --status option has been removed.
+
+The options --intern, --extern and --extern-strict have been replaced
+by --ignore-url and --no-follow-url.
+
+The configuration file format has changed. See the distributed
+linkcheckerrc default config for the new syntax.
+
+
+Migrating from 2.2 to 2.3
+-------------------------
+The per-user config file is now ``~/.linkchecker/linkcheckerrc``
+(previous location was ``~/.linkcheckerrc`` ).
+
+The default blacklist output file is now ``~/.linkchecker/blacklist``
+(previous location was ``~/.blacklist``).
+
+Python >= 2.4 is now required.
+
+
+Migrating from 1.x to 2.0
+-------------------------
+The --output and --file-output parameters can specify the encoding
+now. You should check your scripts if they support the new option
+syntax.
+
+Some added checks might trigger new warnings, so automated scripts
+or alarms can have more output than with 1.x releases.
+
+All output (file and console) is now encoded according to a given
+character set encoding which defaults to ISO-8859-15. If you
+relied that output was in a specific encoding, you might want to
+use the output encoding option.
+
+
+Migrating from 1.12.x to 1.13.0
+-------------------------------
+Since lots of filenames have changed you should check that any
+manually installed versions prior to 1.13.0 are removed. Otherwise
+you will have startup problems.
+
+The default output logger ``text`` has now colored output if the
+output terminal supports it. The old ``colored`` output logger has
+been removed.
+
+The ``-F`` option no longer suppresses normal output. The old behaviour
+can be restored by giving the option ``-onone``.
+
+The --status option is now the default and has been deprecated. The
+old behaviour can be restored by giving the option ``--no-status``.
+
+The default recursion depth is now infinite. The old behaviour
+can be restored by giving the option ``--recursion-level=1``.
+
+The option ``--strict`` has been renamed to ``--extern-strict-all``.
+
+The commandline program ``linkchecker`` returns now non-zero exit value
+when errors were encountered. Previous versions always return a zero
+exit value.
+For scripts to ignore exit values and therefore restore the old behaviour
+you can append a ``|| true`` at the end of the command.

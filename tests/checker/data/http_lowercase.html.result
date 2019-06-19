@@ -1,0 +1,10 @@
+url http://localhost:%(port)d/%(datadir)s/http_lowercase.html
+cache key http://localhost:%(port)d/%(datadir)s/http_lowercase.html
+real url http://localhost:%(port)d/%(datadir)s/http_lowercase.html
+valid
+
+url HtTP://WwW.ExaMple.cOm/
+cache key http://www.example.com/
+real url http://www.example.com/
+name l1
+valid

@@ -1,0 +1,189 @@
+Installation
+============
+If you are upgrading from older versions of LinkChecker you should
+also read the upgrading documentation stored in upgrading.txt.
+
+Setup with pip
+------------------
+If pip_ is available, this command should install LinkChecker on
+the local system:
+
+.. _pip: https://pypi.python.org/pypi/pip
+
+``sudo pip install LinkChecker``
+
+Note that this needs the Python development and a C compiler installed.
+For example on Debian Linux systems use ``sudo apt-get install python-dev``.
+
+
+Setup for Windows
+-----------------
+Execute ``LinkChecker-x.y.exe`` and follow the instructions.
+
+
+Setup for Mac OS X
+------------------
+Nobody is currently offering a "dmg" download for Mac OS X in your programs folder
+See https://github.com/linkchecker/linkchecker/issues/60
+...however the steps for compiling it from source are given below.
+
+Setup for GNU/Linux
+-------------------
+On all major Linux distributions (Debian, Mandriva, Redhat, Suse, Ubuntu),
+the ``linkchecker`` package is available for install.
+
+
+Manual setup for Unix systems
+-----------------------------
+First, install the required software.
+
+1. You need a standard GNU development environment with
+   
+   - C compiler (for example the GNU C Compiler gcc)
+     
+     Depending on your distribution, several development packages
+     might be needed to provide a fully functional C development
+     environment.
+   
+   Note for developers: if you want to regenerate the po/linkchecker.pot
+   template from the source files, you will need xgettext with Python
+   support. This is available in gettext >= 0.12.
+
+2. Python >= 2.7.2 from http://www.python.org/
+   
+   Be sure to also have installed the included distutils module.
+   On most distributions, the distutils module is included in
+   an extra ``python-dev`` package.
+
+3. Python requests module from https://pypi.python.org/pypi/requests
+
+4. *Optional, for bash-completion:*
+   argcomplete Python module from https://pypi.python.org/pypi/argcomplete
+
+5. *Optional, for displaying country codes:*
+   GeoIP from http://www.maxmind.com/app/python
+
+6. *Optional, used for Virus checking:*
+   ClamAv from http://www.clamav.net/
+
+7. *Optional, for GNOME proxy setting parsing:*
+    Python Gtk from http://www.pygtk.org/downloads.html
+
+8. *Optional, to run the WSGI web interface:*
+   Apache from http://httpd.apache.org/
+   mod_wsgi from http://code.google.com/p/modwsgi/
+
+
+Now install the application.
+
+1. Compile Python modules
+   
+   Run ``python setup.py sdist --manifest-only`` to create the MANIFEST
+   file.
+   Run ``python setup.py build`` to compile the Python files.
+   For help about the setup.py script options, run
+   ``python setup.py --help``.
+   The CC environment variable is checked before compilation, so you can
+   change the default C compiler with ``export CC=myccompiler``.
+
+2.
+   a) Installation as root
+      
+      Run ``sudo python setup.py install`` to install LinkChecker.
+   
+   b) Installation as a normal user
+      
+      Run ``python setup.py install --home $HOME``. Note that you have
+      to adjust your PATH and PYTHONPATH environment variables, eg. by
+      adding the commands ``export PYTHONPATH=$HOME/lib/python`` and
+      ``export PATH=$PATH:$HOME/bin`` to your shell configuration
+      file.
+      
+      For more information look at the `Modifying Python's search path`_
+      documentation.
+      
+      .. _Modifying Python's search path:
+         http://docs.python.org/inst/search-path.html#SECTION000410000000000000000
+
+
+After installation
+------------------
+LinkChecker is now installed. Have fun!
+
+Manual setup for OSX systems
+----------------------------
+
+1. Install the XCode developer tools
+
+2. Install homebrew_
+   
+   .. _homebrew: http://mxcl.github.com/homebrew/
+
+3. Install dependencies
+
+   brew update
+   brew install python
+   brew install gettext
+   # link gettext or put the msgfmt binary in your PATH
+   brew link --force gettext
+
+4. Install py2app 
+   (from http://svn.pythonmac.org/py2app/py2app/trunk/doc/index.html#installation)
+   Requires 'easy_install' --
+   $ curl -O http://peak.telecommunity.com/dist/ez_setup.py
+   $ sudo python ez_setup.py -U setuptools
+   Now install py2app:
+   $ sudo easy_install -U py2app
+
+5. git clone git@github.com:linkchecker/linkchecker.git linkchecker
+
+6. cd linkchecker
+
+7. Run ``pip install -r requirements.txt --use-mirrors`` and after that ``make app``
+
+8. Install the resulting .dmg
+
+   # mount DMG
+   mkdir -p dist/mnt
+   hdiutil attach -mountpoint dist/mnt dist/LinkChecker-x.y.z.dmg
+   # to run directly
+   open -n dist/mnt/LinkChecker.app --args http://www.example.org
+   # install the app
+   sudo cp -r dist/mnt/LinkChecker.app /Applications
+   # unmount DMG
+   hdiutil detach dist/mnt
+
+
+WSGI web interface
+-----------------------
+The included WSGI script can run LinkChecker with a nice graphical web
+interface.
+You can use and adjust the example HTML files in the lconline directory
+to run the script.
+
+1. Note that running LinkChecker requires CPU and memory resources.
+   Allowing a WSGI script to execute such a program for possibly a
+   large number of users might deplete those resources.
+   Be sure to only allow access from trusted sites to this script.
+   
+2. Copy the script lc.wsgi in the WSGI directory.
+
+3. Adjust the "action=..." parameter in lconline/lc_cgi.html
+   to point to your WSGI script.
+
+4. If you use Apache, copy config/linkchecker.apache2.conf
+   into your Apache configuration directory (eg. /etc/apache2/conf.d)
+   and enable it.
+
+5. Load the lconline/index.html file, enter an URL and click on the
+   check button.
+
+6. If something goes wrong, check the following:
+   
+   a) look in the error log of your web server
+   b) be sure that you have enabled WSGI support in your web server,
+      for example by installing mod_wsgi for Apache
+   c) be sure that you have enabled the negotiation and versioning
+      modules for Apache:
+      a2enmod version
+      a2enmod negotiation

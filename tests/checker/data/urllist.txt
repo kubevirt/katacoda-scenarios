@@ -1,0 +1,7 @@
+# LinkChecker url list
+# empty lines and
+ # comments are ignored
+
+file.html
+
+javascript:loadthis()

@@ -1,0 +1,5 @@
+version: "9.3"
+name: "LinkChecker"
+lname: "linkchecker"
+maintainer: "Bastian Kleineidam"
+author: "Bastian Kleineidam"

@@ -1,0 +1,26 @@
+<link rel="dns-prefetch" href="//www.example.org">
+<link rel="dns-prefetch" href="http://www.example.com/">
+<a b=c "boo" href="http://www.garantiertnixgutt.bla/">bad url</a>
+<!-- check cache key with query -->
+<a href="/?d=directory&amp;p=page">should not be cached</a>
+<a href="/?d=directory&amp;p=page1">should not be cached</a>
+<!-- entities -->
+<a href="/?q=&uuml;">html entities</a>
+
+<!-- empty form URL -->
+<form action="" method="GET">
+</form>
+
+<!-- multiple links in one tag -->
+<applet archive="file.html" src="file.css">
+<!-- css urls -->
+<img style="@font-face {src:url(file.asc)};background-image:url(file.txt)"
+ title="CSS urls">
+
+<!-- object with codebase -->
+<object classid="clsid:12345-67890" codebase="http://example.org/foo/ #a=1,2,3">
+
+<!-- <a href=http://nocheckin> no check because of comment -->
+
+<!-- Invalid URL -->
+<a href="http://.example.org/">Error</a>

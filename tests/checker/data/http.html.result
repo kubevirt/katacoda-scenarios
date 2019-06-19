@@ -1,0 +1,77 @@
+url http://localhost:%(port)d/%(datadir)s/http.html
+cache key http://localhost:%(port)d/%(datadir)s/http.html
+real url http://localhost:%(port)d/%(datadir)s/http.html
+valid
+
+url clsid:12345-67890
+cache key clsid:12345-67890
+real url clsid:12345-67890
+info Clsid URL ignored.
+valid
+
+url dns://www.example.org
+cache key dns://www.example.org
+real url dns://www.example.org
+valid
+
+url dns://www.example.com
+cache key dns://www.example.com
+real url dns://www.example.com
+valid
+
+url http://www.garantiertnixgutt.bla/
+cache key http://www.garantiertnixgutt.bla/
+real url http://www.garantiertnixgutt.bla/
+name bad url
+error
+
+url /?d=directory&p=page
+cache key http://localhost:%(port)d/?d=directory&p=page
+real url http://localhost:%(port)d/?d=directory&p=page
+name should not be cached
+valid
+
+url /?d=directory&p=page1
+cache key http://localhost:%(port)d/?d=directory&p=page1
+real url http://localhost:%(port)d/?d=directory&p=page1
+name should not be cached
+valid
+
+url /?q=ü
+cache key http://localhost:%(port)d/?q=%%C3%%BC
+real url http://localhost:%(port)d/?q=%%C3%%BC
+name html entities
+valid
+
+url file.html
+cache key http://localhost:%(port)d/tests/checker/data/file.html
+real url http://localhost:%(port)d/tests/checker/data/file.html
+valid
+
+url file.css
+cache key http://localhost:%(port)d/tests/checker/data/file.css
+real url http://localhost:%(port)d/tests/checker/data/file.css
+valid
+
+url file.asc
+cache key http://localhost:%(port)d/tests/checker/data/file.asc
+real url http://localhost:%(port)d/tests/checker/data/file.asc
+name CSS urls
+valid
+
+url file.txt
+cache key http://localhost:%(port)d/tests/checker/data/file.txt
+real url http://localhost:%(port)d/tests/checker/data/file.txt
+name CSS urls
+valid
+
+url http://example.org/foo/ #a=1,2,3
+cache key http://example.org/foo/%%20
+real url http://example.org/foo/%%20#a=1,2,3
+error
+
+url http://.example.org/
+cache key http://.example.org/
+real url http://.example.org/
+name Error
+error

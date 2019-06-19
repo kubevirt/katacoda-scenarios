@@ -1,0 +1,19 @@
+# To convert from XML to binary format:
+# plutil -convert binary1 -o - Bookmarks.plist
+url file://%(curdir)s/%(datadir)s/plist_xml/Bookmarks.plist
+cache key file://%(curdir)s/%(datadir)s/plist_xml/Bookmarks.plist
+real url file://%(curdir)s/%(datadir)s/plist_xml/Bookmarks.plist
+name %(datadir)s/plist_xml/Bookmarks.plist
+valid
+
+url http://www.example.com/
+cache key http://www.example.com/
+real url http://www.example.com/
+name Imadoofus
+valid
+
+url http://www.example.net/
+cache key http://www.example.net/
+real url http://www.example.net/
+name Imanotherdoofus
+valid

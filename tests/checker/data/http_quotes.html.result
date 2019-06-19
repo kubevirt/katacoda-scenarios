@@ -1,0 +1,22 @@
+url http://localhost:%(port)d/%(datadir)s/http_quotes.html
+cache key http://localhost:%(port)d/%(datadir)s/http_quotes.html
+real url http://localhost:%(port)d/%(datadir)s/http_quotes.html
+valid
+
+url http://example.com/
+cache key http://example.com/
+real url http://example.com/
+name unquoted
+valid
+
+url /stalter&sohn
+cache key http://localhost:%(port)d/stalter%%26sohn
+real url http://localhost:%(port)d/stalter%%26sohn
+name unquoted ampersand
+error
+
+url http://www.example.com/
+cache key http://www.example.com/
+real url http://www.example.com/
+name no beginning quote example
+valid

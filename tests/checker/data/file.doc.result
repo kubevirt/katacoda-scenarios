@@ -1,0 +1,12 @@
+url file://%(curdir)s/%(datadir)s/file.doc
+cache key file://%(curdir)s/%(datadir)s/file.doc
+real url file://%(curdir)s/%(datadir)s/file.doc
+name %(datadir)s/file.doc
+valid
+
+url http://www.example.org/
+cache key http://www.example.org/
+real url http://www.example.com/
+name Example.org
+info Redirected to `http://www.example.com/'.
+valid

@@ -1,0 +1,3276 @@
+9.4 "" (released xx.xx.xxxx)
+
+Features:
+- checking: Support itms-services: URLs.
+  Closes: GH bug #532
+- checking: Support XDG Base Directory Specification for configuration
+  and data.
+  Closes: GH bug #44
+- add Dockerfile
+- use xdg dirs for config & data
+- use tox for tests and fix travis build
+- add --no-robots commandline flag
+- Added plugin for parsing and checking links in Markdown files
+
+Changes:
+- installation: Remove dependency on msgfmt.py by pre-generating the
+  *.mo files and adding them to version control.
+  Reason was the difficulty to run msgfmt.py under both Python 2 and 3.
+- checking: When checking SSL certificates under POSIX systems try
+  to use the system certificate store.
+- logging: improved debugging by also enabling urllib3 output
+- remove third-party packages and use them as dependency
+- Allow wayback-format urls without affecting atom 'feed' urls
+- Move dev requirements into dev-requirements.txt
+- Crawl HTML attributes in deterministic order
+- Remove platform-specific installer stuff and ensure a build .whl wheel file can be built.
+- Move GUI files to separate project
+
+Fixes:
+- checking: Correct typos in the proxy handling code.
+  Closes: GH bug #536
+- checking: Add to default HTTP client headers instead of replacing.
+- cmdline: Reactivate paging of help pages.
+- requirements: Fix requests module version check.
+  Closes: GH bug #548
+- load cookies from the --cookiefile correctly
+- fix incorrect call to the logging module
+- Fix TypeError: hasattr(): attribute name must be string
+- fix HTTPS URL checks
+
+
+9.3 "Better Living Through Chemistry" (released 16.7.2014)
+
+Features:
+- checking: Parse and check links in PDF files.
+- checking: Parse Refresh: and Content-Location: HTTP headers for URLs.
+
+Changes:
+- plugins: PDF and Word checks are now parser plugins
+  (PdfParser, WordParser). Both plugins are not enabled
+  by default since they require third party modules.
+- plugins: Print a warning for enabled plugins that could not
+  import needed third party modules.
+- checking: Treat empty URLs as same as parent URL.
+  Closes: GH bug #524
+- installation: Replaced the twill dependency with local code.
+
+Fixes:
+- checking: Catch XML parse errors in sitemap XML files and print them
+  as warnings. Patch by Mark-Hetherington.
+  Closes: GH bug #516
+- checking: Fix internal URL match pattern. Patch by Mark-Hetherington.
+  Closes: GH bug #510
+- checking: Recalculate extern status after HTTP redirection.
+  Patch by Mark-Hetherington.
+  Closes: GH bug #515
+- checking: Do not strip quotes from already resolved URLs.
+  Closes: GH bug #521
+- cgi: Sanitize configuration.
+  Closes: GH bug #519
+- checking: Use user-supplied authentication and proxies when requestiong
+  robot.txt.
+- plugins: Fix Word file check plugin.
+  Closes: GH bug #530
+
+
+9.2 "Rick and Morty" (released 23.4.2014)
+
+Fixes:
+- checking: Don't scan external robots.txt sitemap URLs.
+  Closes: GH bug #495
+- installation: Correct case for pip install command.
+  Closes: GH bug #498
+
+Features:
+- checking: Parse and check HTTP Link: headers.
+- checking: Support parsing of HTML image srcset attributes.
+- checking: Support parsing of HTML schema itemtype attributes.
+
+
+9.1 "Don Jon" (released 30.3.2014)
+
+Features:
+- checking: Support parsing of sitemap and sitemap index XML files.
+  Closes: GH bug #413
+- checking: Add new HTTP header info plugin.
+- logging: Support arbitrary encodings in CSV output.
+  Closes: GH bug #467
+- installation: Use .gz compression for source release to support
+  "pip install".
+  Closes: GH bug #461
+
+Changes:
+- checking: Ignored URLs are reported earlier now.
+- checking: Updated the list of unkonwn or ignored URI schemes.
+- checking: Internal errors do not disable check threads anymore.
+- checking: Disable URL length warning for data: URLs.
+- checking: Do not warn about missing addresses on mailto links that have
+  subjects.
+- checking: Check and display SSL certificate info even on redirects.
+  Closes: GH bug #489
+- installation: Check requirement for Python requests >= 2.2.0.
+  Closes: GH bug #478
+- logging: Display downloaded bytes.
+
+Fixes:
+- checking: Fix internal errors in debug output.
+  Closes: GH bug #472
+- checking: Fix URL result caching.
+- checking: Fix assertion in external link checking.
+- checking: Fix SSL errors on Windows.
+  Closes: GH bug #471
+- checking: Fix error when SNI checks are enabled.
+  Closes: GH bug #488
+- gui: Fix warning regex settings.
+  Closes: GH bug #485
+
+
+9.0 "The Wolf of Wall Street" (released 3.3.2014)
+
+Features:
+- checking: Support connection and content check plugins.
+- checking: Move lots of custom checks like Antivirus and syntax
+  checks into plugins (see upgrading.txt for more info).
+- checking: Add options to limit the number of requests per second,
+  allowed URL schemes and maximum file or download size.
+  Closes: GH bug #397, #465, #420
+- checking: Support checking Sitemap: URLs in robots.txt files.
+- checking: Reduced memory usage when caching checked links.
+  Closes: GH bug #429
+- gui: UI language can be changed dynamically.
+  Closes: GH bug #391
+
+Changes:
+- checking: Use the Python requests module for HTTP and HTTPS requests.
+  Closes: GH bug #393, #463, #417
+- logging: Removed download, domains and robots.txt statistics.
+- logging: HTML output is now in HTML5.
+- checking: Removed 301 warning since 301 redirects are used
+  a lot without updating the old URL links.
+  Also, recursive redirection is not checked any more since there
+  is a maximum redirection limit anyway.
+  Closes: GH bug #444, #419
+- checking: Disallowed access by robots.txt is an info now, not
+  a warning. Otherwise it produces a lot of warnings which
+  is counter-productive.
+- checking: Do not check SMTP connections for mailto: URLs anymore.
+  It resulted in lots of false warnings since spam prevention
+  usually disallows direct SMTP connections from unrecognized
+  client IPs.
+- checking: Only internal URLs are checked as default. To check
+  external urls use --check-extern.
+  Closes: GH bug #394, #460
+- checking: Document that gconf and KDE proxy settings are parsed.
+  Closes: GH bug #424
+- checking: Disable twill page refreshing.
+  Closes: GH bug #423
+- checking: The default number of checking threads is 10 now instead of 100.
+
+Fixes:
+- logging: Status was printed every second regardless of the
+  configured wait time.
+- logging: Add missing column name to SQL insert command.
+  Closes: GH bug #399
+- checking: Several speed and memory usage improvements.
+- logging: Fix --no-warnings option.
+  Closes: GH bug #457
+- logging: The -o none now sets the exit code.
+  Closes: GH bug #451
+- checking: For login pages, use twill form field counter if
+  the field has neither name nor id.
+  Closes: GH bug #428
+- configuration: Check regular expressions for errors.
+  Closes: GH bug #410
+
+
+8.6 "About Time" (released 8.1.2014)
+
+Changes:
+- checking: Add "Accept" HTTP header.
+  Closes: GH bug #395
+
+Fixes:
+- installer: Include missing logger classes for Windows and
+  OSX installer.
+  Closes: GH bug #448
+
+
+8.5 "Christmas Vacation" (released 24.12.2013)
+
+Features:
+- checking: Make per-host connection limits configurable.
+- checking: Avoid DoS in SSL certificate host matcher.
+
+Changes:
+- checking: Always use the W3C validator to check HTML or CSS syntax.
+- checking: Remove the http-wrong-redirect warning.
+- checking: Remove the url-content-duplicate warning.
+- checking: Make SSL certificate verification optional and allow
+  user-specified certificate files.
+  Closes: GH bug #387
+- cmdline: Replace argument parsing. No changes in functionality, only
+  the help text will be formatted different.
+- gui: Check early if help files are not found.
+  Closes: GH bug #437
+- gui: Remember the last "Save result as" selection.
+  Closes: GH bug #380
+
+Fixes:
+- checking: Apache Coyote (the HTTP server of Tomcat) sends the wrong
+  Content-Type on HEAD requests. Automatically fallback to GET in this
+  case.
+  Closes: GH bug #414
+- checking: Do not use GET on POST forms.
+  Closes: GH bug #405
+- scripts: Fix argument parsing in linkchecker-nagios
+  Closes: GH bug #404
+- installation: Fix building on OS X systems.
+
+
+8.4 "Frankenweenie" (released 25.01.2013)
+
+Features:
+- checking: Support <link rel="dns-prefetch"> URLs.
+- logging: Sending SIGUSR1 signal prints the stack trace of all current
+  running threads. This makes debugging deadlocks easier.
+- gui: Support Drag-and-Drop of local files. If the local file is
+  a LinkChecker project (.lcp) file it is loaded, else the check
+  URL is set to the local file URL.
+
+Changes:
+- checking: Increase per-host connection limits to speed up checking.
+
+Fixes:
+- checking: Fix a crash when closing a Word document after scanning failed.
+  Closes: GH bug #369
+- checking: Catch UnicodeError from idna.encode() fixing an internal error when
+  trying to connect to certain invalid hostnames.
+- checking: Always close HTTP connections without body content.
+  See also http://bugs.python.org/issue16298
+  Closes: GH bug #376
+
+
+8.3 "Mahna Mahna Killer" (released 6.1.2013)
+
+Features:
+- project: The Project moved to Github.
+  Closes: GH bug #368
+
+Changes:
+- logging: Print system arguments (sys.argv) and variable values in
+  internal error information.
+- installation: Install the dns Python module into linkcheck_dns subdirectory to avoid
+  conflicts with an upstream python-dns installation.
+
+Fixes:
+- gui: Fix storing of ignore lines in options.
+  Closes: SF bug #3587386
+
+
+8.2 "Belle De Jour" (released 9.11.2012)
+
+Changes:
+- checking: Print a warning when passwords are found in the configuration file
+  and the file is accessible by others.
+- checking: Add debug statements for unparseable content types.
+  Closes: SF bug #3579714
+- checking: Turn off caching. This improves memory performance drastically
+  and it's a very seldom used feature - judging from user feedback over the years
+  and my own experience.
+- checking: Only allow checking of local files when parent URL does not exist or
+  it's also a file URL.
+
+Fixes:
+- checking: Fix anchor checking of cached HTTP URLs.
+  Closes: SF bug #3577743
+- checking: Fix cookie path matching with empty paths.
+  Closes: SF bug #3578005
+- checking: Fix handling of non-ASCII exceptions (regression in 8.1).
+  Closes: SF bug #3579766
+- configuration: Fix configuration directory creation on Windows
+  systems.
+  Closes: SF bug #3584837
+
+
+8.1 "Safety Not Guaranteed" (released 14.10.2012)
+
+Features:
+- checking: Allow specification of maximum checking time or maximum
+  number of checked URLs.
+- checking: Send a HTTP Do-Not-Track header.
+- checking: Check URL length. Print error on URL longer than 2000 characters,
+  warning for longer than 255 characters.
+- checking: Warn about duplicate URL contents.
+- logging: A new XML sitemap logger can be used that implements the protocol
+  defined at http://www.sitemaps.org/protocol.php.
+
+Changes:
+- doc: Mention 7-zip and Peazip to extract the .tar.xz under Windows.
+  Closes: SF bug #3564733
+- logging: Print download and cache statistics in text output logger.
+- logging: Print warning tag in text output logger. Makes warning filtering
+  more easy.
+- logging: Make the last modification time a separate field in logging
+  output. See doc/upgrading.txt for compatibility changes.
+- logging: All sitemap loggers log all valid URLs regardless of the
+  --warnings or --complete options. This way the sitemaps can be
+  logged to file without changing the output of URLs in other loggers.
+- logging: Ignored warnings are now never logged, even when the URL
+  has errors.
+- checking: Improved robots.txt caching by using finer grained locking.
+- checking: Limit number of concurrent connections to FTP and HTTP
+  servers. This avoids spurious BadStatusLine errors.
+
+Fixes:
+- logging: Close logger properly on I/O errors.
+  Closes: SF bug #3567476
+- checking: Fix wrong method name when printing SSL certificate warnings.
+- checking: Catch ValueError on invalid cookie expiration dates.
+  Patch from Charles Jones.
+  Closes: SF bug #3575556
+- checking: Detect and handle remote filesystem errors when checking
+  local file links.
+
+
+8.0 "Luminaris" (released 2.9.2012)
+
+Features:
+- checking: Verify SSL certificates for HTTPS connections. Both the
+  hostname and the expiration date are checked.
+- checking: Always compare encoded anchor names.
+  Closes: SF bug #3538365
+- checking: Support WML sites.
+  Closes: SF bug #3553175
+- checking: Show number of parsed URLs in page content.
+- cmdline: Added Nagios plugin script.
+
+Changes:
+- dependencies: Python >= 2.7.2 is now required
+- gui: Display debug output text with fixed-width font.
+- gui: Display the real name in the URL properties.
+  Closes: SF bug #3542976
+- gui: Make URL properties selectable with the mouse.
+  Closes: SF bug #3561129
+- checking: Ignore feed: URLs.
+- checking: --ignore-url now really ignores the URLs instead
+  of checking only the syntax.
+- checking: Increase the default number of checker threads from 10 to
+  100.
+
+Fixes:
+- gui: Fix saving of the debugmemory option.
+- checking: Do not handle <object codebase="..."> attribute as parent
+  URL but as normal URL to be checked.
+- checking: Fix UNC path handling on Windows.
+- checking: Detect more sites not supporting HEAD requests properly.
+  Closes: SF bug #3535981
+
+
+7.9 "The Dark Knight" (released 10.6.2012)
+
+Fixes:
+- checking: Catch any errors initializing the MIME database.
+  Closes: SF bug #3528450
+- checking: Fix writing temporary files.
+- checking: Properly handle URLs with user/password information.
+  Closes: SF bug #3529812
+
+Changes:
+- checking: Ignore URLs from local PHP files with execution
+  directives of the form "<? ?>".
+  Prevents false errors when checking local PHP files.
+  Closes: SF bug #3532763
+- checking: Allow configuration of local webroot directory to
+  enable checking of local HTML files with absolute URLs.
+  Closes: SF bug #3533203
+
+Features:
+- installation: Support RPM building with cx_Freeze.
+- installation: Added .desktop files for POSIX systems.
+- checking: Allow writing of a memory dump file to debug memory
+  problems.
+
+
+7.8 "Gangster Exchange" (released 12.5.2012)
+
+Fixes:
+- checking: Always use GET for Zope servers since their HEAD support
+  is broken.
+  Closes: SF bug #3522710
+- installation: Install correct MSVC++ runtime DLL version for Windows.
+- installation: Install missing Python modules for twill, cssutils and
+  HTMLTidy.
+
+Changes:
+- documentation: Made the --ignore-url documentation more clear.
+  Patch from Charles Jones.
+  Closes: SF bug #3522351
+- installation: Report missing py2app instead of generating a
+  Distutils error.
+  Closes: SF bug #3522265
+- documentation: Fix typo in linkcheckerrc.5 manual page.
+  Closes: SF bug #3522846
+
+Features:
+- installation: Add dependency declaration documentation to setup.py.
+  Closes: SF bug #3524757
+
+
+7.7 "Intouchables" (released 22.04.2012)
+
+Fixes:
+- checking: Detect invalid empty cookie values.
+  Patch by Charles Jones.
+  Closes: SF bug #3514219
+- checking: Fix cache key for URL connections on redirect.
+  Closes: SF bug #3514748
+- gui: Fix update check when content could not be downloaded.
+  Closes: SF bug #3515959
+- i18n: Make locale domain name lowercase, fixing the .mo-file
+  lookup on Unix systems.
+- checking: Fix CSV output with German locale.
+  Closes: SF bug #3516400
+- checking: Write correct statistics when saving results in the GUI.
+  Closes: SF bug #3515980
+
+Changes:
+- cmdline: Remove deprecated options --check-css-w3 and
+  --check-html-w3.
+
+Features:
+- cgi: Added a WSGI script to replace the CGI script.
+
+
+7.6 "Türkisch für Anfänger" (released 31.03.2012)
+
+Fixes:
+- checking: Recheck extern status on HTTP redirects even if domain
+  did not change. Patch by Charles Jones.
+  Closes: SF bug #3495407
+- checking: Fix non-ascii HTTP header handling.
+  Closes: SF bug #3495621
+- checking: Fix non-ascii HTTP header debugging.
+  Closes: SF bug #3488675
+- checking: Improved error message for connect errors to the ClamAV
+  virus checking daemon.
+- gui: Replace configuration filename in options dialog.
+- checking: Honor the charset encoding of the Content-Type HTTP
+  header when parsing HTML. Fixes characters displayed as '?'
+  for non-ISO-8859-1 websites.
+  Closes: SF bug #3388257
+- checking: HTML parser detects and handles invalid comments of the
+  form "<! bla >".
+  Closes: SF bug #3509848
+- checking: Store cookies on redirects. Patch by Charles Jones.
+  Closes: SF bug #3513345
+- checking: Fix concatenation of multiple cookie values.
+  Patch by Charles Jones.
+- logging: Encode comments when logging CSV comments.
+  Closes: SF bug #3513415
+
+Changes:
+- checking: Add real url to cache. Improves output for cached errors.
+- checking: Specify timeout for SMTP connections. Avoids spurious
+  connect errors when checking email addresses.
+  Closes: SF bug #3504366
+
+Features:
+- config: Allow --pause and --cookiefile to be set in configuration file.
+
+
+7.5 "Kukushka" (released 13.02.2012)
+
+Fixes:
+- checking: Properly handle non-ascii HTTP header values.
+  Closes: SF bug #3473359
+- checking: Work around a Squid proxy bug which resulted in not
+  detecting broken links.
+  Closes: SF bug #3472341
+- documentation: Fix typo in the manual page.
+  Closes: SF bug #3485876
+
+Changes:
+- checking: Add steam:// URIs to the list of ignored URIs.
+  Closes: SF bug #3471570
+- checking: Deprecate the --check-html-w3 and --check-css-w3 options.
+  The W3C checkers are automatically used if a local check library
+  is not installed.
+- distribution: The portable version of LinkChecker does not write
+  the configuration file in the user directory anymore. So a user
+  can use this version on a foreign system without leaving any traces
+  behind.
+
+Features:
+- gui: Add Ctrl-L shortcut to highlight the URL input.
+- gui: Support loading and saving of project files.
+  Closes: SF bug #3467492
+
+
+7.4 "Warrior" (released 07.01.2012)
+
+Fixes:
+- gui: Fix saving of check results as a file.
+  Closes: SF bug #3466545, #3470389
+
+Changes:
+- checking: The archive attribute of <applet> and <object> is a
+  comma-separated list of URIs. The value is now split and each URI
+  is checked separately.
+- cmdline: Remove deprecated options.
+- configuration: The dictionary-based logging configuration is now
+  used. The logging.conf file has been removed.
+- dependencies: Python >= 2.7 is now required
+
+Features:
+- checking: Add HTML5 link elements and attributes.
+
+
+7.3 "Attack the block" (released 25.12.2011)
+
+Fixes:
+- configuration: Properly detect home directory on OS X systems.
+  Closes: SF bug #3423110
+- checking: Proper error reporting for too-long unicode hostnames.
+  Closes: SF bug #3438553
+- checking: Do not remove whitespace inside URLs given on the
+  commandline or GUI. Only remove whitespace at the start and end.
+- cmdline: Return with non-zero exit value when internal program
+  errors occurred.
+- gui: Fix saving of check results as a file.
+
+Changes:
+- gui: Display all options in one dialog instead of tabbed panes.
+
+Features:
+- gui: Add configuration for warning strings instead of regular
+  expressions. The regular expressions can still be configured in
+  the configuration file.
+- gui: Add configuration for ignore URL patterns.
+  Closes: SF bug #3311262
+- checking: Support parsing of Safari Bookmark files.
+
+
+7.2 "Drive" (released 20.10.2011)
+
+Fixes:
+- checking: HTML parser now correctly detects character encoding for
+  some sites.
+  Closes: SF bug #3388291
+- logging: Fix SQL output.
+  Closes: SF bug #3415274, #3422230
+- checking: Fix W3C HTML checking by using the new soap12 output.
+  Closes: SF bug #3413022
+- gui: Fix startup when configuration file contains errors.
+  Closes: SF bug #3392021
+- checking: Ignore errors trying to get FTP feature set.
+  Closes: SF bug #3424719
+
+Changes:
+- configuration: Parse logger and logging part names case insensitive.
+  Closes: SF bug #3380114
+- gui: Add actions to find bookmark files to the edit menu.
+
+Features:
+- checking: If a warning regex is configured, multiple matches in
+  the URL content are added as warnings.
+  Closes: SF bug #3412317
+- gui: Allow configuration of a warning regex.
+
+
+7.1 "A fish called Wanda" (released 6.8.2011)
+
+Fixes:
+- checking: HTML parser detects and handles stray "<" characters before
+  end tags.
+- checking: Reset content type setting after loading HTTP headers again.
+  Closes: SF bug #3324125
+- checking: Remove query and fragment parts of file URLs. Fixes false
+  errors checking sites on local file systems.
+  Closes: SF bug #3308753
+- checking: Do not append a stray newline character when encoding
+  authentication information to base64. Fixes HTTP basic
+  authentication.
+  Closes: SF bug #3377193
+- checking: Ignore attribute errors when printing the Qt version.
+- checking: Update cookie values instead of adding duplicate entries.
+  Closes: SF bug #3373910
+- checking: Send cookies in as few headers as possible.
+  Closes: SF bug #3346972
+- checking: Send all domain-matching cookies that apply.
+  Closes: SF bug #3375899
+- gui: Properly reset active URL count when checking stops.
+  Closes: SF bug #3311270
+
+Changes:
+- gui: Default to last URL checked in GUI (if no URL is given as
+  commandline parameter).
+  Closes: SF bug #3311271
+- cgi: Removed FastCGI module. The normal CGI module should be
+  sufficient.
+- doc: Document the list of supported warnings in the linkcheckerrc(5)
+  man page.
+  Closes: SF bug #3340449
+
+Features:
+- checking: New option --user-agent to set the User-Agent header
+  string sent to HTTP web servers. Note that this does not change
+  or prevent robots.txt checking.
+  Closes: SF bug #3325026
+
+
+7.0 "Plots with a View" (released 28.5.2011)
+
+Fixes:
+- doc: Correct reference to RFC 2616 for cookie file format.
+  Closes: SF bug #3299557
+- checking: HTML parser detects and handles stray "<" characters.
+  Closes: SF bug #3302895
+- checking: Correct wrong import path in configuration file.
+  Closes: SF bug #3305351
+- checking: Only check warning patterns in parseable content.
+  Avoids false errors downloading large binary files.
+  Closes: SF bug #3297970
+- checking: Correctly include dns.rdtypes.IN and dns.rdtypes.ANY
+  submodules in Windows and OSX installers. Fixes false DNS errors.
+  Closes: SF bug #3297235
+
+Changes:
+- gui: Display status info into GUI main window instead of modal window.
+  Closes: SF bug #3297252
+- gui: Display warnings in result column.
+  Closes: SF bug #3298036
+- gui: Improved option dialog layout.
+  Closes: SF bug #3302498
+- doc: Document the ability to search for URLs with --warning-regex.
+  Closes: SF bug #3297248
+- checking: Support for a system configuration file has been removed.
+  There is now only one user-configurable configuration file.
+- doc: Paginate linkchecker -h output when printing to console.
+
+Features:
+- logging: Colorize number of errors in text output logger.
+- checking: Support both Chromium and Google Chrome profile dirs
+  for finding bookmark files.
+- gui: Remember last 10 checked URLs in GUI.
+  Closes: SF bug #3297243
+- gui: Display the number of selected rows as status message.
+  Closes: SF bug #3297247
+
+
+6.9 "Cowboy Bebop" (released 6.5.2011)
+
+Fixes:
+- gui: Correctly reset logger statistics.
+- gui: Fixed saving of parent URL source.
+- installer: Fixed portable windows version by not compressing DLLs.
+- checking: Catch socket errors when resolving GeoIP country data.
+
+Changes:
+- checking: Automatically allow redirections from URLs given by the
+  user.
+- checking: Limit download file size to 5MB.
+  SF bug #3297970
+- gui: While checking, show new URLs added in the URL list view by
+  scrolling down.
+- gui: Display release date in about dialog.
+  Closes: SF bug #3297255
+- gui: Warn before closing changed editor window.
+  Closes: SF bug #3297245
+- doc: Improved warningregex example in default configuration file.
+  Closes: SF bug #3297254
+
+Features:
+- gui: Add syntax highlighting for Qt editor in case QScintilla
+  is not installed.
+- gui: Highlight check results and colorize number of errors.
+- gui: Reload configuration after changes have been made in the editor.
+  Closes: SF bug #3297242
+
+
+6.8 "Ghost in the shell" (released 26.4.2011)
+
+Fixes:
+- checking: Make module detection more robust by catching OSError.
+
+Changes:
+- gui: Print detected module information in about dialog.
+- gui: Close application on Ctrl-C.
+- checking: Ignore redirections if the scheme is not HTTP,
+  HTTPS or FTP.
+- build: Ship Microsoft C++ runtime files directly instead
+  of the installer package.
+- gui: Make QScintilla editor optional by falling back to a
+  QPlainText editor.
+
+Features:
+- build: Support building a binary installer in 64bit Windows
+  systems.
+- build: The Windows installer is now signed with a local self-signed
+  certificate.
+- build: Added a Mac OS X binary installer.
+- network: Support getting network information on Mac OS X systems.
+
+
+6.7 "Friendship" (released 12.4.2011)
+
+Fixes:
+- gui: Fix display of warnings in property pane.
+  Closes: SF bug #3263974
+- gui: Don't forget to write statistics when saving result files.
+- doc: Added configuration file locations in HTML documentation.
+- doc: Removed mentioning of old -s option from man page.
+- logging: Only write configured output parts in CSV logger.
+- logging: Correctly encode CSV output.
+  Closes: SF bug #3263848
+- logging: Don't print empty country information.
+- gui: Don't crash while handling internal error in non-main threads.
+
+Changes:
+- gui: Improved display of internal errors.
+- logging: Print more detailed locale information on internal
+  errors.
+
+Features:
+- gui: Added CSV output type for results.
+- gui: Use Qt Macintosh widget style on OS X systems.
+- logging: Print recursion level in machine readable logger outputs
+  xml, csv and sql. Allows filtering the output by recursion level.
+
+
+6.6 "Coraline" (released 25.3.2011)
+
+Fixes:
+- gui: Really read system and user configuration file.
+- gui: Fix "File->Save results" command.
+  Closes: SF bug #3223290
+
+Changes:
+- logging: Add warning tag attribute in XML loggers.
+
+Features:
+- gui: Added a crash handler which displays exceptions
+  in a dialog window.
+
+
+6.5 "The Abyss" (released 13.3.2011)
+
+Fixes:
+- checking: Fix typo calling get_temp_file() function.
+  Closes: SF bug #3196917
+- checking: Prevent false positives when detecting the MIME type
+  of certain archive files.
+- checking: Correct conversion between file URLs and encoded
+  filenames. Fixes false errors when handling files with Unicode
+  encodings.
+- checking: Work around a Python 2.7 regression in parsing certain
+  URLs with paths starting with a digit.
+- cmdline: Fix filename completion if path starts with ~
+- cgi: Prevent encoding errors printing to sys.stdout using an
+  encoding wrapper.
+
+Changes:
+- checking: Use HTTP GET requests to work around buggy IIS servers
+  sending false positive status codes for HEAD requests.
+- checking: Strip leading and trailing whitespace from URLs and print
+  a warning instead of having errors.
+  Also all embedded whitespace is stripped from URLs given at the
+  commandline or the GUI.
+  Closes: SF bug #3196918
+
+Features:
+- configuration: Support reading GNOME and KDE proxy settings.
+
+
+6.4 "The Sunset Limited" (released 20.2.2011)
+
+Fixes:
+- checking: Do not remove CGI parameters when joining URLs.
+- checking: Correctly detect empty FTP paths as directories.
+- checking: Reuse connections more than once and ensure they are
+  closed before expiring.
+- checking: Make sure "ignore" URL patterns are checked before
+  "nofollow" URL patterns.
+  Closes: SF bug #3184973
+- install: Properly include all linkcheck.dns submodules in the
+  .exe installer.
+- gui: Remove old context menu action to view URL properties.
+- gui: Disable viewing of parent URL source if it's a directory.
+
+Changes:
+- gui: Use Alt-key shortcuts for menu entries.
+- checking: Improved thread locking and reduce calls to time.sleep().
+- cmdline: Deprecate the --priority commandline option. Now the check
+  process runs with normal priority.
+- cmdline: Deprecate the --allow-root commandline option. Root
+  privileges are now always dropped.
+- cmdline: Deprecate the --interactive commandline option. It has
+  no effect anymore.
+
+Features:
+- checking: Added support for Google Chrome bookmark files.
+- gui: Preselect filename on save dialog when editing file:// URLs.
+  Closes: SF bug #3176022
+- gui: Add context menu entries for finding Google Chrome and Opera
+  bookmark files.
+
+
+6.3 "Due Date" (released 6.2.2011)
+
+Fixes:
+- install: Fixed the install instructions.
+  Closes: SF bug #3153484
+- logging: Enforce encoding error policy when writing to stdout.
+- checking: Prevent error message from Geoip by using the correct
+  API function when no city database is installed.
+- checking: Properly detect case where IPv6 is not supported.
+  Closes: SF bug #3167249
+
+Changes:
+- gui: Detect local or development versions in update check.
+
+
+6.2 "Despicable Me" (released 6.1.2011)
+
+Changes:
+- checking: Parse PHP files recursively.
+- gui: Remove reset button from option dialog.
+
+Features:
+- gui: Add update check for newer versions of LinkChecker.
+
+
+6.1 "Christmas Vacation" (released 23.12.2010)
+
+Fixes:
+- checking: Fix broken anchor checking.
+  Closes: SF bug #3140765
+- checking: Properly detect filenames with spaces as
+  internal links when given as start URL.
+- logging: Allow Unicode strings to be written to stdout without
+  encoding errors on Unix systems.
+- logging: Fix missing content type for cached URLs.
+- gui: Reset statistics before each run.
+
+Changes:
+- install: Compress Windows installer with upx, saving some Bytes.
+
+Features:
+- gui: Add URL input context menu action to paste Firefox bookmark file.
+- install: Added a portable package for Windows.
+
+
+6.0 "Kung Fu Panda Holiday Special" (released 19.12.2010)
+
+Fixes:
+- checking: Fall back to HTTP GET requests when the connection has
+  been reset since some servers tend to do this for HEAD requests.
+  Closes: SF bug #3114622
+- gui: Activate links in property dialog.
+- gui: Fix sorting of columns in URL result list.
+  Closes: SF bug #3131401
+- checking: Fix wrong __init__ call to URL proxy handler.
+  Closes: SF bug #3118254
+- checking: Catch socket errors (for example socket.timeout)
+  when closing SMTP connections.
+
+Changes:
+- dependencies: Require and use Python 2.6.
+- cmdline: Removed deprecated options --no-anchor-caching and
+  --no-proxy-for.
+- config: Remove backwards compatilibity parsing and require the
+  new multiline configuration syntax.
+- logging: Use codecs module for proper output encoding.
+  Closes: SF bug #3114624
+- checking: The maximum file size of FTP files is now limited
+  to 10MB.
+- checking: Remove warning about using Unicode domains which are more
+  widely supported now.
+- logging: The unique ID of an URL is not printed out anymore.
+  Instead the cache URL key should be used to uniquely identify URLs.
+- gui: Display URL properties in main window instead of an extra
+  dialog.
+
+Features:
+- logging: More statistic information about content types and URL
+  lengths is printed out.
+- gui: Store column widths in registry settings.
+- gui: Add ability to save results to local files with File->Save.
+- gui: Assume the entered URL starts with http:// if it has no
+  scheme specified and is not a valid local file.
+- gui: Display check statistics in main window.
+- gui: There is now a clear button in the URL input field if any text
+  has been written to it.
+
+
+5.5 "Red" (released 20.11.2010)
+
+Fixes:
+- checking: Do not check content of already cached URLs.
+  Closes: SF bug #1720083
+- checking: Do not parse URL CGI part recursively, avoiding maximum
+  recursion limit errors.
+  Closes: SF bug #3096115
+- logging: Avoid error when logger fields "intro" or "outro" are
+  configured.
+- logging: Correctly quote edge labels of graph output formats and
+  remove whitespace.
+- checking: Make sure the check for external domain is done after all
+  HTTP redirections.
+- checking: Check for allowed content read before trying to
+  parse anchors in HTML file.
+  Closes: SF bug #3110569
+
+Changes:
+- cmdline: Don't log a warning if URL has been redirected.
+  Closes: SF bug #3078820
+- checking: Do not print warnings for HTTP -> HTTPS and HTTPS -> HTTP
+  redirects any more.
+- logging: Changed comment format in GML output to be able to load the
+  graph in gephi.
+- gui: Remove timeout and thread options.
+- checking: Do not report irc:// hyperlinks as errors, ignore them
+  instead.
+  Closes: SF bug #3106302
+
+Features:
+- gui: Add command to save the parent URL source in a local file.
+- gui: Show configuration files in option dialog and allow them to
+  be edited.
+  Closes: SF bug #3102201
+- gui: Added dialog to show detailed URL properties on double click.
+- gui: Store GUI options in registry settings.
+
+
+5.4 "How to train your dragon" (released 26.10.2010)
+
+Fixes:
+- gui: Enable the cancel button again after it has been clicked and
+  disabled.
+- checking: Fix printing of active URLs on Ctrl-C.
+- checking: Check for allowed content read before trying to
+  parse robots.txt allowance.
+- gui: Prevent off-screen window position.
+  Closes: SF bug #3025284
+
+Changes:
+- gui: Display cancel message in progress window.
+- gui: Use separate debug log window.
+- install: Copy and execute the Microsoft Visual C runtime DLL
+  installer. This solves startup error on WinXP systems that don't
+  have this DLL installed.
+  Closes: SF bug #3025284
+- checking: Tune timeout values to close threads faster on exit.
+  Closes: SF bug #3087944
+- config: Authentication password entries are optional and if missing
+  have to be entered at the commandline.
+
+Features:
+- gui: Added "View parent URL online" context menu action to display
+  source in text editor window.
+  Closes: SF bug #3040378
+- gui: Read default options from configuration file.
+  Closes: SF bug #2931320
+- config: Added configuration file option for the --cookies command line
+  option.
+- http: Allow specifying a login URL in the configuration file which
+  gets visited before checking submits login data.
+  Closes: SF bug #3041527
+
+
+5.3 "Inception" (released 29.9.2010)
+
+Fixes:
+- ftp: Fix support for FTP ports other than the default.
+- build: Use _WIN32 instead of WIN32 define to detect Windows systems.
+  Closes: SF bug #2978524
+- http: Send correct host header when using proxies. Thanks Jason Martin
+  for the patch.
+  Closes: SF bug #3035754
+- file: Prevent truncation of UNC paths on Windows systems.
+  Closes: SF bug #3017391
+- url: Work around a Python bug cutting off characters when joining an
+  URL that starts with semicolon.
+  Closes: SF bug #3056136
+- gui: Enable tree widget items to make them selectable. This makes
+  the right-click context menu work again.
+  Closes: SF bug #3040377
+
+Changes:
+- checking: Caches are now size-restricted to limit the memory
+  usage.
+- logging: Use more memory-efficient wire-format for UrlBase,
+  using __slots__.
+  Closes: SF bug #2976995
+- checking: Get size from Content-Length HTTP header and for local
+  files from stat(2) so size information is available without
+  downloading the content data.
+- checking: Remove the unnormed URL warning. URLs can be written
+  in more than one way and there is no norm.
+  Closes: SF bug #1575800
+- checking: Add "skype:" to list of ignored URL schemes.
+  Closes: SF bug #2989086
+- logging: Prefer the <a> element content as name instead of the title
+  attribute.
+  Closes: SF bug #3023483
+- logging: Use semicolon as default separator for CSV files so it opens
+  in Excel initially.
+- checking: Allow redirections of external URLs if domain stays the
+  same.
+  Closes: SF bug #3024394
+- cmdline: The --password option now reads a password from stdin
+  instead taking it from the commandline.
+- gui: Change registry base key to avoid spydoctor alert. Old keys
+  have to be deleted by hand though.
+  Closes: SF bug #3062161
+
+Features:
+- ftp: Detect and support UTF-8 filename encoding capability of FTP
+  servers.
+- checking: Added new warning to check if content size is zero.
+- install: Remove Windows registry keys on uninstall.
+- checking: Do not fall back to GET when no recursion is requested on
+  single pages. This allows to check pages with a HEAD request even if
+  robots.txt disallows to get the page content.
+- checking: detect and warn when obfuscated IP addresses are found.
+- gui: Add "Copy to clipboard" context menu item to copy an URL to
+  the system clipboard.
+- checking: Support the pygeoip package to display country information
+  on windows systems.
+
+
+5.2 "11:14" (released 7.3.2010)
+
+Fixes:
+- logging: Use default platform encoding instead of hardcoded one
+  of iso-8859-1.
+  Closes: SF bug #2770077
+- dns: Use /dev/urandom instead of /dev/random to get initial seed
+  on Linux machines since the last one can block indefinitely.
+  Closes: SF bug #2901667
+- http: Retry if server closed connection and sent an empty
+  status line. Fixes the "BadStatusLine" errors.
+- http: Prevent UnicodeDecodeError on redirection by ensuring that
+  the redirected URL will be Unicode encoded.
+- checking: Prevent UnicodeDecodeError in robots.txt parser by
+  encoding the linkchecker useragent string.
+- installer: Add commandline executable to Windows installer.
+  Closes: SF bug #2903257
+- http: Warn about permanent redirections even when redirected URL is
+  outside of the domain filter.
+  Closes: SF bug #2920182
+- mailto: An empty email-address is syntactically allowed according
+  to RFC2368. So the syntax error about missing email-addresses gets
+  demoted to a warning.
+  Closes: SF bug #2910588
+- cmdline: Expand tilde (~) in filenames given with the --config option.
+
+Changes:
+- cmdline: disabled and deprecated the --no-proxy-for option. Use the
+  $no_proxy environment variable instead.
+- dns: Updated dnspython module from upstream version 1.8.1.
+- checking: Improved HTML parsing speed:
+  a) The parsers for HTML title and robots.txt meta tags stop after seeing
+     a <body> tag.
+  b) Anchor references are not always parsed, but onl when the--anchor
+     option was given.
+  c) Found HTML links are not queued after parsing the whole file, but
+     directly when found. This also saves some memory.
+
+Features:
+- checking: Check hyperlinks of Word documents. Needs pywin32
+  installed.
+- http: Allow and support HTTPS proxies.
+
+
+5.1 "Let the right one in" (released 04.08.2009)
+
+Fixes:
+- logging: The content size of downloads is now shown again.
+- logging: The CSV logger does not crash anymore when only parts
+  of log output was configured
+  Closes: SF bug #2806790
+- http: Fixed persistent connection handling: retry connecting to HTTP
+  servers which close persistent connections unexpectedly.
+- bookmarks: correctly read the bookmark title from Mozilla places.sqllite
+- checking: ignore the fragment part (ie. the anchor) of URIs when
+  getting and caching HTTP content; follows the HTTP/1.1 specification which
+  does not include fragments in the protocol. Thanks to Martin von Gagern
+  for pointing this out.
+  This also deprecates the --no-anchor-caching option which will be
+  removed in future releases.
+  Closes: SF bug #2784996
+- checking: Prefer to encode spaces with %20 instead of + to be sure mailto:
+  URLs are understood by email clients.
+  Closes: SF bug #2820773
+- checking: Allow digits at end of domain names.
+
+Changes:
+- logging: Switch default output encoding of loggers to UTF-8, except the
+  text logger which also honors the system settings.
+  Closes: SF bug #2579899
+- logging: Make output more concise by not logging duplicate cached URLs.
+- nntp: Only retry 3 instead of 5 times to connect to busy NNTP servers.
+- cmdline: The command line script exits with error only when errors
+  or warnings are printed. Previously it exited with error status even
+  when all warnings were ignored.
+  Closes: SF bug #2820812
+
+Features:
+- email: Added email syntax checking.
+  Closes: SF bug #2595437
+- gui: Improved progress dialog in GUI client: show active and queued URLs.
+- gui: Added right-click context menu for logged URLs.
+- nntp: Output welcome message from NNTP servers as info.
+- http: Honor the no_proxy environment variable.
+- config: the system configuration is copied to the user configuration at
+  ~./linkchecker/linkcheckerrc if it does not exist yet.
+- logging: the loggers now have an additional field "ID" which prints
+  a unique ID for each logged URL.
+
+5.0.2 "All the boys love Mandy Lane" (released 13.2.2009)
+
+  * Properly detect location of the log configuration file in the Windows
+    binary .exe.
+    Closes: SF bug #2564674
+
+  * Install locale .mo files in the Windows binary .exe
+
+5.0.1 "Slumdog Millionaire" (released 31.1.2009)
+
+  * Remove unit tests from distribution to avoid antivirus software
+    alarms with the virus filter tests.
+    Closes: SF bug #2537822
+
+  * Updated dnspython module from upstream.
+    Changed: linkcheck/dns/*, tests/dns/*
+
+5.0 "Iron Man" (released 24.1.2009)
+
+  * Require and use Python >= 2.5.
+    Type: feature
+    Changed: *.py
+
+  * Send HTTP Referer header for both http and https URLs.
+    Type: feature
+    Changed: linkcheck/checker/httpurl.py
+
+  * The HTML and CSS syntax check now only applies to URLs
+    which match those given on the command line.
+    This makes checking of personal pages easier.
+    Type: feature
+    Changed: linkcheck/checker/urlbase.py
+
+  * Added online HTML and CSS syntax checks using W3C validators.
+    Implemented as commandline options --check-html-w3 and
+    --check-css-w3.
+    Type: feature
+    Changed: linkchecker, linkcheck/checker/urlbase.py
+
+  * Added ability to scan URL content with ClamAV virus scanner.
+    Implemented as commandline option --scan-virus.
+    Type: feature:
+    Changed: linkchecker, linkcheck/checker/urlbase.py
+    Added: linkcheck/clamav.py
+
+  * Improved network interface detection on POSIX systems.
+    Type: bugfix
+    Added: linkcheck/network/*
+
+  * Improved graph output: print labels as node names. Thanks
+    to Jan Weiss for the initial idea.
+    Type: feature
+    Changed: linkcheck/logger/{dot,gml,gxml}.py
+    Added: linkcheck/logger/graph.py
+
+  * Add support for setuptools and thus Python eggs in the setup.py
+    script. This should fix installation errors for generated .egg
+    files.
+    Type: feature
+    Closes: SF bug #1985509
+
+  * Support parsing of HTML pages served with application/xhtml+xml
+    content type.
+    Type: bugfix
+    Closes: SF bug #1994104
+
+  * Support reading URLs from stdin in the commandline interface.
+    Type: feature
+    Closes: SF bug #2013873, #2013874
+    Changed: linkchecker
+
+  * Improved filename recognition on Windows systems.
+    Type: bugfix
+    Changed: linkcheck/checker/fileurl.py
+
+  * Fix error encoding non-ASCII robots.txt content. Makes some sites
+    like wikipedia.org accessible with LinkChecker.
+    Type: bugfix
+    Changed: linkcheck/robotparser2.py
+
+  * Fix off-by-one error in cookie domain matching code. Prevented
+    some cookie files to work properly.
+    Type: bugfix
+    Changed: linkcheck/cookies.py
+    Closes: SF bug #2016451
+
+  * Improved double Ctrl-C abort on Unix and Windows platforms.
+    Type: feature
+    Changed: linkcheck/director/__init__.py
+
+  * Support reading Firefox 3 bookmark files in SQLite format.
+    Type: feature
+    Changed: linkcheck/checker/fileurl.py
+
+  * Handle non-Latin1 filenames when checking local directories.
+    Type: bugfix
+    Closes: SF bug #2093225
+    Changed: linkcheck/checker/fileurl.py
+
+  * Use configured proxy when requesting robots.txt, especially
+    honor the noproxy values.
+    Type: bugfix
+    Closes: SF bug #2091297
+    Changed: linkcheck/robotparser2.py, linkcheck/cache/robots_txt.py,
+      linkcheck/checker/httpurl.py
+
+  * Added new --complete option; making --verbose less chatty.
+    Type: feature
+    Closes: SF #2338973
+    Changed: linkchecker, linkcheck/configuration/__init__.py
+
+  * Remove gopher: URL checking.
+    Type: feature
+    Changed: linkcheck/checker/unkonwnurl.py
+    Removed: linkcheck/checker/gopherurl.py
+
+4.9 "Michael Clayton" (released 25.4.2008)
+
+  * Parse Shockwave Flash (SWF) for URLs to check
+    Type: feature
+    Changed: linkcheck/checker/urlbase.py
+
+  * Don't parse <script for=""> attributes since they specify IDs, not
+    URLs.
+    Type: bugfix
+    Changed: linkcheck/linkparse.py
+
+  * Fix bash filename completion script:
+      - add missing COMPREPLY variable
+      - support whitespace in files using "-o filenames" bash completion
+        option
+      - support subdirs by adding a FileCompleter argument matcher to
+        optcomplete.autocomplete()
+    Type: bugfix
+    Changed: config/linkchecker-completion
+
+  * Prevent unicode errors when an email address contains non-ascii
+    characters.
+    Type: bugfix
+    Changed: linkcheck/checker/mailtourl.py
+
+  * Workaround for buggy servers that break protocol synchronization of
+    persistent HTTP connections.
+    Type: bugfix
+    Changed: linkcheck/checker/httpurl.py
+    Closes: SF bug #1913992
+
+  * Properly fall back to DNS A requests when no MX host could be found
+    for a mailto: URL.
+    Type: bugfix
+    Changed: linkcheck/checker/mailtourl.py
+    Closes: SF bug #1942463
+
+  * Double Ctrl-C aborts checking immediately, without cleanup.
+    Type: feature
+    Changed: linkcheck/director/__init__.py
+    Closes: SF bug #1720104
+
+  * Intern patterns now accept URLs with and without "www." prefixes
+    as default. This allows sites to check that use both variants.
+    Type: feature
+    Changed: linkcheck/checker/internpaturl.py
+
+  * Added --check-html and --check-css options to enable HTML and CSS
+    syntax checking. Uses third-party modules "tidy" and "cssutils"
+    for the actual check.
+    Type: feature
+    Changed: linkchecker, linkcheck/checker/urlbase.py
+
+4.8 "Hallam Foe" (released 16.12.2007)
+
+  * Fix message typo for not disclosing information.
+    Type: documentation
+    Closes: SF bug #1758531
+    Changed: linkcheck/director/console.py, po/de.po, po/linkchecker.pot
+
+  * Always read the request body data on persistent HTTP connections, else
+    subsequent calls will get data from the previous request.
+    Type: bugfix
+    Changed: linkcheck/checker/httpurl.py
+
+  * Zope server workaround: assume missing HEAD support when receiving
+    text/plain on a HEAD request. Switch to GET request in this case.
+    Type: bugfix
+    Closes: SF bug #1770131
+    Changed: linkcheck/checker/httpurl.py
+
+  * Prevent double encoding in HTML info output.
+    Type: bugfix
+    Changed: linkcheck/logger/html.py
+
+  * Honor urllib.proxy_bypass() when ignoring proxy settings.
+    This only affected Windows systems, since on other platforms
+    the proxy_bypass() function always return False (on Python <= 2.5
+    that is).
+    Type: bugfix
+    Changed: linkcheck/checker/proxysupport.py
+
+  * Document the --configfile option in the man page.
+    Type: documentation
+    Changed: doc/{en,de}/linkchecker.1
+
+  * Remove comments from CSS content before searching for links.
+    Type: bugfix
+    Changed: linkcheck/linkparse.py, linkcheck/checker/urlbase.py
+    Closes: SF bug #1831900
+
+  * Try to detect unkonwn URL schemes from the command line, eg. URLs
+    like "rtsp://foo".
+    Type: feature
+    Changed: linkchecker, linkcheck/lc_cgi.py,
+      linkcheck/checker/{__init__,urlbase,httpurl,unknownurl}.py
+
+  * Fix typo in warnings and use constants for the warning strings
+    to avoid this in the future.
+    Type: bugfix
+    Closes: SF bug #1838803
+    Changed: linkcheck/checker/__init__.py
+
+  * Make sure LinkChecker does not check paths that are not prefixed
+    with the start URL.
+    Type: bugfix
+    Closes: SF bug #1841305
+    Changed: linkcheck/checker/internpaturl.py
+    Added: linkcheck/checker/test/test_internpat.py
+
+  * Try to solve the "Too many open files" errors that users have
+    encountered.
+    + Ensure that the connection of a checked URL are closed after checking
+      (except for reused connections in the connection pool).
+    + Regularly close expired connections from the connection pool, and
+      finally close all of them when the program is finished.
+    Closes: SF #1758338, SF #1678055, SF #1631042
+    Type: bugfix
+    Changed: linkcheck/cache/connection.py, linkcheck/director/aggregator.py,
+      linkcheck/checker/{httpurl,mailtourl,urlbase,ftpurl}.py
+    Added: linkcheck/directory/cleanup.py
+
+  * Add man page linkcheckerrc(5) for the configuration file format.
+    Type: documentation
+    Added: doc/{en,de}/linkcheckerrc.5
+    Changed: doc/po4a.conf
+
+  * Drop french translations, they are less than 20% complete for
+    years now.
+    Type: documentation
+    Removed: doc/fr/*
+
+  * Correct misnamed colums in create.sql script: r/*string/\1/g
+    Type: bugfix
+    Changed: config/create.sql
+    Closes: SF #1849733
+
+  * Improved cookie parsing:
+    + Allow spaces in attribute values. Example:
+      "Set-Cookie: expires=Wed, 12-Dec-2001 19:27:57 GMT"
+      is now parsed correctly
+    + Add an optional leading dot for domain names, and account for that
+      in the domain checking routine.
+    Type: feature
+    Changed: linkcheck/cookies.py
+
+  * Don't print cached errors or warnings unless verbose output is
+    requested.
+    Type: feature
+    Changed: linkcheck/director/logger.py,
+      linkcheck/logger/{__init__,html,text}.py
+
+4.7 "300" (released 17.6.2007)
+
+  * Mention in the documentation that --anchors enables logging of
+    the anchor warning.
+    Type: documentation
+    Changed: linkchecker, linkcheck/doc/*/linkchecker.1
+
+  * Make sure --anchors and --no-warnings play along in the configuration.
+    Type: bugfix
+    Changed: linkchecker, linkcheck/configuration/__init__.py
+
+  * Check that charset is not None before lowering it in set_encoding().
+    Type: bugfix
+    Changed: linkcheck/HtmlParser/__init__.py
+
+  * Use standard "utf-8" charset name instead of "utf8" for the XML output
+    encoding. Thanks to Dan Reitano for the note.
+    Type: bugfix
+    Changed: linkcheck/logger/xmllog.py
+
+  * Added "created" attribute in XML output root element.
+    Added "result" attribute in XML output valid element.
+    Type: feature
+    Changed: linkcheck/logger/customxml.py
+
+  * Fix printing of unicode names. Thanks to Frank Bennet for the hint.
+    Type: bugfix
+    Changed: linkcheck/logger/{html,text}.py
+
+  * Deprecate gopher: URLs. They do not really exist anymore and the
+    gopherlib module in Python 2.5 is deprecated and will vanish soon.
+    Type: feature
+    Changed: doc/*/{documentation.txt,linkchecker.1}, linkchecker
+
+4.6 "Cars" (released 16.12.2006)
+
+  * Fixed default config file syntax by not indenting comment lines
+    Type: bugfix
+    Changed: config/linkcheckerrc
+
+  * Don't set the URL result on redirections when getting the content.
+    Type: bugfix
+    Changed: linkcheck/checker/httpurl.py
+
+  * Ignore errors when opening the log file output, and display a warning
+    instead.
+    Type: bugfix
+    Closes: SF bug #1600172
+    Changed: linkcheck/logger/__init__.py
+    Added: linkcheck/dummy.py
+
+  * Added some more examples.
+    Added: doc/examples/*.sh
+
+  * Pull in changes from Python subversion repository to locally stored
+    gzip and httplib modules.
+    Type: bugfix
+    Changed: linkcheck/{httplib2,gzip2}.py
+
+4.5 "The Good Humor Man" (released 25.9.2006)
+
+  * Don't ignore robots.txt entries consisting only of Allow: directives.
+    Type: bugfix
+    Changed: linkcheck/robotparser2.py
+
+  * Don't rely on HTTP HEAD requests to generate the same response status
+    as HTTP GET. So we have to follow redirections when using HTTP GET to
+    get page contents.
+    Type: bugfix
+    Changed: linkcheck/checker/httpurl.py
+
+  * Document proxy URL syntax.
+    Closes: SF bug #1562129
+    Type: documentation
+    Changed: linkchecker, {doc,po}/{en,de}.po, doc/{en,de}/linkchecker.1
+
+  * Print active URLs on Ctrl-C interrupt.
+    Closes: SF patch #1562177
+    Type: feature
+    Changed: linkcheck/director/__init__.py
+
+  * Replace all old "entry1, entry2" configuration entries with
+    multiline "entry" config entry. The old syntax is still supported,
+    but deprecated.
+    Closes: SF patch #1562195
+    Type: feature
+    Changed: linkcheck/configuration/confparse.py
+
+  * If LinkChecker was not able to spawn the initial checker and status
+    threads, print an informative error instead of an internal error.
+    Type: feature
+    Changed: linkcheck/director/__init__.py
+
+4.4 "Garden State" (released 16.9.2006)
+
+  * The JavaScript URL syntax check allows now digits and underscores.
+    Patch from Olivier Berger.
+    Type: bugfix
+    Changed: cgi-bin/lconline/check.js
+
+  * Add "internlinks" documentation and example to the default config
+    file linkcheckerrc.
+    Type: documentation
+    Changed: config/linkcheckerrc
+
+  * Detect more cases when a HTTP connection cannot be reused and
+    must be closed. And close response objects after usage.
+    Type: bugfix
+    Changed: linkcheck/checker/httpurl.py
+
+  * Only wait before a new connection to a host, not when reusing
+    a previous connection.
+    Type: bugfix
+    Changed: linkcheck/cache/connection.py
+
+  * Add more infos to various HTTP errors. Don't close connection when
+    the response object is still open.
+    Type: feature
+    Changed: linkcheck/httplib2.py
+
+  * Ignore keyboard interrupts during shutdown.
+    Type: bugfix
+    Changed: linkcheck/director/__init__.py
+
+  * Removed old Psyco references from man page and documentation.
+    Type: documentation
+    Changed: doc/*/linkchecker.1, doc/en/install.txt
+
+4.3 "Brick" (released 17.8.2006)
+
+  * Use RawConfigParser for config parsing, getting rid of the unused
+    interpolation feature of the default ConfigParser.
+    Type: feature
+    Changed: linkcheck/configuration/confparse.py
+    
+  * Removed the deprecated --disable-psyco option.
+    Type: feature
+    Changed: linkchecker
+
+  * Allow infinite recursion in CGI script, and add a warning about
+    performance requirements.
+    Type: feature
+    Changed: cgi-bin/lconline/lc_cgi.html.*, linkcheck/lc_cgi.py,
+      doc/en/install.txt
+
+4.2 "V for Vendetta" (released 26.7.2006)
+
+  * Drop privileges when running as root under Unix systems. Add
+    new option --allow-root to prevent this.
+    Type: feature
+    Changed: linkchecker, doc/{en,de}/linkchecker.1
+  
+  * Don't generate empty output files, open them only when they are
+    written to.
+    Type: bugfix
+    Changed: linkcheck/logger/{__init__,text}.py
+
+  * Only accept ASCII in robots.txt content
+    Type: bugfix
+    Changed: linkcheck/robotsparser2.py
+
+  * Fix the --profile option run.
+    Type: bugfix
+    Changed: linkchecker
+
+  * Remove the psyco optimizer, it prevented Ctrl-C breaking to work
+    properly.
+    Type: bugfix
+    Changed: linkchecker
+
+  * Norm the base reference URL.
+    Type: bugfix
+    Changed: linkcheck/checker/urlbase.py
+
+  * If default encoding cannot be determined, fall back to ASCII.
+    Type: bugfix
+    Changed: linkcheck/i18n.py
+    Closes: SF bug #1524800
+
+4.1 "Tsotsi" (released 29.5.2006)
+
+  * Wait for spawned threads to finish before shutdown. Gets rid
+    of exceptions during shutdown.
+    Type: bugfix
+    Changed: linkcheck/director/*.py
+
+  * Every once in a while look through the URL queue and put cached
+    URLs to the top. This way cached URLs will get checked more quickly.
+    Type: feature
+    Changed: linkcheck/cache/urlqueue.py
+
+4.0 "Down in the Valley" (released 19.5.2006)
+
+  * Put a name to the DOT graph output. Thanks to Peter Chiocchetti
+    for noticing this.
+    Type: bugfix
+    Changed: linkcheck/logger/dot.py
+
+  * Parse <!> empty SGML comments in HTML data. And build the HTML
+    parser with equivalence class compression which makes it a lot
+    smaller and only a little tad slower.
+    Also, literal </script> is not allowed anymore in single-line
+    JavaScript comments in HTML data.
+    Type: feature
+    Changed: linkcheck/HtmlParser/htmllex.[lc],
+      linkcheck/tests/test_parser.py
+
+  * Revamp the threading algorithm by using a URL queue, with a
+    constant number of consumer threads called 'workers'.
+    This fixes the remaining "dequeue mutated during iteration" errors.
+    Type: feature
+    Changed: *.py
+
+  * The default intern pattern matches both http: and https: schemes
+    now.
+    Type: feature
+    Changed: linckheck/checker/internpaturl.py
+
+  * If the robots.txt connection times out, don't bother to check
+    the URL but report an error immediately. Avoids having the
+    timeout twice.
+    Type: feature
+    Changed: linkcheck/robotparser2.py
+
+  * DNS lookups for HTTP links are now cached.
+    Type: feature
+    Changed: linkcheck/httplib2.py
+    Added: linkcheck/cache/addrinfo.py
+
+  * Added timeout value option to the configuration file.
+    Type: feature
+    Changed: linkcheck/configuration/confparse.py, config/linkcheckerrc
+
+  * New option --cookiefile to set initial cookie values sent to
+    HTTP servers.
+    Type: feature
+    Changed: linkchecker, linkcheck/configuration/__init__.py,
+      linkcheck/checker/httpurl.py, linkcheck/cookies.py
+
+  * The --pause option delays requests to the same host, and is not
+    required to disable threading to do that.
+    Type: bugfix
+    Changed: linkcheck/cache/connection.py, linkcheck/checker/urlbase.py,
+      linkcheck/directory/__init__.py
+
+  * Honor the "Crawl-delay" directive in robots.txt files.
+    Type: feature
+    Changed: linkcheck/robotparser2.py, linkcheck/checker/httpurl.py,
+      linkcheck/cache/robots_txt.py, linkcheck/cache/connection.py,
+
+  * Merge IgnoredUrl and ErrorUrl into UnknownUrl. Enables caching
+    on invalid URLs, plus the ability to first check for external
+    URL patterns.
+    Type: bugfix
+    Changed: linkcheck/checker/__init__.py
+    Removed: linkcheck/checker/{ignored,error}url.py
+    Added: linkcheck/checker/unknownurl.py
+
+  * Convert the "label too long" domain name parse error into
+    a more friendly error message.
+    Type: bugfix
+    Changed: linkcheck/checker/{__init__,urlbase,httpurl,fileurl}.py,
+      linkchecker
+
+3.4 "The Chumscrubbers" (released 4.2.2006)
+
+  * Ignore decoding errors when retrieving the robots.txt URL.
+    Type: bugfix
+    Changed: linkcheck/robotparser2.py
+
+  * On HTTP redirects, cache all the encountered URLs, not just the
+    initial one.
+    Type: feature
+    Changed: linkcheck/checker/{urlbase,httpurl,cache}.py
+
+  * Fixed the Cookie parsing and sending.
+    Type: bugfix
+    Changed: linkcheck/checker/cache.py
+    Added: linkcheck/cookies.py
+
+  * The psyco optimizer now has a maximum memory limit.
+    Type: feature
+    Changed: linkchecker
+
+  * The checker did not recurse into command line URLs that had upper
+    case characters.
+    Type: bugfix
+    Changed: linkcheck/checker/__init__.py
+    Closes: SF bug #1413162
+
+  * Fix a possible thread race condition by checking the return
+    value of the lock.acquire() method.
+    Type: bugfix
+    Changed: linkcheck/decorators.py
+
+3.3 "Four Brothers" (released 14.10.2005)
+
+  * Fix parsing of ignore and nofollow in configuration files.
+    Type: bugfix
+    Changed: linkcheck/configuration.py
+    Closes: SF bug #1311964, #1270783
+
+  * Ignore refresh meta content without a recognizable URL.
+    Type: bugfix
+    Changed: linkcheck/linkparse.py
+    Closes: SF bug #1294456
+
+  * Catch CGI syntax errors in mailto: URLs, and add an appropriate
+    warning about the error.
+    Type: bugfix
+    Changed: linkcheck/checker/mailtourl.py
+    Closes: SF bug #1290563
+
+  * Initialize the i18n on module load time, so one does not have
+    to call init_i18n() manually anymore. Fixes parts in the code
+    (ie. the CGI script) that forgot to do this.
+    Type: feature
+    Changed: linkcheck/__init__.py
+    Closes: SF bug #1277577
+
+  * Compress libraries in the .exe installer with UPX compressor.
+    Type: feature
+    Changed: setup.py
+
+  * Ensure that base_url is Unicode for local files.
+    Type: bugfix
+    Changed: linkcheck/checker/fileurl.py
+    Closes: Debian bug #332870
+
+  * The default encoding for program and logger output will be the
+    preferred encoding now. It is determined from your current locale
+    system settings.
+    Type: feature
+    Changed: linkchecker, linkcheck/checker/__init__.py,
+      linkcheck/i18n.py, linkcheck/logger/__init__.py
+
+  * Improved documentation about recursion and proxy support.
+    Type: documentation
+    Changed: linkchecker, doc/en/documentation.txt,
+      doc/{en,de}/linkchecker.1
+
+  * Make sure that given proxy values are reasonably well-formed.
+    Else abort checking of the current URL.
+    Type: feature
+    Changed: linkcheck/checker/proxysupport.py
+
+  * Correctly catch internal errors in the check URL loop, and
+    disable raising certain exceptions while the abort routine finishes
+    up.
+    Fixes the "dequeue mutated during iteration" errors.
+    Type: bugfix
+    Changed: linkcheck/checker/{__init__,consumer}.py
+    Closes: SF bug #1325570, #1312865, #1307775, #1292919, #1264865
+
+3.2 "Kiss kiss bang bang" (released 3.8.2005)
+
+  * Fixed typo in redirection handling code.
+    Type: bugfix
+    Changed: linkcheck/checker/httpurl.py
+  
+  * Handle all redirections to different URL types, not just HTTP ->
+    non-HTTP.
+    Type: bugfix
+    Changed: linkcheck/checker/httpurl.py
+
+  * Workaround a urllib2.py bug raising ValueError on some failed
+    HTTP authorisations.
+    Type: bugfix
+    Closes: SF bug #1250555
+    Changed: linkcheck/robotparser2.py
+
+  * Fix invalid import in DNS resolver.
+    Type: bugfix
+    Changed: linkcheck/dns/resolver.py
+
+3.1 "Suspicious" (released 18.7.2005)
+
+  * Updated documentation for the HTML parser.
+    Type: feature
+    Changed: linkcheck/HtmlParser/*
+    
+  * Added new DNS debug level and use it for DNS routines.
+    Type: feature
+    Changed: linkcheck/__init__.py, doc/en/linkchecker.1,
+      linkcheck/dns/{ifconfig,resolver}.py
+
+  * Use tags for different LinkChecker warnings and allow them to
+    be filtered with a configuration file entry.
+    Type: feature
+    Changed: linkchecker, linkcheck/checker/*.py,
+      linkcheck/configuration.py
+
+  * Add compatibility fix for HTTP/0.9 servers, from Python CVS.
+    Type: bugfix
+    Changed: linkcheck/httplib2.py
+
+  * Add buffer flush fix for gzip files, from Python CVS.
+    Type: bugfix
+    Changed: linkcheck/gzip2.py
+
+  * Do not cache URLs where a timeout or unusual error occurred.
+    This way they get re-checked.
+    Type: feature
+    Changed: linkcheck/checker/{__init__, urlbase}.py
+
+  * For HTTP return codes, try to use the official W3C name when it
+    is defined.
+    Type: feature
+    Changed: linkcheck/checker/httpurl.py
+
+  * Fix detection code of supported GCC command line options. this
+    fixes a build error on some Unix systems (eg. FreeBSD).
+    Type: bugfix
+    Closes: SF bug #1238906
+    Changed: setup.py
+
+  * Renamed the old "xml" output logger to "gxml" and added a new
+    "xml" output logger which writes a custom XML format.
+    Type: feature
+    Changed: linkchecker, linkcheck/logger/*xml*.py
+
+  * Use correct number of checked URLs in status output.
+    Type: bugfix
+    Closes: SF bug #1239943
+    Changed: linkcheck/checker/consumer.py
+
+3.0 "The Jacket" (released 8.7.2005)
+
+  * Catch all check errors, not just the ones inside of URL checking.
+    Type: bugfix
+    Changed: linkcheck/checker/__init__.py
+
+  * Ensure that the name of a newly created thread is ASCII. Else there
+    can be encoding errors.
+    Type: bugfix
+    Changed: linkcheck/strformat.py, linkcheck/checker/consumer.py,
+      linkcheck/threader.py
+
+  * Use our own gzip module to cope with incomplete gzip streams.
+    Type: bugfix
+    Closes: SF bug #1158475
+    Changed: linkcheck/checker/httpurl.py
+    Added: linkcheck/gzip2.py
+
+  * Fix hard coded python.exe path in the batch file linkchecker.bat.
+    Type: bugfix
+    Closes: SF bug #1206858
+    Changed: setup.py, install-linkchecker.py
+
+  * Allow empty relative URLs. Note that a completely missing URL is
+    still an error (ie. <a href=""> is valid, <a href> is an error).
+    Type: bugfix
+    Closes: SF bug #1217397
+    Changed: linkcheck/linkparse.py, linkcheck/logger/*.py,
+      linkcheck/checker/urlbase.py
+
+  * Added checks for more <meta> URL entries, especially favicon
+    check was added.
+    Type: feature
+    Changed: linkcheck/linkparse.py
+
+  * Limit memory consumption of psyco optimizer.
+    Type: feature
+    Changed: linkchecker
+
+  * Always norm the URL before sending a request.
+    Type: bugfix
+    Changed: linkcheck/checker/urlbase.py
+
+  * Send complete email address on SMTP VRFY command. Avoids a spurious
+    warning about incomplete email addresses.
+    Type: bugfix
+    Changed: linkcheck/checker/mailtourl.py
+
+  * The old intern/extern URL configuration has been replaced with
+    a new and hopefully simpler one. Please see the documentation on
+    how to upgrade to the new option syntax.
+    Type: feature
+    Changed: linkchecker, linkcheck/*.py
+
+  * Honor XHTML in tag browser.
+    Type: bugfix
+    Closes: SF bug #1217356
+    Changed: linkcheck/linkparse.py
+
+  * Catch curses.setupterm() errors.
+    Type: bugfix
+    Closes: SF bug #1216092
+    Changed: linkcheck/ansicolor.py
+
+  * Only call _optcomplete bash completion function when it exists.
+    Type: bugfix
+    Closes: Debian bug #309076
+    Changed: config/linkchecker-completion
+
+  * If a default config file (either /etc/linkchecker/linkcheckerrc or
+    ~/.linkchecker/linkcheckerrc) does not exist it is not added to
+    the config file list.
+    Type: bugfix
+    Changed: linkcheck/configuration.py
+
+  * The default output encoding is now that of your locale, and not
+    the hardcoded iso-8859-15 anymore.
+    Type: feature
+    Closes: Debian bug #307810
+    Changed: linkcheck/logger/__init__.py
+
+  * Do not generate an empty user config dir ~/.linkchecker by default,
+    only when needed.
+    Type: feature
+    Closes: Debian bug #307876
+    Changed: linkchecker
+
+  * Redundant dot path at beginning of relative urls are now removed.
+    Type: feature
+    Changed: linkcheck/url.py, linkcheck/tests/test_url.py
+
+  * Displaying warnings is now the default. One can disable warnings
+    with the --no-warnings option. The old --warnings option is
+    deprecated.
+    Type: feature
+    Changed: linkchecker, linkcheck/configuration.py
+
+  * CGI parameters in URLs are now properly splitted and normed.
+    Type: bugfix
+    Changed: linkcheck/url.py
+
+  * The number of encountered warnings is printed on program end.
+    Type: feature
+    Changed: linkcheck/logger/{text,html}.py
+
+  * The deprecated --status option has been removed.
+    Type: feature
+    Changed: linkchecker
+
+  * New option --disable-psyco to disable psyco compilation regardless
+    if it is installed.
+    Type: feature
+    Changed: linkchecker
+
+  * Since URL aliases from redirections do not represent the real
+    URL with regards to warnings, the aliases are no longer cached.
+    Type: bugfix
+    Changed: linkcheck/checker/cache.py, linkcheck/checker/httpurl.py
+
+  * The ignored url type honors now intern/extern filters.
+    Type: bugfix
+    Changed: linkcheck/checker/ignoreurl.py
+    Closes: SF #1223956
+
+2.9 "Sweat" (released 22.4.2005)
+
+  * Use collections.deque object for incoming URL list. This is faster
+    than a plain Python list object.
+    Type: optimization
+    Changed: linkcheck/checker/cache.py
+
+  * Updated spanish translation, thanks to Servilio Afre Puentes.
+    Type: feature
+    Changed: po/es.po
+
+2.8 "Robots" (released 8.4.2005)
+
+  * Correct AttributeError in blacklist logger.
+    Type: bugfix
+    Closes: SF bug #1173823
+    Changed: linkcheck/logger/blacklist.py
+
+  * Do not enforce an optional slash in empty URI paths. This resulted
+    in spurious warnings.
+    Closes: SF bug #1173841
+    Changed: linkcheck/url.py, linkcheck/tests/test_url.py
+
+  * On NT-derivative Windows systems, the command line scripts is now named
+    "linkchecker.bat" to facilitate execution.
+    Type: feature
+    Changed: setup.py, install-linkchecker.py, doc/en/index.txt
+
+  * Use pydoc.pager() in strformat.paginate() instead of rolling out
+    our own paging algorithm.
+    Type: feature
+    Changed: linkcheck/strformat.py
+
+2.7 "Million Dollar Baby" (released 30.3.2005)
+
+  * When a host has no MX record, fall back to A records as the mail
+    host.
+    Type: bugfix
+    Changed: linkcheck/checker/mailtourl.py
+
+  * Do not split CGI params on semicolons. This is wrong of course,
+    but not supported by all servers. A later version of the CGI parser
+    engine will split and re-join semicolons.
+    Type: bugfix
+    Changed: linkcheck/url.py
+
+  * Make sure that URLs are always Unicode strings and not None.
+    Type: bugfix
+    Closes: SF bug #1168720
+    Changed: linkcheck/linkparse.py, linkcheck/containers.py
+
+  * Fix the detection of persistent HTTP connections.
+    Type: bugfix
+    Changed: linkcheck/checker/httpheaders.py
+
+  * HTTP connections with pending data will not be cached.
+    Type: bugfix
+    Changed: linkcheck/checker/httpurl.py
+
+  * Add all URL aliases to the URL cache to avoid recursion. This
+    also changes some invariants about what URLs are expected to be
+    in the cache.
+    Type: bugfix
+    Changed: linkcheck/checker/cache.py
+
+2.6 "Lord of the Rings" (released 15.3.2005)
+
+  * Run with low priority. New option --priority to run with normal
+    priority.
+    Type: feature
+    Changed: linkchecker, linkcheck/threader.py
+
+  * If GeoIP Python wrapper is installed, log the country name as info.
+    Type: feature
+    Changed: linkcheck/checker/consumer.py
+    Added: linkcheck/checker/geoip.py
+
+  * New option --no-proxy-for that lets linkchecker contact the given
+    hosts directly instead of going through a proxy.
+    Also configurable in linkcheckerrc
+    Type: feature
+    Changed: linkchecker, linkcheck/checker/proxysupport.py,
+      linkcheck/configuration.py
+
+  * Give a useful error message for syntax errors in regular expressions.
+    Type: bugfix
+    Changed: linkchecker, linkcheck/configuration.py
+
+  * Accept quoted urls in CSS attributes.
+    Type: bugfix
+    Changed: linkcheck/linkparse.py
+
+  * Eliminate duplicate link reporting in the link parser.
+    Type: bugfix
+    Changed: linkcheck/linkparse.py
+
+  * Do not send multiple Accept-Encoding headers.
+    Type: bugfix
+    Changed: linkcheck/checker/httpurl.py
+
+  * Avoid deadlocks between the cache and the queue lock.
+    Type: bugfix
+    Changed: linkcheck/checker/consumer.py, linkcheck/checker/cache.py
+    Added: linkcheck/lock.py
+
+  * Always reinitialize stored HTTP headers on redirects; prevents
+    a false alarm about recursive redirects.
+    Type: bugfix
+    Changed: linkcheck/checker/httpurl.py
+
+2.5 "Spanglish" (released 4.3.2005)
+
+  * Added spanish translation, thanks to Servilio Afre Puentes.
+    Type: feature
+    Changed: po/Makefile
+    Added: po/es.po
+
+  * Ignore a missing locale/ dir and fall back to the default locale
+    instead of crashing.
+    Type: bugfix
+    Changed: linkcheck/i18n.py
+
+  * Since profile.py and pstats.py have been removed from some
+    Python standard installations (eg. Debian GNU/Linux), make their
+    usage optional.
+    Using --profile without an available profile.py prints a warning
+    and runs linkchecker without profiling.
+    Using --viewprof without an available pstats.py prints an error
+    and exits.
+    Type: bugfix
+    Changed: linkchecker
+
+  * Ensure stored result, info and warning strings are always Unicode.
+    Else there might be encoding errors.
+    Type: bugfix
+    Closes: SF bug #1143553
+    Changed: linkcheck/checker/{urlbase,httpurl,ftpurl}.py,
+      linkcheck/strformat.py
+
+  * Fix -h help option on Windows systems
+    Type: bugfix
+    Closes: SF bug #1149987
+    Changed: linkchecker
+
+2.4 "Kitchen stories" (released 9.2.2005)
+
+  * Work around a Python 2.4 bug when HTTP 302 redirections are
+    encountered in urllib2.
+    Type: bugfix
+    Changed: linkcheck/robotparser2.py
+
+  * Be sure to use Unicode HTML parser messages.
+    Type: bugfix
+    Changed: linkcheck/linkparse.py
+
+  * Make sure that FTP connections are opened when they are reused.
+    Else open a new connection.
+    Type: bugfix
+    Changed: linkcheck/checker/ftpurl.py
+
+  * Added '!' to the list of unquoted URL path characters.
+    Type: bugfix
+    Changed: linkcheck/url.py, linkcheck/tests/test_url.py
+
+  * Fix Windows path name for network paths.
+    Type: bugfix
+    Closes: SF bug #1117839
+    Changed: linkcheck/checker/fileurl.py
+
+  * Regularly remove expired connections from the connection pool.
+    Type: feature
+    Changed: linkcheck/checker/pool.py
+
+  * Documentation and pylint cleanups.
+    Type: feature
+    Changed: linkcheck/*.py
+
+2.3 "Napoleon Dynamite" (released 3.2.2005)
+
+  * Use and require Python >= 2.4.
+    Type: feature
+    Changed: doc/install.txt, linkcheck/__init__.py, some scripts
+
+  * Add square brackets ([]) to the list of allowed URL characters
+    that do not need to be quoted.
+    Type: bugfix
+    Changed: linkcheck/url.py
+
+  * Document the return value of the linkchecker command line script
+    in the help text and man pages.
+    Type: documentation
+    Changed: linkchecker, doc/{en,de,fr}/linkchecker.1
+
+  * Always write the GML graph beginning, not just when "intro" field
+    is defined.
+    Type: bugfix
+    Changed: linkcheck/logger/gml.py
+
+  * Added DOT graph format output logger.
+    Type: feature
+    Added: linkcheck/logger/dot.py
+    Changed: linkcheck/logger/__init__.py, linkcheck/configuration.py,
+      linkchecker
+
+  * Added ftpparse module to parse FTP LIST output lines.
+    Type: feature
+    Added linkcheck/ftpparse/*
+    Changed: setup.py, linkcheck/checker/ftpurl.py
+
+  * Ignore all errors when closing SMTP connections.
+    Type: bugfix
+    Changed: linkcheck/checker/mailtourl.py
+
+  * Do not list FTP directory contents when they are not needed.
+    Type: bugfix
+    Changed: linkcheck/checker/ftpurl.py
+
+  * Added connection pooling, used for HTTP and FTP connections.
+    Type: feature
+    Added: linkcheck/checker/pool.py
+    Changed: linkcheck/checker/{cache, httpurl, ftpurl}.py
+
+  * The new per-user configuration file is now stored in
+    ~/.linkchecker/linkcheckerrc.
+    Type: feature
+    Changed: linkchecker, linkcheck/configuration.py, doc/{de,en,fr}/*.1
+
+  * The new blacklist output file is now stored in
+    ~/.linkchecker/blacklist.
+    Type: feature
+    Changed: linkchecker, linkcheck/configuration.py, doc/{de,en,fr}/*.1
+
+  * Start the log output before appending new urls to the consumer since
+    this can trigger logger.new_url().
+    Type: bugfix
+    Changed: linkcheck/checker/{__init__, consumer}.py
+
+  * Fix crash when using -t option.
+    Type: bugfix
+    Changed: linkchecker
+
+  * Updated french translation of linkchecker, thanks to Yann Verley.
+    Type: feature
+    Changed: po/fr.po, doc/fr/linkchecker.1
+
+2.2 "Cube" (released 25.01.2005)
+
+  * CSV log format changes:
+    - default separator is now a comma, not a semicolon
+    - the quotechar can be configured and defaults to a double quote
+    - write CSV column headers as the first data row
+      (thanks to Hartmut Goebel)
+    Type: feature
+    Changed: linkcheck/logger/csvlog.py
+
+  * Support bzip-compressed man pages in RPM install script.
+    From Hartmut Goebel.
+    Type: feature
+    Changed: install-rpm.sh
+
+  * HTML parser updates:
+    - supply and use Py_CLEAR macro
+    - only call set_encoding function if tag name is 'meta'
+    Type: feature
+    Changed: linkcheck/HtmlParser/*
+
+  * Changed documentation format for epydoc.
+    Type: documentation
+    Changed: *.py
+
+  * Fix FTP error message display crash.
+    Type: bugfix
+    Changed: linkcheck/checker/ftpurl.py
+
+  * Ask before overwriting old profile data with --profile.
+    Type: feature
+    Changed: linkchecker
+
+  * When searching for link names, limit the amount of data to look at
+    to 256 characters. Do not look at the complete content anymore.
+    This speeds up parsing of big HTML files significantly.
+    Type: optimization
+    Changed: linkcheck/linkparse.py
+
+  * Support Psyco >= 1.4. If you installed older versions of Psyco,
+    a warning is printed.
+    Type: feature
+    Changed: linkchecker, doc/install.txt
+
+  * The build script setup.py uses -std=gnu99 when using GNU gcc compilers.
+    This gets rid of several compile warnings.
+    Type: feature
+    Changed: setup.py
+
+  * Correct the sent User-Agent header when getting robots.txt files.
+    Added a simple robots.txt example file.
+    Type: bugfix
+    Changed: linkcheck/robotparser2.py
+    Added: doc/robots.txt
+
+  * Updated the included linkcheck/httplib2.py from the newest httplib.py
+    found in Python CVS.
+    Type: feature
+    Changed: linkcheck/httplib2.py
+
+  * Do not install unit tests. Only include them in the source distribution.
+    Type: feature
+    Changed: MANIFEST.in, setup.py
+
+2.1 "Shogun Assassin" (released 11.1.2005)
+
+  * Added XHTML support to the HTML parser.
+    Type: feature
+    Changed: linkcheck/HtmlParser/*
+
+  * Support plural forms in gettext translations.
+    Type: feature
+    Changed: po/*.po*
+
+  * Remove intern optcomplete installation, and make it optional to
+    install, since it is only needed on Unix installations using
+    bash-completion.
+    Type: feature
+    Changed: linkchecker, config/linkchecker-completion
+    Removed: linkcheck/optcomplete.py
+
+  * Minor enhancements in url parsing.
+    Type: feature
+    Changed: linkcheck/url.py
+
+  * Sort according to preference when checking MX hosts so that
+    preferred MX hosts get checked first.
+    Type: bugfix
+    Changed: linkcheck/checker/mailtourl.py
+
+  * If mail VRFY command fails, print a warning message.
+    Type: feature
+    Changed: linkcheck/checker/mailtourl.py
+
+2.0 "I Kina spiser de hunde" (released 7.12.2004)
+
+  * Regenerate the HTML parser with new Bison version 1.875d.
+    Also use the now supported Bison memory macros YYMALLOC and
+    YYFREE.
+    Type: feature
+    Changed: linkcheck/HtmlParser/htmlparse.y
+
+  * Updated installation and usage documentation.
+    Type: documentation
+    Changed: doc/install.txt, doc/index.txt
+
+  * Added comment() method to loggers for printing comments.
+    Type: feature
+    Changed: linkcheck/logger/*.py
+
+  * Updated and translated manpages. French translation from
+    Yann Verley. German translation from me ;)
+    Type: documentation
+    Added: doc/de/linkchecker.de.1, doc/fr/linkchecker.fr.1
+    Changed: doc/en/linkchecker.1
+
+  * Fix mailto: URL norming by splitting the query type correctly.
+    Type: bugfix
+    Changed: linkcheck/url.py
+
+  * Encode all output strings for display.
+    Type: bugfix
+    Changed: linkchecker
+
+  * Accept -o option logger type as case independent string.
+    Type: feature
+    Changed: linkchecker
+
+  * Internal Unicode handling fixed.
+    Type: bugfix
+    Changed: linkcheck/url.py, linkcheck/checker/*.py
+
+  * Use correct FTP directory list parsing.
+    Type: bugfix
+    Changed: linkcheck/checker/ftpurl.py
+
+2.0rc2 "El dia de la bestia" (released 20.11.2004)
+
+  * encode version string for --version output
+    Type: bugfix
+    Closes: SF bug #1067915
+    Changed: linkchecker
+
+  * Added shell config note with --home install option.
+    Type: documentation
+    Closes: SF bug #1067919
+    Changed: doc/install.txt
+
+  * Recheck robots.txt allowance and intern/extern filters for
+    redirected URLs.
+    Type: bugfix
+    Closes: SF bug #1067914
+    Changed: linkcheck/checker/httpurl.py
+
+  * Updated the warning and info messages to be always complete
+    sentences.
+    Type: feature
+    Changed: linkcheck/checker/*.py, po/*, linkcheck/ftests/*.py,
+      linkcheck/ftests/data/*.result
+
+  * Added missing script_dir to the windows installer script.
+    Use python.exe instead of pythonw.exe and --interactive option to
+    call linkcheck script.
+    Add Documentation link to the programs group.
+    Type: bugfix
+    Changed: install-linkchecker.py
+
+2.0rc1 "The Incredibles" (released 16.11.2004)
+
+  * Only instantiate SSL connections if SSL is supported
+    Type: bugfix
+    Changed: linkcheck/checker/httpurl.py
+
+  * Close all opened log files.
+    Type: bugfix
+    Changed: linkcheck/logger/*.py
+
+  * All loggers have now an output encoding. Valid encodings are listed
+    in http://docs.python.org/lib/node127.html. The default encoding is
+    "iso-8859-15".
+    Type: feature
+    Changed: linkcheck/logger/*.py
+
+  * The --output and --file-output parameters can specify the encoding
+    now. The documentation has been updated with this change.
+    Type: feature
+    Changed: linkchecker, linkchecker.1
+
+  * The encoding can also be specified in the linkcheckerrc config file.
+    Type: feature
+    Changed: config/linkcheckerrc
+
+  * All leading directories of a given output log file are created
+    automatically now. Errors creating these directories or opening
+    the log file for writing abort the checking and print a usage mesage.
+    Type: feature
+    Changed: linkchecker, linkcheck/logger/__init__.py
+
+  * Coerce url names to unicode
+    Type: feature
+    Changed: linkcheck/checker/__init__.py
+
+  * Accept unicode filenames for resolver config
+    Type: feature
+    Changed: linkcheck/dns/resolver.py
+
+  * LinkChecker accepts now Unicode domain names and converts them
+    according to RFC 3490 (http://www.faqs.org/rfcs/rfc3490.html).
+    Type: feature
+    Changed: linkcheck/dns/resolver.py, linkcheck/url.py
+
+  * Exceptions in the log systems are no more caught.
+    Type: feature
+    Changed: linkcheck/ansicolor.py
+
+  * Remember a <base href=""> tag in the link parser. Saves one HTML
+    parse.
+    Type: feature
+    Changed: linkcheck/checker/urlbase.py, linkcheck/linkparse.py
+
+  * Optimize link name parsing of img alt tags.
+    Type: feature
+    Changed: linkcheck/linkname.py
+
+  * Remove all references to the old 'colored' output logger.
+    Type: documentation
+    Closes: SF bug #1062011
+    Changed: linkchecker.1
+
+  * Synchronized the linkchecker documentation and the man page.
+    Type: documentation
+    Closes: SF bug #1062034
+    Changed: linkchecker, linkchecker.1
+
+  * Make --quiet an alias for -o none.
+    Type: bugfix
+    Closes: SF bug #1063144
+    Changed: linkchecker, linkcheck/configuration.py,
+      linkcheck/checker/consumer.py
+
+  * Re-norm a changed file:// base url, avoiding a spurious warning.
+    Type: bugfix
+    Changed: linkcheck/checker/fileurl.py
+
+  * Wrong case of file links on Windows platforms now issue a
+    warning.
+    Type: feature
+    Closes: SF bug #1062007
+    Changed: linkcheck/checker/fileurl.py
+
+  * Updated the french translation. Thanks to Yann Verley.
+    Type: feature
+    Changed: po/fr.po
+
+1.13.5 "Die Musterknaben" (released 22.9.2004)
+  * Use xgettext with Python support for .pot file creation, adjusted
+    developer documentation.
+    Type: feature
+    Changed: doc/install.txt, po/Makefile, MANIFEST.in
+    Removed: po/pygettext.py, po/msgfmt.py
+
+  * Use plural gettext form for log messages.
+    Type: feature
+    Changed: linkcheck/logger/{text,html}.py
+
+  * Check if FTP file really exists instead of only the parent dir.
+    Type: bugfix
+    Changed: linkcheck/checker/ftpurl.py
+
+  * Document the different logger output types.
+    Type: documentation
+    Changed: linkchecker, linkchecker.1
+
+  * Recursion into FTP directories and parseable files has been
+    implemented.
+    Type: feature
+    Changed: linkcheck/checker/ftpurl.py
+
+1.13.4 "Shaun of the dead" (released 17.9.2004)
+  * Catch HTTP cookie errors and add a warning.
+    Type: bugfix
+    Changed: linkcheck/checker/httpurl.py
+
+  * fix up response page object in robots.txt parser for the upcoming
+    Python 2.4 release
+    Type: bugfix
+    Changed: linkcheck/robotparser2.py
+
+  * remove cached urls from progress queue, fixing endless wait for
+    checking to finish
+    Type: bugfix
+    Changed: linkcheck/checker/consumer.py
+
+  * updated and synchronized documentation of the man page (linkchecker.1)
+    and the linkchecker --help output.
+    Type: documentation
+    Changed: linkchecker, linkchecker.1
+
+1.13.3 "Fight Club" (released 10.9.2004)
+  * Prevent collapsing of relative parent dir paths. This fixes false
+    positives on URLs of the form "../../foo".
+    Closes: SF bug #1025459
+    Changed: linkcheck/url.py, linkcheck/tests/test_url.py
+
+1.13.2 "Zatoichi" (released 8.9.2004)
+  * Fix permissions of data files on install to be world readable.
+    Type: bugfix
+    Closes: SF bug #1022132
+    Changed: setup.py
+
+  * Fixed the SQL logger when encountering empty URLs.
+    Type: bugfix
+    Closes: SF bug #1022156
+    Changed: linkcheck/logger/sql.py
+
+  * Added notes about access rules for CGI scripts
+    Type: documentation
+    Changed: doc/install.txt
+
+  * Updated french translation. Thanks, Yann Verley!
+    Type: feature
+    Changed: po/fr.po
+
+  * initialize i18n at program start
+    Type: bugfix
+    Changed: linkchecker, linkcheck/lc_cgi.py
+
+  * Make initialization function for i18n, and allow LOCPATH to override
+    the locale directory.
+    Type: feature
+    Changed: linkcheck/__init__.py
+
+  * Removed debug print statement when issueing linkchecker --help.
+    Type: bugfix
+    Changed: linkchecker
+
+  * Reset to default ANSI color scheme, we don't know what background
+    color the terminal has.
+    Type: bugfix
+    Closes: SF bug #1022158
+    Changed: linkcheck/configuration.py
+
+  * Reinit the logger object when config files change values.
+    Type: bugfix
+    Changed: linkcheck/configuration.py
+
+  * Only import ifconfig routines on POSIX systems.
+    Type: bugfix
+    Closes: SF bug #1024607
+    Changed: linkcheck/dns/resolver.py
+
+1.13.1 "Old men in new cars" (released 3.9.2004)
+  * Fixed RPM generation by adding the generated config file to the
+    installed files list.
+    Type: bugfix
+    Changed: setup.py
+
+  * Mention to remove old versions when upgrading in the documentation.
+    Type: documentation
+    Changed: doc/upgrading.txt, doc/install.txt
+
+  * Fix typo in redirection cache handling.
+    Type: bugfix
+    Changed: linkcheck/checker/cache.py
+
+  * The -F file output must honor verbose/quiet configuration.
+    Type: bugfix
+    Changed: linkcheck/checker/consumer.py
+
+  * Generate all translation files under windows systems.
+    Type: bugfix
+    Changed: po/Makefile
+
+  * Added windows binary installer script and configuration.
+    Type: feature
+    Changed: setup.py, setup.cfg, doc/install.txt
+    Added: install-linkchecker.py
+
+  * Do not raise an error when user and/or password of ftp URLs is not
+    specified.
+    Type: bugfix
+    Changed: linkcheck/checker/ftpurl.py
+
+  * honor anchor part of cache url key, handle the recursion check
+    with an extra cache key
+    Type: bugfix
+    Changed: linkcheck/checker/{urlbase,cache,fileurl}.py
+
+  * Support URL lists in text files with one URL per line. Empty lines
+    or comment lines starting with '#' are ignored.
+    Type: feature
+    Changed: linkcheck/checker/fileurl.py
+
+  * Added new option --extern-strict to specify strict extern url
+    patterns.
+    Type: feature
+    Changed: linkchecker
+
+  * Strip quotes from parsed CSS urls.
+    Type: bugfix
+    Changed: linkcheck/checker/urlbase.py
+
+1.13.0 "The Butterfly Effect" (released 1.9.2004)
+  * lots of internal code restructuring
+    Type: code cleanup
+    Changed: a lot
+
+  * If checking revealed errors (or warnings with --warnings),
+    the command line client exits with a non-zero exit status.
+    Type: feature
+    Closes: SF bug 1013191
+    Changed: linkchecker, linkcheck/checker/consumer.py
+
+  * Specify the HTML doctype and charset in HTML output.
+    Type: feature
+    Closes: SF bug 1014283
+    Changed: linkcheck/logger/html.py
+
+  * Fix endless loop on broken urls with non-empty anchor.
+    Type: bugfix
+    Changed: linkcheck/checker/httpurl.py
+
+  * For news: or nntp: urls, entries in ~/.netrc are now ignored.
+    You should give instead username/password info in the configuration
+    file or on the command line.
+    Type: bugfix
+    Changed: linkcheck/checker/nntpurl.py
+
+  * The HTML output shows now HTML and CSS validation links for
+    the parent URL of invalid links.
+    Type: feature
+    Changed: linkcheck/logger/html.py
+
+  * The status is now printed as default, it can be supressed with
+    the new --no-status option.
+    Type: feature
+    Changed: linkchecker
+
+  * The default recursion level is now infinite.
+    Type: feature
+    Changed: linkchecker
+
+  * The 'outside of domain filter' is no more a warning but an informational
+    message. A warning is inappropriate since the user is in full control
+    over what links are extern or intern.
+    Type: feature
+    Closes: SF bug 1013206
+    Changed: linkcheck/urlbase.py
+
+  * Renamed the --strict option to --extern-strict-all.
+    Type: feature
+    Changed: linkchecker
+
+  * a new cache and queueing algorithm makes sure that no URL is
+    checked twice.
+    Type: feature
+    Changed: linkcheck/checker/cache.py
+
+  * the given user/password authententication is now also used to
+    get robots.txt files.
+    Type: feature
+    Changed: linkcheck/robotparser2.py, linkcheck/checker/cache.py
+
+1.12.3 "The Princess Bride" (released 27.5.2004)
+  * fall back to GET on bad status line of a HEAD request
+    Type: bugfix
+    Changed: linkcheck/HttpUrlData.py
+
+  * really fall back to GET with Zope servers; fixes infinite loop
+    Type: bugfix
+    Changed: linkcheck/HttpUrlData.py
+
+  * better error msg on BadStatusLine error
+    Type: feature
+    Changed: linkcheck/UrlData.py
+
+  * updated optcomplete to newest upstream
+    Type: feature
+    Changed: linkcheck/optcomplete.py
+
+  * also quote query parts of urls
+    Type: bugfix
+    Changed: linkcheck/{HttpUrlData, url}.py
+
+  * - preserve the order in which HTML attributes have been parsed
+    - cope with trailing space in HTML comments
+    Type: feature
+    Changed: linkcheck/parser/{__init__.py,htmllex.l}
+    Added: linkcheck/containers.py
+
+  * rework anchor fallback
+    Type: bugfix
+    Changed: linkcheck/HttpUrlData.py
+
+  * move contentAllowsRobot check to end of recursion check to avoid
+    unnecessary GET request
+    Type: bugfix
+    Changed: linkcheck/UrlData.py
+
+1.12.2 (release 4.4.2004)
+  * use XmlUtils instead of xmlify for XML quoting
+    Type: code cleanup
+    Added: linkcheck/XmlUtils.py
+    Changed: linkcheck/StringUtil.py, linkcheck/log/XMLLogger.py
+
+  * don't require a value anymore with the --version option
+    Type: bugfix
+    Changed: linkchecker
+
+  * before putting url data objects in the queue, check if they have
+    correct syntax and are not already cached
+    Type: optimization
+    Changed: linkcheck/{UrlData,Config}.py
+
+  * every once in a while, remove all already cached urls from the
+    incoming queue. This action is reported when --status is given.
+    Type: optimization
+    Changed: linkcheck/Config.py
+
+  * both changes above result in significant performance improvements
+    when checking large websites, since a majority of the links tend
+    to be navigation links to already-cached pages.
+    Type: note
+
+  * updated examples and put them before options in the man page for
+    easier reading
+    Type: documentation
+    Changed: linkchecker, linkchecker.1
+
+  * added contact url and email to the HTTP User-Agent string, which
+    gets us more accepted by some bot-blocking software; also see
+    http://www.livejournal.com/bots/
+    Type: feature
+    Changed: linkcheck/Config.py
+
+  * only check robots.txt for http connections
+    Type: bugfix
+    Changed: linkcheck/{Http,}UrlData.py
+    Closes: SF bug 928895
+
+  * updated regression tests
+    Type: feature
+    Changed: test/test_*.py, Makefile
+    Added: test/run.sh
+
+  * preserve the order in which HTML attributes have been parsed
+    Type: feature
+    Changed: linkcheck/parser/{__init__.py,htmllex.l}
+
+  * handle and correct missing start quotes in HTML attributes
+    Type: feature
+    Changed: linkcheck/parser/htmllex.l
+
+  * full parsing of .css files
+    Type: feature
+    Changed: linkcheck/{Http,}UrlData.py, linkcheck/linkparse.py
+
+  * removed Gilman news draft
+    Type: feature
+    Removed: draft-gilman-news-url-00.txt
+
+
+1.12.1 (release 21.2.2004)
+  * raise IncompleteRead instead of ValueError on malformed chunked
+    HTTP data
+    Changed: linkcheck/httplib2.py
+  * catch errors earlier in recursion check
+    Changed: linkcheck/UrlData.py
+  * quote url and parent url in log output
+    Changed: linkcheck/log/*.py
+    Added: linkcheck/url.py
+
+1.12.0 (release 31.1.2004)
+  * added LRU.setdefault function
+    Changed: linkcheck/LRU.py
+    Closes: SF bug 885916
+  * Added Mac OS X as supported platform (version 10.3 is known to work)
+    Changed: README, INSTALL
+  * HTML parser objects are now subclassable and collectable by the cyclic
+    garbage collector
+    Changed: linkcheck/parser/htmlparse.y
+  * made some minor parser fixes for attribute scanning and JavaScript
+    Changed: linkcheck/parser/htmllex.l
+  * include the optcomplete module for bash autocompletion
+    Added: linkcheck/optcomplete.py, linkcheck-completion
+    Changed: MANIFEST.in, setup.py
+  * print out nicer error message for unknown host names
+    Changed: linkcheck/UrlData.py
+  * added new logger type "none" printing out nothing which is handy for
+    cron scripts.
+    Changed: linkchecker, linkcheck/Config.py, linkcheck/log/__init__.py
+    Added: linkcheck/log/NoneLogger.py
+  * the -F file output option disables console output now
+    Changed: linkchecker
+  * added an example cron script
+    Added: linkcheck-cron.sh
+    Changed: MANIFEST.in, setup.py
+  * only warn about missing anchor support servers when the url has
+    actually an anchor
+    Changed: linkcheck/HttpUrlData.py
+  * always fall back to HTTP GET request when HEAD gave an error to
+    cope with servers not supporting HEAD requests
+    Changed: linkcheck/HttpUrlData.py, FAQ
+
+1.10.3 (release 10.1.2004)
+  * use the optparser module for command line parsing
+    Changed: linkchecker, po/*.po
+  * use Set() instead of hashmap
+    Changed: linkcheck/Config.py
+  * fix mime-type checking to allow parsing of .css stylesheets
+    Changed: linkcheck/HttpUrlData.py
+  * honor HTML meta tags for robots, ie.
+    <meta name="ROBOTS" content="NOFOLLOW">
+    Changed: linkcheck/UrlData.py, linkcheck/linkparse.py
+  * much less aggressive thread acquiring, this fixes the 100% CPU
+    usage from the previous version
+    Changed: linkcheck/Threader.py
+
+1.10.2 (release 3.1.2004)
+  * fixed CGI safe_url pattern, it was too strict
+    Changed: linkcheck/lc_cgi.py
+  * replace backticks with repr() or %r
+    Changed: all .py files containing backticks, and po/*.po
+  * make windows DNS nameserver parsing more robust
+    Changed: linkcheck/DNS/Base.py
+    Closes: SF bugs 863227,864383
+  * only cache used data, not the whole url object
+    Changed: linkcheck/{Http,}UrlData.py
+  * limit cached data
+    Changed: linkcheck/{UrlData,Config}.py
+    Added: linkcheck/LRU.py
+    Closes: SF bug 864516
+  * use dummy_threading module and get rid of the _NoThreads
+    functions
+    Changed: linkchecker, linkcheck/{Config,Threader}.py,
+      test/test_*.py
+  * set default connection timeout to 60 seconds
+    Changed: linkcheck/__init__.py
+  * new option --status print regular messages about number of
+    checked urls and urls still to check
+    Changed: linkchecker, linkcheck/{__init__,Config}.py
+
+1.10.1 (release 19.12.2003)
+  * added Mandrake .spec file from Chris Green <cmg@dok.org>
+    Added: linkchecker.spec
+    Changed: MANIFEST.in
+  * print last-modified date for http and https links in infos
+    Changed: linkcheck/HttpUrlData.py
+  * add detailed installation instructions for Windows
+    Changed: INSTALL
+    Closes: SF bug 857748
+  * updated the DNS nameserver config parse routines
+    Changed: linkcheck/DNS/Base.py
+    Added: linkcheck/DNS/winreg.py
+    Removed: linkcheck/DNS/win32dns.py
+  * fix https support test
+    Changed: linkcheck/HttpUrlData.py
+
+1.10.0 (released 7.12.2003)
+  * catch httplib errors in robotparser
+    Changed: linkcheck/robotparser2.py
+    Closes: SF bug 836864
+  * - infinite recursion option with negative value works now
+    - initialize self.urlparts to avoid crash when reading cached http
+      urls
+    - with --strict option do not add any automatic filters if the user
+      gave his own on the command line
+    Changed: linkcheck/UrlData.py
+
+1.9.5 (released 31.10.2003)
+  * Add Zope to servers with broken HEAD support, adjusted the FAQ
+    Changed: linkcheck/HttpUrlData.py, FAQ
+    Closes: SF bug 833419
+  * Disable psyco usage, it is causing infinite loops (this is a known
+    issue with psyco); and it is disabling ctrl-c interrupts (this
+    is also a known issue in psyco)
+    Changed: linkchecker
+  * use internal debug logger
+    Changed: linkcheck/robotparser2.py
+  * do not hardcode Accept-Encoding header in HTTP request
+    Added: linkcheck/httplib2.py
+    Changed: linkcheck/robotparser2.py
+
+1.9.4 (released 22.10.2003)
+  * parse CSS stylesheet files and check included urls, for example
+    background images
+    Changed: linkcheck/{File,Http,Ftp,}UrlData.py, linkcheck/linkparser.py
+  * try to use psyco for the commandline linkchecker script
+    Changed: linkchecker
+  * when decompression of compressed HTML pages fails, assume the page
+    is not compressed
+    Changed: linkcheck/{robotparser2,HttpUrlData}.py
+
+1.9.3 (released 16.10.2003)
+  * re-added an updated robot parser which uses urllib2 and can decode
+    compressed transfer encodings.
+    Added: linkcheck/robotparser2.py
+  * more restrictive url validity checking when running in CGI mode
+    Changed: linkcheck/lc_cgi.py
+  * accept more Windows path specifications, like
+    file://C:\Dokume~1\test.html
+    Changed: linkcheck/FileUrlData.py
+
+1.9.2
+  * parser fixes:
+    - do not #include <stdint.h>, fixes build on some FreeBSD, Windows
+      and Solaris/SunOS platforms
+    - ignore first leading invalid backslash in a=\"b\" attributes
+    Changed: linkcheck/parser/htmllex.{l,c}
+  * add full script path to linkchecker on windows systems
+    Changed: linkchecker.bat
+  * fix generation of Linkchecker_Readme.txt under windows systems
+    Changed: setup.py
+
+1.9.1
+  * add documentation how to change the default C compiler
+    Changed: INSTALL
+  * fixed blacklist logging
+    Changed: linkcheck/log/BlacklistLogger.py
+  * removed unused imports
+    Changed: linkcheck/*.py
+  * parser fixes:
+    - fixed parsing of end tags with trailing garbage
+    - fixed parsing of script single comment lines
+    Changed: linkcheck/parser/htmllex.l
+
+1.9.0
+  * Require Python 2.3
+    - removed timeoutsocket.py and robotparser.py, using upstream
+    - use True/False for boolean values
+    - use csv module
+    - use new-style classes
+    Closes: SF bug 784977
+    Changed: a lot
+  * update po makefiles and tools
+    Changed po/*
+  * start CGI output immediately
+    Changed: lc.cgi, lc.fcgi, lc.sz_fcgi, linkcheck/lc_cgi.py
+    Closes: SF bug 784331
+
+1.8.22
+  * allow colons in HTML attribute names, used for namespaces
+    Changed: linkcheck/parser/htmllex.l
+  * fix match of intern patterns with --denyallow enabled
+    Changed: linkcheck/UrlData.py
+  * s/intern/internal/ and s/extern/external/ in the documentation
+    Changed: linkchecker, linkchecker.1, FAQ
+  * rename column "column" to "col" in SQL output, since "column" is
+    a reserved keyword. Thanks Garvin Hicking for the hint.
+    Changed: linkcheck/log/SQLLogger.py, create.sql
+  * handle HTTP redirects to a non-http url
+    Changed: linkcheck/{Http,}UrlData.py
+    Closes: SF bug 784372
+
+1.8.21
+  * detect recursive redirections; the maximum of five redirections is
+    still there though
+  * after every HTTP 301 or 302 redirection, check the URL cache again
+    Closes: SF bug 776851
+  * put all HTTP 301 redirection answers also in the url cache as
+    aliases of the original url. this could mess up some redirection
+    warnings (ie warn about redirection when there is none), but it is
+    more network efficient.
+
+1.8.20
+  * fix setting of domain in set_intern_url
+    Changed: linkcheck/UrlData.py
+  * - parse JS strings and comments
+    - accept "<!- " as comment begin
+    Changed: linkcheck/parser/htmlex.l
+    Closes: SF bug 768661
+  * quote url before submitting the request, the previous map() call
+    was useless. Thanks Toby Dickenson for the patch.
+    Changed: linkcheck/HttpUrlData.py
+    Closes: SF bug 776416
+
+1.8.19
+  * add scheme colon in set_intern_url
+    Changed: linkcheck/UrlData.py
+  * fix threading option -t
+    Changed: linkchecker, linkcheck/Config.py
+  * do not try to get content of urls that have no content (eg mail)
+    Closes: SF bug 765016
+    Changed: linkcheck/{Mailto,Nntp,Telnet,}UrlData.py
+  * added robots.txt FAQ, updated links
+    Removed: norobots-rfc.html
+    Changed: FAQ, WONTDO, TODO
+  * add iso-8859-1 coding line to all .py files
+    Changed: *.py
+  * Correctly quote the HTML output
+    Changed: linkcheck/log/HtmlLogger.py
+
+1.8.18
+  * fix option error messages for invalid integer arguments
+    Changed files: linkchecker
+  * enable infinite recursion with a negative -r value
+    Changed files: linkcheck/{UrlData,Config}.py, linkchecker,
+      linkchecker.1
+  * if -s is given, add some link patterns to urls given on the
+    command line automatically:
+    for local files, add -i "^file:". For http and ftp urls, add
+    the domain name -i "<domain>".
+    Changed files: linkcheck/UrlData.py, linkchecker
+
+1.8.17
+  * fix parsing of missing end tag in "</a <a b=c>"
+    Changed files: linkcheck/parser/htmllex.l
+  * fix entity resolving in parsed html links
+    Closes: SF bug #749543
+    Changed files: linkcheck/StringUtil.py
+
+1.8.16
+  * also look at id attributes on anchor check
+    (Closes SF Bug #741131)
+    Changed files: linkcheck/{linkparser,UrlData}.py
+  * minor parser cleanups
+    Changed files: linkcheck/parser/*
+
+1.8.15
+  * Fix compile errors with C variable declarations in HTML parser.
+    Thanks to Fazal Majid <fazal@majid.fm>
+    Changed files: linkcheck/parser/htmlparse.[yc]
+
+1.8.14
+  * fix old bug in redirects not using the full url. This resulted in
+    errors like (-2, "Name or service not known")
+    Changed files: linkcheck/HttpUrlData.py
+    Closes: SF Bug #729007
+  * only remove anchors on IIS servers (other servers are doing quite
+    well with anchors... can you spell A-p-a-c-h-e ?)
+    Changed files: linkcheck/{HttpUrlData, UrlData}.py
+  * Parser changes:
+    - correctly propagate and display parsing errors
+    - really cope with missing ">" end tags
+    Changed files: linkcheck/parser/html{lex.l, parse.y},
+      linkcheck/linkparse.py, linkcheck/UrlData.py
+  * quote urls before a request
+    Changed files: linkcheck/HttpUrlData.py
+
+1.8.13
+  * fix typo in manpage
+    Changed files: linkchecker.1
+  * remove anchor from HEAD and GET requests
+    Changed files: linkcheck/{HttpUrlData, UrlData}.py
+
+1.8.12
+  * convert urlparts to list also on redirect
+    Changed files: linkcheck/HttpUrlData.py
+
+1.8.11
+  * catch httplib.error exceptions
+    Changed files: linkcheck/HttpUrlData.py
+  * override interactive password question in robotparser.py
+    Changed files: linkcheck/robotparser.py
+  * switch to urllib2.py as default url connect.
+    Changed files: linkcheck/UrlData.py
+  * recompile html parser with flex 2.5.31
+    Changed files: linkcheck/parser/{htmllex.c,Makefile}
+
+1.8.10
+  * new option --no-anchor-caching
+    Changed files: linkchecker, linkcheck/{Config.py, UrlData.py}, FAQ
+  * quote empty attribute arguments
+    Changed files: linkcheck/parser/htmllex.[lc]
+
+1.8.9
+  * recompile with bison 1.875a
+    Changed files: linkcheck/parser/htmlparse.[ch]
+  * remove stpcpy declaration, fixes compile error on RedHat 7.x
+    Changed files: linkcheck/parser/htmlsax.h
+  * clarify keyboard interrupt warning to wait for active connections
+    to finish
+    Changed files: linkcheck/__init__.py
+  * resolve &#XXX; number entity references
+    Changed files: linkcheck/{StringUtil.py,linkname.py}
+
+1.8.8
+  * All amazon servers block HEAD requests with timeouts. Use GET as
+    a workaround, but issue a warning.
+    Changed files: linkcheck/HttpUrlData.py
+  * restrict CGI access to localhost per default
+    Changed files: lc.cgi, lc.fcgi, lc.sz_fcgi, linkcheck/lc_cgi.py
+
+1.8.7
+  * #define YY_NO_UNISTD_H on Windows systems, fixes build error with
+    Visual Studio compiler
+    Changed files: setup.py
+  * use python2.2 headers for parser compile, not 2.1.
+    Changed files: linkcheck/parser/Makefile
+
+1.8.6
+  * include a fixed robotparser.py (from Python 2.2 CVS maint branch)
+
+1.8.5
+  * fix config.warn to warn
+    Changed files: linkcheck/__init.py
+  * parser changes:
+    o recognise "<! -- -->" HTML comments (seen at Eonline)
+    o recognise "<! !>" HTML comments (seen at www.nba.com)
+    o rebuild with flex 2.5.27
+    Changed files: linkcheck/parser/htmllex.[lc]
+  * added another url exclusion example to the FAQ
+    numerate questions and answers
+    Changed files: FAQ
+  * fix linkchecker exceptions
+    Changed files: linkcheck/{Ftp,Mailto,Nntp,Telnet,}UrlData.py,
+      linkcheck/__init__.py
+
+1.8.4
+  * Improve error message for failing htmlsax module import
+    Changed files: linkcheck/parser/htmllib.py
+  * Regenerate parser with new bison 1.875
+    Changed files: linkcheck/parser/htmlparser.c
+  * Some CVS files were not the same as their local counterpart.
+    Something went wrong. Anyway, I re-committed them.
+    Changed files: a lot .py files
+ 
+1.8.3
+  * add missing imports for StringUtil in log classes, defer i18n of log
+    field names (used for CGI scripts)
+    Changed files: linkcheck/log/*.py
+  * fixed wrong debug level comparison from > to >=
+    Changed files: linkcheck/Config.py
+  * JavaScript checks in the CGI scripts
+    Changed files: lconline/lc_cgi.html.*
+    Added files: lconline/check.js
+  * Updated documentation with a link restriction example
+    Changed files: linkchecker, linkchecker.1, FAQ
+  * Updated po/pygettext.py to version 1.5, cleaned up some gettext
+    usages.
+  * updated i18n
+    Added files: linkcheck/i18n.py
+    Changed files: all .py files using i18n
+  * Recognise "<! --" HTML comments
+    Changed files: linkcheck/parser/htmllex.l
+  * -a anchor option implies -w because anchor errors are always warnings
+    Changed files: linkchecker
+  * added AnsiColors.py and debug.py to split out some functions
+    Changed files: a lot .py files using these things
+  * use yy_size_t for parser alloc definitions, fixes build errors on 64bit
+    architectures
+    Changed files: linkcheck/parser/htmllex.l
+
+1.8.2
+  * - ignore invalid html attribute characters
+    - ignore trailing garbage on html end tags
+    - fixed debugging code with flex
+    - use flex memory management interface
+    - use only double quotes for attribute quoting
+    - check quoting of all attributes
+    Changed files: linkcheck/parser/htmllex.l
+  * build parser with flex 2.5.25
+    Changed files: linkcheck/parser/{Makefile, htmllex.c}
+  * put shared code of cgi scripts in lc_cgi.py
+    Changed files: lc.cgi, lc.fcgi, lc.sz_fcgi, linkcheck/lc_cgi.py
+  * put some linebreaks and target="top" into HTML output
+    Changed files: linkcheck/logging/HtmlLogger.py
+  * add translated cgi files
+    Changed files: setup.py, MANIFEST.in, debian/rules
+    Added files: lconline/*.{de,en}
+    Removed files: lconline/{leer.html,lc_cgi.html}
+
+1.8.1
+  * Add missing () to function call in proxy handling code
+    Changed files: FtpUrlData.py
+  * Use urlparse.url(un)split instead of urlparse.url(un)parse
+    Changed files: FtpUrlData.py, UrlData.py, HttpUrlData.py,
+      FileUrlData.py
+  * Print size information if its available
+    Changed files: FtpUrlData.py, UrlData.py, HttpUrlData.py
+  * Add --warning-size-bytes option to print warning if content size
+    exceeds the given byte limit
+    Changed files: FtpUrlData.py, HttpUrlData.py, linkchecker, Config.py,
+      linkchecker.1
+  * Updated translations
+    Changed files: po/linkchecker.pot, po/*.po
+  * Parse supported file types for ftp links
+    Changed files: FtpUrlData.py, FileUrlData.py, UrlData.py
+
+1.8.0
+  * Require Python >= 2.2.1, remove httplib.
+    Changed files: setup.py, INSTALL, linkchecker
+  * Add again python-dns, the Debian package maintainer is unresponsive
+    Added files: linkcheck/DNS/*.py
+    Changed files: INSTALL, setup.py
+  * You must now use named constants for ANSII color codes
+    Changed files: linkcheckerrc, linkcheck/log/ColoredLogger.py
+  * Release RedHat 8.0 rpm packages.
+    Changed files: setup.py, MANIFEST.in
+  * remove --robots-txt from manpage, fix HTZP->HTTP typo
+    Changed files: linkchecker.1
+
+1.7.1
+  * Fix memory leak in HTML parser flushing error path
+    Changed files: htmlparse.y
+  * add custom line and column tracking in parser
+    Changed files: htmllex.l, htmlparse.y, htmlsax.h, htmllib.py
+  * Use column tracking in urldata classes
+    Changed files: UrlData.py, FileUrlData,py, FtpUrlData.py,
+     HostCheckingUrlData.py
+  * Use column tracking in logger classes
+    Changed files: StandardLogger.py CVSLogger.py, ColoredLogger.py,
+      HtmlLogger.py, SqlLogger.py
+
+1.7.0
+  * Added new HTML parser written in C as a Python extension module.
+    It is faster and it is more fault tolerant.
+    Of course, this means I cannot provide .exe installers any more
+    since the distutils dont provide cross-compilation.
+
+1.6.7
+  * Removed check for <applet> tags codebase attribute, but honor it
+    when checking applet links
+  * Handle <applet> tags archive attribute as a comma separated list
+    Closes: SF bug #636802
+  * Fix a nasty bug in tag searching, which ignored tags with more
+    than one link attribute in it.
+  * Fix concatenation with relative base urls by first joining the
+    parent url.
+  * New commandline option --profile to write profile data.
+  * Add httplib.py from Python CVS 2.1 maintenance branch, which has the
+    skip_host keyword argument I am using now.
+
+1.6.6
+  * Use the new HTTPConnection/HTTPResponse interface of httplib
+    Closes: SF bug #634679
+    Changed files: linkcheck/HTTPUrlData.py, linkcheck/HTTPSUrlData.py
+  * Updated the ftp online test
+    Changed files: test/output/test_ftp
+
+1.6.5
+  * Catch the maximum recursion limit error while parsing links and
+    print an error message instead of bailing out.
+    Changed files: linkcheck/UrlData.py
+  * Fixed Ctrl-C only interrupting one single thread, not the whole
+    program.
+    Changed files: linkcheck/UrlData.py, linkcheck/__init__.py
+  * HTML syntax cleanup and relative cgi form url for the cgi scripts
+    Changed files: lconline/*.html
+
+1.6.4
+  * Support for ftp proxies
+    Changed files: linkcheck/FtpUrlData.py, linkcheck/HttpUrlData.py
+    Added files: linkcheck/ProxyUrlData.py
+  * Updated german translation
+
+1.6.3:
+  * Generate md5sum checksums for distributed files
+    Changed files: Makefile
+  * use "startswith" string method instead of a regex
+    Changed files: linkchecker, linkcheck/UrlData.py
+  * Add a note about supported languages, updated the documentation.
+    Changed files: README, linkchecker, FAQ
+  * Remove --robots-txt option from documentation, it is per default
+    enabled and you cannot disable it from the command line.
+    Changed files: linkchecker, po/*.po
+  * fix --extern argument creation
+    Changed files: linkchecker, linkcheck/UrlData.py
+  * Print help if PyDNS module is not installed
+    Changed files: linkcheck/UrlData.py
+  * Print information if a proxy was used.
+    Changed files: linkcheck/HttpUrlData.py
+  * Updated german documentation
+    Changed files: po/de.po
+  * Oops, an FTP proxy is not used. Will make it in the next release.
+    Changed files: linkcheck/FtpUrlData.py
+  * Default socket timeout is now 30 seconds (10 was too short)
+
+1.6.2:
+  * Warn about unknown Content-Encodings. Dont parse HTML in this case.
+  * Support deflate content encoding (snatched from Debians reportbug)
+  * Add appropriate Accept-Encoding header to HTTP request.
+  * Updated german translations
+
+1.6.1:
+  * FileUrlData.py: remove searching for links in text files, this is
+    error prone. Just handle *.html and Opera Bookmarks.
+  * Make separate ChangeLog from debian/changelog. For previous
+    changes, see debian/changelog.
+  * Default socket timeout is now 10 seconds
+  * updated linkcheck/timeoutsocket.py to newest version
+  * updated README and INSTALL
+  * s/User-agent/User-Agent/, use same case as other browsers

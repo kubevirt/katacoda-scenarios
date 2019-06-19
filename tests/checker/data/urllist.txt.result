@@ -1,0 +1,16 @@
+url file://%(curdir)s/%(datadir)s/urllist.txt
+cache key file://%(curdir)s/%(datadir)s/urllist.txt
+real url file://%(curdir)s/%(datadir)s/urllist.txt
+name %(datadir)s/urllist.txt
+valid
+
+url javascript:loadthis()
+cache key javascript:loadthis()
+real url javascript:loadthis()
+info Javascript URL ignored.
+valid
+
+url file.html
+cache key file://%(curdir)s/%(datadir)s/file.html
+real url file://%(curdir)s/%(datadir)s/file.html
+valid

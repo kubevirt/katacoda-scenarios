@@ -1,0 +1,32 @@
+{
+  "pathwayTitle": "KubeVirt",
+  "title": "KubeVirt Demo",
+  "description": "Deploy and use KubeVirt in a hosted sandboxed interactive environment",
+  "time": "5min",
+  "difficulty": "beginner",
+  "details": {
+    "steps": [
+      {
+        "title": "Launch cluster and deploy KubeVirt",
+        "text": "step1.md"
+      },
+      {
+        "title": "Create and use your first VM",
+        "text": "step2.md"
+      }
+    ],
+    "intro": {
+      "text": "intro.md",
+      "code": "set-env.sh"
+    },
+    "finish": {
+      "text": "finish.md"
+    }
+  },
+  "environment": {
+    "uilayout": "terminal"
+  },
+  "backend": {
+    "imageid": "kubernetes"
+  }
+}
