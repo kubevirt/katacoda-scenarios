@@ -1,17 +1,19 @@
-### Wait for the cluster to be ready
+### Wait for the Kubernetes cluster to be ready
 
 Before we can start, we need to wait for the Kubernetes cluster to be ready (command prompt will appear to accept commands).
 
 #### Deploy KubeVirt
 
-Deploy KubeVirt operator using latest KubeVirt version
+Deploy KubeVirt operator[^1] using latest KubeVirt version (we query GH api to get latest release available).
 
-`export KUBEVIRT_VERSION=$(curl -s https://api.github.com/repos/kubevirt/kubevirt/releases|grep tag_name|sort -V | tail -1 | awk -F':' '{print $2}' | sed 's/,//' | xargs)
+[^1]: An Operator is a method for packaging, deploying and managing Kubernetes applications, read more at [CoreOS Operators](https://coreos.com/operators/)
+
+`export KUBEVIRT_VERSION=$(curl -s https://api.github.com/repos/kubevirt/kubevirt/releases/latest|jq '.tag_name'|tr -d '"')
 echo $KUBEVIRT_VERSION`{{execute}}
 
 `kubectl create -f https://github.com/kubevirt/kubevirt/releases/download/${KUBEVIRT_VERSION}/kubevirt-operator.yaml`{{execute}}
 
-Provide some initial configuration
+Provide some initial configuration to enable 'nested' virtualization in our environment:
 
 `kubectl create configmap kubevirt-config -n kubevirt --from-literal debug.useEmulation=true`{{execute}}
 

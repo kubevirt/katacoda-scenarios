@@ -4,7 +4,7 @@ Start of by creating a virtual machine:
 
 `kubectl apply -f https://raw.githubusercontent.com/kubevirt/demo/master/manifests/vm.yaml`{{execute}}
 
-After it has been created you can manage VMs using the usual verbs:
+After it has been created, you can manage VMs using the usual verbs:
 
 ```
 $ kubectl get vms
@@ -43,23 +43,24 @@ Now that a VM is running you can access its console:
 
 **NOTE** : YOU WILL NOT BE ABLE TO ESCAPE THE CONSOLE ON KATACODA.
 
-`^]` means press CTRL + "]" keys to escape it
+`^]` means: press CTRL + "]" keys to escape the console
 
-```
+~~~sh
 # Connect to the serial console
 $ ./virtctl console testvm
-```
-If you've opened the console **within** Katacoda , you can click on the `+` close to 'Terminal' to start a new shell there and be able to continue with the following steps in the shutdown and cleanup section.
+~~~
+
+If you've opened the console **within** Katacoda, you can click on the `+` close to 'Terminal' to start a new shell there and be able to continue with the following steps in the shutdown and cleanup section.
 
 **NOTE** This doesn't work on Katacoda because of the environment setup and browser access
 
 `./virtctl console testvm`
 
-```
+~~~sh
 # Connect to the graphical display
 # It Requires remote-viewer from the virt-viewer package.
 $ ./virtctl vnc testvm
-```
+~~~
 
 #### Shutdown and cleanup
 
