@@ -13,13 +13,11 @@ echo $KUBEVIRT_VERSION`{{execute}}
 
 `kubectl create -f https://github.com/kubevirt/kubevirt/releases/download/${KUBEVIRT_VERSION}/kubevirt-operator.yaml`{{execute}}
 
-Provide some initial configuration to enable 'nested' virtualization in our environment:
+Provide some initial configuration to enable 'nested' virtualization in our environment. To do so, the following command enables 'emulation' to run the VM's as our demo environment is using 'emulated' virtualization. (In our environment at Katacoda, we're running inside Virtual Machines, so in order to execute a '2nd' layer of VM inside the VM we need to emulate it. In production, when using over baremetal this will not be required.)
 
 `kubectl create configmap kubevirt-config -n kubevirt --from-literal debug.useEmulation=true`{{execute}}
 
-Above commands enables 'emulation' to run the VM's as our demo environment is using 'emulated' virtualization.
-
-Now let's deploy kubevirt by creating a custom resource:
+Now let's deploy KubeVirt by creating a Custom Resource that will trigger the 'operator' reaction and perform the deployment:
 
 `kubectl create -f https://github.com/kubevirt/kubevirt/releases/download/${KUBEVIRT_VERSION}/kubevirt-cr.yaml`{{execute}}
 
@@ -42,7 +40,7 @@ virt-operator-5649f67475-sw78k     1/1       Running   0          4m
 
 #### Install Virtctl
 
-`virtctl` is a client utility to provide some more convenient ways to interact with the VM:
+`virtctl` is a client utility to provide some more convenient ways to interact with the VM (start/stop/console, etc):
 
 `wget -O virtctl https://github.com/kubevirt/kubevirt/releases/download/${KUBEVIRT_VERSION}/virtctl-${KUBEVIRT_VERSION}-linux-amd64`{{execute}}
 
