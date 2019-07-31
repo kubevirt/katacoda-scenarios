@@ -8,7 +8,7 @@ Deploy KubeVirt operator[^1] using latest KubeVirt version (we query GH api to g
 
 [^1]: An Operator is a method for packaging, deploying and managing Kubernetes applications, read more at [CoreOS Operators](https://coreos.com/operators/)
 
-`export KUBEVIRT_VERSION=$(curl -s https://api.github.com/repos/kubevirt/kubevirt/releases/latest|jq '.tag_name'|tr -d '"')
+`export KUBEVIRT_VERSION=$(curl -s https://api.github.com/repos/kubevirt/kubevirt/releases/latest | jq -r .tag_name)
 echo $KUBEVIRT_VERSION`{{execute}}
 
 `kubectl create -f https://github.com/kubevirt/kubevirt/releases/download/${KUBEVIRT_VERSION}/kubevirt-operator.yaml`{{execute}}
