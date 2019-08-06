@@ -1,11 +1,5 @@
 [{
         "scenario": "kubevirt",
         "targetScenario": "kubevirt-101",
-        "targetUsername": "kubevirt"
-    },
-    {
-        "scenario": "citellus",
-        "targetScenario": "citellus",
-        "targetUsername": "citellus"
     }
 ]

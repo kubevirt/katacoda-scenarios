@@ -1,10 +1,8 @@
 #### Deploy a VM
 
-Start off by creating a virtual machine:
+The command below applies a yaml definition of a virtual machine into our current Kubernetes environment, defining the vm name, the resources required (disk, cpu, memory), etc. You can take a look to the [vm.yaml](https://raw.githubusercontent.com/kubevirt/demo/master/manifests/vm.yaml) file if you have interest in knowing more about a virtual machine definition:
 
 `kubectl apply -f https://raw.githubusercontent.com/kubevirt/demo/master/manifests/vm.yaml`{{execute}}
-
-The command above applies a yaml definition of a virtual machine into our current Kubernetes environment, defining the vm name, the resources required (disk, cpu, memory), etc. You can take a look to the vm.yaml file if you have interest in knowing more about a virtual machine definition.
 
 We are creating a Virtual Machine in the same way as we would create any other Kubernetes resource thanks to what KubeVirt has enabled in our environment. Now we have got a Virtual Machine as a Kubernetes resource.
 
@@ -16,11 +14,16 @@ $ kubectl get vms -o yaml testvm
 ```
 
 Check VM's defined (using commands above)
+
 `kubectl get vms`{{execute}}
 
 To start a VM, virtctl should be used:
 
 `./virtctl start testvm`{{execute}}
+
+Now, you can check again the vm status:
+
+`kubectl get vms`{{execute}}
 
 Alternatively you can use `kubectl edit vm testvm` to set `.spec.running: true`.
 
