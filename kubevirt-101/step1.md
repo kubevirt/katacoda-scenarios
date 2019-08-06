@@ -13,6 +13,8 @@ We query GitHub api to get the latest release available (click on the text to au
 `export KUBEVIRT_VERSION=$(curl -s https://api.github.com/repos/kubevirt/kubevirt/releases/latest | jq -r .tag_name)
 echo $KUBEVIRT_VERSION`{{execute}}
 
+Run the following command to deploy KubeVirt Operator:
+
 `kubectl create -f https://github.com/kubevirt/kubevirt/releases/download/${KUBEVIRT_VERSION}/kubevirt-operator.yaml`{{execute}}
 
 We need to enable 'nested' virtualization in our demo environment. To do so, we need to run the following command to run the VM's using 'emulated' virtualization. (It is a requriment of the environment in Katacoda, we're running kubernetes inside Virtual Machines, so in order to execute a '2nd' layer of VM inside the VM we need to emulate it. In production, when using over baremetal this will not be required.)
