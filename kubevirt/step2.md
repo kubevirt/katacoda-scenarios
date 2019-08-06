@@ -4,7 +4,7 @@ Start off by creating a virtual machine:
 
 `kubectl apply -f https://raw.githubusercontent.com/kubevirt/demo/master/manifests/vm.yaml`{{execute}}
 
-The command above applies a `yaml` definition of a virtual machine and applies it to our current Kubernetes environment (defining vm name, resources required (disk, cpu, memory), etc).
+The command above applies a yaml definition of a virtual machine into our current Kubernetes environment, defining the vm name, the resources required (disk, cpu, memory), etc. You can take a look to the vm.yaml file if you have interest in knowing more about a virtual machine definition.
 
 We are creating a Virtual Machine in the same way as we would create any other Kubernetes resource thanks to what KubeVirt has enabled in our environment. Now we have got a Virtual Machine as a Kubernetes resource.
 
