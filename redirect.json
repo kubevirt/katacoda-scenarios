@@ -1,5 +1,6 @@
 [{
         "scenario": "kubevirt",
         "targetScenario": "kubevirt-101",
+        "targetUsername": "kubevirt"
     }
 ]
