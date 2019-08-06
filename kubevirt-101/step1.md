@@ -4,9 +4,11 @@ Before we can start, we need to wait for the Kubernetes cluster to be ready (com
 
 #### Deploy KubeVirt
 
-Deploy KubeVirt operator[^1] using latest KubeVirt version (we query GH api to get latest release available).
+Deploy KubeVirt operator[^1] using latest KubeVirt version.
 
 [^1] An Operator is a method of packaging, deploying and managing a Kubernetes application. A Kubernetes application is an application that is both deployed on Kubernetes and managed using the Kubernetes APIs and kubectl tooling. To be able to make the most of Kubernetes, you need a set of cohesive APIs to extend in order to service and manage your applications that run on Kubernetes. You can think of Operators as the runtime that manages this type of application on Kubernetes. If you want to learn more about Operators you can check the CoreOS Operators website: <https://coreos.com/operators/>
+
+We query GitHub api to get the latest release available (click on the text to autoexecute the commands on the console):
 
 `export KUBEVIRT_VERSION=$(curl -s https://api.github.com/repos/kubevirt/kubevirt/releases/latest | jq -r .tag_name)
 echo $KUBEVIRT_VERSION`{{execute}}
