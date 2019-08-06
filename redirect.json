@@ -1,0 +1,11 @@
+[{
+        "scenario": "kubevirt",
+        "targetScenario": "kubevirt",
+        "targetUsername": "kubevirt"
+    },
+    {
+        "scenario": "citellus",
+        "targetScenario": "citellus",
+        "targetUsername": "citellus"
+    }
+]
