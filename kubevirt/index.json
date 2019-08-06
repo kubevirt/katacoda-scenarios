@@ -1,7 +1,7 @@
 {
   "pathwayTitle": "KubeVirt",
   "title": "KubeVirt Demo",
-  "description": "Deploy and use KubeVirt in a hosted sandboxed interactive environment",
+  "description": "KubeVirt is a virtual machine management add-on for Kubernetes. Deploy it and play with it in a hosted sandboxed interactive environment.",
   "time": "5min",
   "difficulty": "beginner",
   "details": {

@@ -6,14 +6,14 @@ Before we can start, we need to wait for the Kubernetes cluster to be ready (com
 
 Deploy KubeVirt operator[^1] using latest KubeVirt version (we query GH api to get latest release available).
 
-[^1]: An Operator is a method for packaging, deploying and managing Kubernetes applications, read more at [CoreOS Operators](https://coreos.com/operators/)
+[^1] An Operator is a method of packaging, deploying and managing a Kubernetes application. A Kubernetes application is an application that is both deployed on Kubernetes and managed using the Kubernetes APIs and kubectl tooling. To be able to make the most of Kubernetes, you need a set of cohesive APIs to extend in order to service and manage your applications that run on Kubernetes. You can think of Operators as the runtime that manages this type of application on Kubernetes. If you want to learn more about Operators you can check the CoreOS Operators website: <https://coreos.com/operators/>
 
 `export KUBEVIRT_VERSION=$(curl -s https://api.github.com/repos/kubevirt/kubevirt/releases/latest | jq -r .tag_name)
 echo $KUBEVIRT_VERSION`{{execute}}
 
 `kubectl create -f https://github.com/kubevirt/kubevirt/releases/download/${KUBEVIRT_VERSION}/kubevirt-operator.yaml`{{execute}}
 
-Provide some initial configuration to enable 'nested' virtualization in our environment. To do so, the following command enables 'emulation' to run the VM's as our demo environment is using 'emulated' virtualization. (In our environment at Katacoda, we're running inside Virtual Machines, so in order to execute a '2nd' layer of VM inside the VM we need to emulate it. In production, when using over baremetal this will not be required.)
+We need to enable 'nested' virtualization in our demo environment. To do so, we need to run the following command to run the VM's using 'emulated' virtualization. (It is a requriment of the environment in Katacoda, we're running kubernetes inside Virtual Machines, so in order to execute a '2nd' layer of VM inside the VM we need to emulate it. In production, when using over baremetal this will not be required.)
 
 `kubectl create configmap kubevirt-config -n kubevirt --from-literal debug.useEmulation=true`{{execute}}
 
