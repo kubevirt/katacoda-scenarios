@@ -4,7 +4,7 @@ Before we can start, we need to wait for the Kubernetes cluster to be ready (a c
 
 #### Deploy KubeVirt
 
-Deploy the KubeVirt operator[^1] using latest KubeVirt version.
+Deploy the KubeVirt operator[^1] using the latest KubeVirt version.
 
 [^1] An Operator is a method of packaging, deploying and managing a Kubernetes application. A Kubernetes application is an application that is both deployed on Kubernetes and managed using the Kubernetes APIs and kubectl tooling. You can think of Operators as the runtime that manages this type of application on Kubernetes. If you want to learn more about Operators you can check the CoreOS Operators website: <https://coreos.com/operators/>
 
