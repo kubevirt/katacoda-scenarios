@@ -1,23 +1,23 @@
 ### Wait for the Kubernetes cluster to be ready
 
-Before we can start, we need to wait for the Kubernetes cluster to be ready (command prompt will appear to accept commands).
+Before we can start, we need to wait for the Kubernetes cluster to be ready (a command prompt will appear once it's ready).
 
 #### Deploy KubeVirt
 
-Deploy KubeVirt operator[^1] using latest KubeVirt version.
+Deploy the KubeVirt operator[^1] using latest KubeVirt version.
 
-[^1] An Operator is a method of packaging, deploying and managing a Kubernetes application. A Kubernetes application is an application that is both deployed on Kubernetes and managed using the Kubernetes APIs and kubectl tooling. To be able to make the most of Kubernetes, you need a set of cohesive APIs to extend in order to service and manage your applications that run on Kubernetes. You can think of Operators as the runtime that manages this type of application on Kubernetes. If you want to learn more about Operators you can check the CoreOS Operators website: <https://coreos.com/operators/>
+[^1] An Operator is a method of packaging, deploying and managing a Kubernetes application. A Kubernetes application is an application that is both deployed on Kubernetes and managed using the Kubernetes APIs and kubectl tooling. You can think of Operators as the runtime that manages this type of application on Kubernetes. If you want to learn more about Operators you can check the CoreOS Operators website: <https://coreos.com/operators/>
 
-We query GitHub api to get the latest release available (click on the text to autoexecute the commands on the console):
+We query GitHub's API to get the latest available release (click on the text to autoexecute the commands on the console):
 
 `export KUBEVIRT_VERSION=$(curl -s https://api.github.com/repos/kubevirt/kubevirt/releases/latest | jq -r .tag_name)
 echo $KUBEVIRT_VERSION`{{execute}}
 
-Run the following command to deploy KubeVirt Operator:
+Run the following command to deploy the KubeVirt Operator:
 
 `kubectl create -f https://github.com/kubevirt/kubevirt/releases/download/${KUBEVIRT_VERSION}/kubevirt-operator.yaml`{{execute}}
 
-We need to enable 'nested' virtualization in our demo environment. To do so, we need to run the following command to run the VM's using 'emulated' virtualization. (It is a requriment of the environment in Katacoda, we're running kubernetes inside Virtual Machines, so in order to execute a '2nd' layer of VM inside the VM we need to emulate it. In production, when using over baremetal this will not be required.)
+This demo environment already runs within a virtualized environment, and in order to be able to run VMs here we need to pre-configure KubeVirt so it uses software-emulated virtualization instead of trying to use real hardware virtualization.
 
 `kubectl create configmap kubevirt-config -n kubevirt --from-literal debug.useEmulation=true`{{execute}}
 
@@ -44,7 +44,7 @@ virt-operator-5649f67475-sw78k     1/1       Running   0          4m
 
 #### Install Virtctl
 
-`virtctl` is a client utility to provide some more convenient ways to interact with the VM (start/stop/console, etc):
+`virtctl` is a client utility that helps interact with VM's (start/stop/console, etc):
 
 `wget -O virtctl https://github.com/kubevirt/kubevirt/releases/download/${KUBEVIRT_VERSION}/virtctl-${KUBEVIRT_VERSION}-linux-amd64`{{execute}}
 

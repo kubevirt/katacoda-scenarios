@@ -1,10 +1,10 @@
 #### Deploy a VM
 
-The command below applies a yaml definition of a virtual machine into our current Kubernetes environment, defining the vm name, the resources required (disk, cpu, memory), etc. You can take a look to the [vm.yaml](https://raw.githubusercontent.com/kubevirt/demo/master/manifests/vm.yaml) file if you have interest in knowing more about a virtual machine definition:
+The command below applies a yaml definition of a virtual machine into our current Kubernetes environment, defining the vm name, the resources required (disk, CPU, memory), etc. You can take a look at the [VM.YAML](https://raw.githubusercontent.com/kubevirt/demo/master/manifests/vm.yaml) file if you have interest in knowing more about a virtual machine definition:
 
 `kubectl apply -f https://raw.githubusercontent.com/kubevirt/demo/master/manifests/vm.yaml`{{execute}}
 
-We are creating a Virtual Machine in the same way as we would create any other Kubernetes resource thanks to what KubeVirt has enabled in our environment. Now we have got a Virtual Machine as a Kubernetes resource.
+We are creating a Virtual Machine in the same way as we would create any other Kubernetes resource thanks to what KubeVirt has enabled in our environment. Now we have a Virtual Machine as a Kubernetes resource.
 
 After the vm resource has been created, you can manage the VMs with standard 'kubectl' commands:
 
@@ -21,13 +21,15 @@ To start a VM, virtctl should be used:
 
 `./virtctl start testvm`{{execute}}
 
-Now, you can check again the vm status:
+Now, you can check again the vm status, but notice from the output that the VM is not running yet:
 
 `kubectl get vms`{{execute}}
 
 Alternatively you can use `kubectl edit vm testvm` to set `.spec.running: true`.
 
-Once the VM is running you can inspect its status as [instance](https://kubevirt.io/user-guide/docs/latest/creating-virtual-machines/intro.html) :
+A VirtualMachine resource contains a VM's definition and status. An [instance](https://kubevirt.io/user-guide/docs/latest/creating-virtual-machines/intro.html) of a running VM has an additional associated resource: a VirtualMachineInstance.
+
+Once the VM is running you can inspect its status:
 
 ```
 $ kubectl get vmis
@@ -48,9 +50,9 @@ testvm    1m        Running   10.32.0.11   master
 
 Now that a VM is running you can access its console:
 
-**NOTE** : YOU WILL NOT BE ABLE TO ESCAPE THE CONSOLE ON KATACODA.
+**NOTE** : WARNING in some browser environments you'll not be able to escape the console on Katacoda.
 
-`^]` means: press CTRL + "]" keys to escape the console
+**NOTE** :`^]` means: press CTRL + "]" keys to escape the console
 
 ~~~sh
 # Connect to the serial console
@@ -59,15 +61,7 @@ $ ./virtctl console testvm
 
 If you've opened the console **within** Katacoda, you can click on the `+` close to 'Terminal' to start a new shell there and be able to continue with the following steps in the shutdown and cleanup section.
 
-**NOTE** This doesn't work on Katacoda because of the environment setup and browser access
-
-`./virtctl console testvm`
-
-~~~sh
-# Connect to the graphical display
-# It Requires remote-viewer from the virt-viewer package.
-$ ./virtctl vnc testvm
-~~~
+In environments where VNC client access is available, the graphical VNC console can be accessed [following documentation](https://kubevirt.io/user-guide/docs/latest/using-virtual-machines/graphical-and-console-access.html)
 
 #### Shutdown and cleanup
 
