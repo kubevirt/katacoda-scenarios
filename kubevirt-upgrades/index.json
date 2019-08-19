@@ -1,0 +1,34 @@
+{
+  "pathwayTitle": "KubeVirt",
+  "title": "KubeVirt Upgrades",
+  "description": "Learn on how to upgrade KubeVirt between releases",
+  "time": "20-30 minutes",
+  "difficulty": "beginner",
+  "details": {
+    "steps": [
+      {
+        "title": "Launch cluster and deploy KubeVirt",
+        "text": "step1.md"
+      },
+      {
+        "title": "Perform KubeVirt Upgrade",
+        "text": "step2.md"
+      }
+    ],
+    "intro": {
+      "text": "intro.md",
+      "code": "set-env.sh"
+    },
+    "finish": {
+      "text": "finish.md"
+    }
+  },
+  "environment": {
+    "uilayout": "terminal",
+    "showdashboard": true,
+    "icon": "fa-kubernetes"
+  },
+  "backend": {
+    "imageid": "kubernetes"
+  }
+}

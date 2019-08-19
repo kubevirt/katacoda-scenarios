@@ -1,0 +1,86 @@
+#### Define the next version
+
+KubeVirt starting from `v0.17.0` onwards, allows to upgrade by using two approaches as defined in the [user-guide](https://kubevirt.io/user-guide/docs/latest/administration/intro.html#update):
+
+- Patching the imageTag value in the KubeVirt CR spec
+- Updating the operator if no imageTag is defined (defaulting to upgrade to match the operator version)
+
+**WARNING:** In both cases, the supported scenario is updating from N-1 to N
+
+**NOTE:** Zero downtime rolling updates are supported starting with release `v0.17.0` onwards. Updating from any release prior to the KubeVirt `v0.17.0` release is not supported.
+
+#### Performing the upgrade
+
+##### Method 1: by changing the imageTag value in the KubeVirt CR’s spec
+
+For example, updating from `v0.17.0` to `v0.18.0` is as simple as patching the KubeVirt CR with the `imageTag: v0.18.0` value. From there the KubeVirt operator will begin the process of rolling out the new version of KubeVirt. Existing VM/VMIs will remain uninterrupted both during and after the update succeeds.
+
+`kubectl patch kv kubevirt -n kubevirt --type=json -p '[{ "op": "add", "path": "/spec/imageTag", "value": "v0.18.0" }]'`{{execute}}
+
+Keep watching the output on terminal 1 on how the containers are stopped/started as the deployment happens.
+
+Now, let's revert back to no indicate version so that we can proceed with next step:
+
+`kubectl patch kv kubevirt -n kubevirt --type=json -p '[{ "op": "add", "path": "/spec/imageTag", "value": "" }]'`{{execute}}
+
+##### Method 2: by updating the KubeVirt operator if no imageTag value is set
+
+When no `imageTag` value is set in the KubeVirt CR, the system assumes that the version of KubeVirt is locked to the version of the operator. This means that updating the operator will result in the underlying KubeVirt installation being updated as well.
+
+Let's upgrade to one newer version since the one in Method 1:
+
+`export KUBEVIRT_VERSION=v0.19.0
+kubectl apply -f https://github.com/kubevirt/kubevirt/releases/download/${KUBEVIRT_VERSION}/kubevirt-operator.yaml`{{execute}}
+
+**NOTE:** Compared to the first step of the scenario we now use **apply** instead of **create** to deploy the newer version.
+
+##### Method comparison
+
+The first way provides a fine granular approach where you have full control over what version of KubeVirt is installed independently of what version of the KubeVirt operator you might be running. 
+
+The second approach allows you to lock both the operator and operand to the same version.
+
+Newer KubeVirt may require additional or extended RBAC rules. In this case, the 1st update method may fail, because the `virt-operator` present in the cluster doesn’t have these RBAC rules itself.
+
+In this case, you need to update the virt-operator first, and then proceed to update kubevirt.
+
+In all cases, we can check that the VM is still running
+
+`kubectl get vmis`{{execute}}
+
+~~~
+master $ kubectl get vmis
+NAME      AGE       PHASE     IP           NODENAME
+testvm    1m        Running   10.32.0.11   master
+~~~
+
+
+#### Final upgrades
+
+You can keep testing in this scenario updating 'one version at a time' until reaching the value of `KUBEVIRT_LATEST_VERSION`:
+
+`export KUBEVIRT_LATEST_VERSION=$(curl -s https://api.github.com/repos/kubevirt/kubevirt/releases/latest | jq -r .tag_name)
+echo "CURRENT: $KUBEVIRT_VERSION"
+echo "LATEST: $KUBEVIRT_LATEST_VERSION"`{{execute}}
+
+Compare the values between and continue upgrading 'one release at a time' by:
+
+Chosing target version:
+`export KUBEVIRT_VERSION=vX.XX.X`{{execute}}
+
+Updating operator to that release:
+`kubectl apply -f https://github.com/kubevirt/kubevirt/releases/download/${KUBEVIRT_VERSION}/kubevirt-operator.yaml`{{execute}}
+
+####  Wrap-up
+
+Shutting down a VM works by either using `virtctl` or editing the VM.
+
+`./virtctl stop testvm`{{execute}}
+
+Finally, the VM can be deleted using:
+
+`kubectl delete vms testvm`{{execute}}
+
+**NOTE:** We've seen two methos for upgrading, based on the future requirements it's better if we follow the `Operator` approach as it will take into consideration new requirements.
+
+When updating using the operator, we can see that the 'AGE' of containers is similar between them, but when updating only the kubevirt version, the operator 'AGE' keeps increasing as it is not 'recreated'.
