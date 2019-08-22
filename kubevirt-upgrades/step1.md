@@ -21,7 +21,7 @@ To deploy the KubeVirt Operator run the following command:
 `kubectl create -f https://github.com/kubevirt/kubevirt/releases/download/${KUBEVIRT_VERSION}/kubevirt-operator.yaml`{{execute}}
 
 Let's wait for the operator to become ready:
-`kubectl wait --for condition=ready pod -l name=kubevirt -n virt-operator --timeout=300s`{{execute}}
+`kubectl wait --for condition=ready pod -l kubevirt.io=virt-operator -n kubevirt --timeout=100s`{{execute}}
 
 This demo environment already runs within a virtualized environment, and in order to be able to run VMs here we need to pre-configure KubeVirt so it uses software-emulated virtualization instead of trying to use real hardware virtualization.
 
@@ -54,9 +54,9 @@ Once all the containers are with the status "Running" you can execute the comman
 
 First, let's wait for all the pods to be ready like previously provided example:
 
-`kubectl wait --for condition=ready pod -l name=kubevirt -n virt-api --timeout=300s
-kubectl wait --for condition=ready pod -l name=kubevirt -n virt-controller --timeout=300s
-kubectl wait --for condition=ready pod -l name=kubevirt -n virt-handler --timeout=300s`{{execute}}
+`kubectl wait --for condition=ready pod -l kubevirt.io=virt-api -n kubevirt --timeout=100s
+kubectl wait --for condition=ready pod -l kubevirt.io=virt-controller -n kubevirt --timeout=100s
+kubectl wait --for condition=ready pod -l kubevirt.io=virt-handler -n kubevirt --timeout=100s`{{execute}}
 
 And proceed with the VM creation:
 
