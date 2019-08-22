@@ -79,6 +79,11 @@ Updating the operator to that release:
 
 `kubectl apply -f https://github.com/kubevirt/kubevirt/releases/download/${KUBEVIRT_VERSION}/kubevirt-operator.yaml`{{execute}}
 
+**NOTE:** Since version `0.20.1`, the operator version should be checked with the following command:
+
+`echo $(
+kubectl get deployment.apps virt-operator -n kubevirt -o jsonpath='{.spec.template.spec.containers[0].env[?(@.name=="KUBEVIRT_VERSION")].value}')`{{execute}}
+
 ####  Wrap-up
 
 Shutting down a VM works by either using `virtctl` or editing the VM.

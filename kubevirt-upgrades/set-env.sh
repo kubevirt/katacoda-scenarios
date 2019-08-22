@@ -1,5 +1,8 @@
 # Disable showing commands as being typed
 stty -echo
+
+export PSBACKUP="$PS1"
+export PS1=""
 clear
 
 echo -e "\nPreparking Kubernetes environment... hold on"
@@ -18,6 +21,9 @@ echo -e  "\nEnvironment is ready and virtctl is installed, go ahead"
 
 SESSION=$USER
 
+# Restore prompt
+export PS1="$PSBACKUP"
+
 tmux -2 new-session -d -s $SESSION
 
 # Setup a window for tailing log files
@@ -26,16 +32,13 @@ tmux split-window -v
 tmux select-pane -t 0
 tmux send-keys "watch -n 0.5 'kubectl -n kubevirt get pods'" C-m
 tmux select-pane -t 1
+tmux send-keys "clear" C-m
 
 # Set default window
 tmux select-window -t $SESSION:1
 
-# Attach to session
-tmux -2 attach-session -t $SESSION
-
-# Write 'environment ready'
-stty -echo
-echo "Environment ready to proceed with the lab"
-
 # Enable back showing commands when typed
 stty echo
+
+# Attach to session
+tmux -2 attach-session -t $SESSION

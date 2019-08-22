@@ -4,7 +4,7 @@ Before we can start, we need to wait for the Kubernetes cluster to be ready (a c
 
 Please ensure you're familiar with KubeVirt basics in [First steps with KubeVirt](https://katacoda.com/kubevirt/scenarios/kubevirt-101) scenario before proceeding.
 
-Wait until you see the message: `Environment ready to proceed with the lab` to continue.
+Wait until you see the command prompt to continue.
 
 #### Deploy KubeVirt
 
