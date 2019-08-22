@@ -1,8 +1,8 @@
 {
   "pathwayTitle": "KubeVirt",
   "title": "KubeVirt Upgrades",
-  "description": "Learn on how to upgrade KubeVirt between releases",
-  "time": "20-30 minutes",
+  "description": "This scenario demonstrates how KubeVirt can be upgraded between releases by either using the operator or patching the values.",
+  "time": "15 minutes",
   "difficulty": "beginner",
   "details": {
     "steps": [

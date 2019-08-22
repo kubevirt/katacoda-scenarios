@@ -4,30 +4,37 @@ Before we can start, we need to wait for the Kubernetes cluster to be ready (a c
 
 Please ensure you're familiar with KubeVirt basics in [First steps with KubeVirt](https://katacoda.com/kubevirt/scenarios/kubevirt-101) scenario before proceeding.
 
+Wait until you see the message: `Environment ready to proceed with the lab` to continue.
+
 #### Deploy KubeVirt
 
-Deploy the KubeVirt operator using a specific KubeVirt version, so that we can later proceed to upgrade to latest.
+For upgrading to the latest KubeVirt version, first we will install a specific older version of the operator.
 
-Let's force ourselves to use release `v0.17.0`:
+Let's stick to use the release `v0.17.0`:
 
 `export KUBEVIRT_VERSION=v0.17.0`{{execute}}
 
-Run the following command to deploy the KubeVirt Operator:
+Similar to <https://katacoda.com/kubevirt/scenarios/kubevirt-101> we're going to follow the same steps:
+
+To deploy the KubeVirt Operator run the following command:
 
 `kubectl create -f https://github.com/kubevirt/kubevirt/releases/download/${KUBEVIRT_VERSION}/kubevirt-operator.yaml`{{execute}}
+
+Let's wait for the operator to become ready:
+`kubectl wait --for condition=ready pod -l name=kubevirt -n virt-operator --timeout=300s`{{execute}}
 
 This demo environment already runs within a virtualized environment, and in order to be able to run VMs here we need to pre-configure KubeVirt so it uses software-emulated virtualization instead of trying to use real hardware virtualization.
 
 `kubectl create configmap kubevirt-config -n kubevirt --from-literal debug.useEmulation=true`{{execute}}
 
-Now let's deploy KubeVirt by creating a Custom Resource that will trigger the 'operator' reaction and perform the deployment:
+Now let's deploy KubeVirt by creating a Custom Resource that will trigger the 'operator' and perform the deployment:
 
 `kubectl create -f https://github.com/kubevirt/kubevirt/releases/download/${KUBEVIRT_VERSION}/kubevirt-cr.yaml`{{execute}}
 
 Let's check the deployment:
 `kubectl get pods -n kubevirt`{{execute}}
 
-Once it's ready, it will show something similar to (this will keep showing in upper half of your terminal at katacoda):
+Once it's ready, it will show something similar to the information below (this will keep showing in the upper half of the terminal in the right side of the webpage):
 
 ~~~
 master $ kubectl get pods -n kubevirt
@@ -43,11 +50,19 @@ virt-operator-5649f67475-sw78k     1/1       Running   0          4m
 
 #### Deploy a VM
 
-The command below applies a YAML definition of a virtual machine into our current Kubernetes environment:
+Once all the containers are with the status "Running" you can execute the command below for applying a YAML definition of a virtual machine into our current Kubernetes environment:
+
+First, let's wait for all the pods to be ready like previously provided example:
+
+`kubectl wait --for condition=ready pod -l name=kubevirt -n virt-api --timeout=300s
+kubectl wait --for condition=ready pod -l name=kubevirt -n virt-controller --timeout=300s
+kubectl wait --for condition=ready pod -l name=kubevirt -n virt-handler --timeout=300s`{{execute}}
+
+And proceed with the VM creation:
 
 `kubectl apply -f https://raw.githubusercontent.com/kubevirt/demo/master/manifests/vm.yaml`{{execute}}
 
-Check that the VM is defined (using commands above):
+Using the command below for checking that the VM is defined:
 
 `kubectl get vms`{{execute}}
 
@@ -73,4 +88,8 @@ NAME      AGE       PHASE     IP           NODENAME
 testvm    1m        Running   10.32.0.11   master
 ~~~
 
-Now, we're ready for upgrading KubeVirt
+While the PHASE is still `Scheduling` you can run the same commnad for checking again:
+
+`kubectl get vmis`{{execute}}
+
+Once the PHASE will change to `Running`,we're ready for upgrading KubeVirt.
