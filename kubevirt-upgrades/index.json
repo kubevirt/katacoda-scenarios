@@ -1,0 +1,34 @@
+{
+  "pathwayTitle": "KubeVirt",
+  "title": "KubeVirt Upgrades",
+  "description": "This scenario demonstrates how KubeVirt can be upgraded between releases by either using the operator or patching the values.",
+  "time": "15 minutes",
+  "difficulty": "beginner",
+  "details": {
+    "steps": [
+      {
+        "title": "Launch cluster and deploy KubeVirt",
+        "text": "step1.md"
+      },
+      {
+        "title": "Perform KubeVirt Upgrade",
+        "text": "step2.md"
+      }
+    ],
+    "intro": {
+      "text": "intro.md",
+      "code": "set-env.sh"
+    },
+    "finish": {
+      "text": "finish.md"
+    }
+  },
+  "environment": {
+    "uilayout": "terminal",
+    "showdashboard": true,
+    "icon": "fa-kubernetes"
+  },
+  "backend": {
+    "imageid": "kubernetes"
+  }
+}
