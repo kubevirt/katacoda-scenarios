@@ -66,7 +66,7 @@ testvm    1m        Running   10.32.0.11   master
 You can keep testing in this scenario updating 'one version at a time' until reaching the value of `KUBEVIRT_LATEST_VERSION`:
 
 `export KUBEVIRT_LATEST_VERSION=$(curl -s https://api.github.com/repos/kubevirt/kubevirt/releases/latest | jq -r .tag_name)
-echo "CURRENT: $KUBEVIRT_VERSION \n LATEST: $KUBEVIRT_LATEST_VERSION"`{{execute}}
+echo -e "CURRENT: $KUBEVIRT_VERSION \n LATEST: $KUBEVIRT_LATEST_VERSION"`{{execute}}
 
 Compare the values between and continue upgrading 'one release at a time' by:
 
