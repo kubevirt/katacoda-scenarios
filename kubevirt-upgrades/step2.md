@@ -1,6 +1,6 @@
 #### Define the next version to upgrade to
 
-KubeVirt starting from `v0.17.0` onwards, allows to upgrade one version at a time, by using two approaches as defined in the [user-guide](https://kubevirt.io/user-guide/docs/latest/administration/intro.html#update):
+KubeVirt starting from `v0.17.0` onwards, allows upgrading one version at a time, by using two approaches as defined in the [user-guide](https://kubevirt.io/user-guide/docs/latest/administration/intro.html#update):
 
 - Patching the imageTag value in the KubeVirt CR spec
 - Updating the operator if no imageTag is defined (defaulting to upgrade to match the operator version)
@@ -17,7 +17,7 @@ In this example we are going to update from the version `v0.17.0` to `v0.18.0`, 
 
 First, let's ensure we've `v0.17.0` installed by executing:
 
-`kubectl get  deployment.apps virt-operator -n kubevirt -o template  --template='{{range .spec.template.spec.containers}}{{.image}}{{end}} '|  awk -F: '{print $NF}'`{{execute}}
+`kubectl get deployment.apps virt-operator -n kubevirt -o template --template='{{range .spec.template.spec.containers}}{{.image}}{{end}} '| awk -F: '{print $NF}'`{{execute}}
 
 Now let's proceed with the update:
 
@@ -25,7 +25,7 @@ Now let's proceed with the update:
 
 To follow the updating process you can keep watching the output on terminal 1 to see how the containers are stopped and started as the deployment happens.
 
-To proceed with the next update in the Method 2 you have to revert  the changes done and indicate no specific version with the following command:
+To proceed with the next update in the Method 2 you have to revert the changes done and indicate no specific version with the following command:
 
 `kubectl patch kv kubevirt -n kubevirt --type=json -p '[{ "op": "add", "path": "/spec/imageTag", "value": "" }]'`{{execute}}
 
@@ -50,7 +50,7 @@ Newer KubeVirt may require additional or extended RBAC rules. In this case, the 
 
 In this case, you need to update the virt-operator first, and then proceed to update kubevirt.
 
-In any case, we can check that the VM is still running
+Anyways, we can check that the VM is still running
 
 `kubectl get vmis`{{execute}}
 
@@ -59,7 +59,6 @@ master $ kubectl get vmis
 NAME      AGE       PHASE     IP           NODENAME
 testvm    1m        Running   10.32.0.11   master
 ~~~
-
 
 #### Final upgrades
 
@@ -70,7 +69,7 @@ echo -e "CURRENT: $KUBEVIRT_VERSION \n LATEST: $KUBEVIRT_LATEST_VERSION"`{{execu
 
 Compare the values between and continue upgrading 'one release at a time' by:
 
-Chosing the target version:
+Choosing the target version:
 
 `export KUBEVIRT_VERSION=vX.XX.X`{{execute}}
 
@@ -93,6 +92,6 @@ Finally, the VM can be deleted using:
 
 `kubectl delete vms testvm`{{execute}}
 
-**NOTE:** We've seen two methos for upgrading, based on the future requirements it's better if we follow the `Operator` approach as it will take into consideration the new requirements.
+**NOTE:** We've seen two methods for upgrading, based on the future requirements it's better if we follow the `Operator` approach as it will take into consideration the new requirements.
 
 When updating using the operator, we can see that the 'AGE' of containers is similar between them, but when updating only the kubevirt version, the operator 'AGE' keeps increasing because it is not 'recreated'.
