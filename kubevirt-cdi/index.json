@@ -1,0 +1,32 @@
+{
+  "pathwayTitle": "KubeVirt",
+  "title": "Experiment with CDI",
+  "description": "CDI is an utility designed to import Virtual Machine images for use with Kubevirt, experiment with it on this Lab",
+  "time": "10min",
+  "difficulty": "beginner",
+  "details": {
+    "steps": [
+      {
+        "title": "Launch cluster and deploy KubeVirt",
+        "text": "step1.md"
+      },
+      {
+        "title": "Use CDI to import and start a VM",
+        "text": "step2.md"
+      }
+    ],
+    "intro": {
+      "text": "intro.md",
+      "code": "set-env.sh"
+    },
+    "finish": {
+      "text": "finish.md"
+    }
+  },
+  "environment": {
+    "uilayout": "terminal"
+  },
+  "backend": {
+    "imageid": "kubernetes"
+  }
+}
