@@ -4,9 +4,9 @@ Before we can start, we need to wait for the Kubernetes cluster to be ready (a c
 
 #### Deploy KubeVirt
 
-In this scenario we'll go quickly over installing KubeVirt as it was covered already in the introduction scenario: 'First steps with KubeVirt'
+In this scenario, we'll go quickly over installing KubeVirt as it was covered already in the introduction scenario: 'First steps with KubeVirt'
 
-We query GitHub's API to get the latest available release (click on the text to autoexecute the commands on the console):
+We query GitHub's API to get the latest available release (click on the text to auto-execute the commands on the console):
 
 `export KUBEVIRT_VERSION=$(curl -s https://api.github.com/repos/kubevirt/kubevirt/releases/latest | jq -r .tag_name)
 echo $KUBEVIRT_VERSION`{{execute}}
@@ -15,7 +15,7 @@ Run the following command to deploy the KubeVirt Operator:
 
 `kubectl create -f https://github.com/kubevirt/kubevirt/releases/download/${KUBEVIRT_VERSION}/kubevirt-operator.yaml`{{execute}}
 
-This demo environment already runs within a virtualized environment, and in order to be able to run VMs here we need to pre-configure KubeVirt so it uses software-emulated virtualization instead of trying to use real hardware virtualization.
+This demo environment already runs within a virtualized environment, and to be able to run VMs here we need to pre-configure KubeVirt so it uses software-emulated virtualization instead of trying to use real hardware virtualization.
 
 `kubectl create configmap kubevirt-config -n kubevirt --from-literal debug.useEmulation=true`{{execute}}
 
@@ -25,6 +25,8 @@ Now let's deploy KubeVirt by creating a Custom Resource that will trigger the 'o
 
 Let's check the deployment:
 `kubectl get pods -n kubevirt`{{execute}}
+
+This will take a while until all the pods are running, retry the command until the output states that all fo them are running.
 
 Once it's ready, it will show something similar to:
 
