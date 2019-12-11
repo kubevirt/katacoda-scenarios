@@ -14,9 +14,14 @@ kubectl create -f storage-setup.yml`{{execute}}
 
 Grab latest version of CDI and apply both the Operator and the Custom Resource Definition (CR) that starts the deployment:
 
-`export VERSION=$(curl -s https://github.com/kubevirt/containerized-data-importer/releases/latest | grep -o "v[0-9]\.[0-9]*\.[0-9]*")
-kubectl create -f https://github.com/kubevirt/containerized-data-importer/releases/download/$VERSION/cdi-operator.yaml
-kubectl create -f https://github.com/kubevirt/containerized-data-importer/releases/download/$VERSION/cdi-cr.yaml`{{execute}}
+`export VERSION=$(curl -s https://github.com/kubevirt/containerized-data-importer/releases/latest | grep -o "v[0-9]\.[0-9]*\.[0-9]*")`{{execute}}
+
+Deploy operator:
+
+`kubectl create -f https://github.com/kubevirt/containerized-data-importer/releases/download/$VERSION/cdi-operator.yaml`{{execute}}
+
+Create CRD to trigger operator deployment of CDI:
+`kubectl create -f https://github.com/kubevirt/containerized-data-importer/releases/download/$VERSION/cdi-cr.yaml`{{execute}}
 
 Review the "cdi" pods that were added.
 
@@ -37,9 +42,8 @@ Grab the pod name to check later the logs. If the pod is not yet listed, wait a 
 `kubectl get pod # Make note of the pod name assigned to the import process`{{execute}}
 
 Then check the import process (it will be a long process and can take some time):
-```sh
-kubectl logs -f $(kubectl get pods -o name)
-```
+
+`kubectl logs -f $(kubectl get pods -o name)`{{execute}}
 
 Notice that the importer downloaded the publicly available Fedora Cloud qcow image. Once the importer pod completes, this PVC is ready for use in KubeVirt.
 
@@ -51,17 +55,17 @@ Let's create a Virtual Machine making use of it. Review the file *vm1_pvc.yml*.
 
 We change the YAML definition of this Virtual Machine to inject the default public key of user in the cloud instance.
 
-First we'll create an SSH key pair that we'll use to configure the machine:
+First we'll create an SSH key pair that we'll use to configure the machine and patch the VM definition to use it:
 
 `# Prepare SSH passwordless login
 rm -fv ~/.ssh/id_rsa
 ssh-keygen -N '' -f ~/.ssh/id_rsa
-PUBKEY=$(cat ~/.ssh/id_rsa.pub)`{{execute}}
+PUBKEY=$(cat ~/.ssh/id_rsa.pub)
+sed -i "s%ssh-rsa.*%$PUBKEY%" vm1_pvc.yml`{{execute}}
 
-Now, we'll patch the VM definition to include our ssh public key to enable the access without password to it:
+Now, we'll create the VM with the patched YAML:
 
-`sed -i "s%ssh-rsa.*%$PUBKEY%" vm1_pvc.yml
-kubectl create -f vm1_pvc.yml`{{execute}}
+`kubectl create -f vm1_pvc.yml`{{execute}}
 
 This will create and start a Virtual Machine named vm1. We can use the following command to check our Virtual Machine is running and to `gather its IP`. You are looking for the IP address beside the `virt-launcher` pod.
 
