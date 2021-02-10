@@ -29,7 +29,7 @@ Now you can check again the VM status:
 
 `kubectl get vms`{{execute}}
 
-A `VirtualMachine` resource contains a VM's definition and status. An [instance](https://kubevirt.io/user-guide/docs/latest/creating-virtual-machines/intro.html) of a running VM has an additional associated resource, a `VirtualMachineInstance`.
+A `VirtualMachine` resource contains a VM's definition and status. An [instance](https://kubevirt.io/user-guide/virtual_machines/virtual_machine_instances/) of a running VM has an additional associated resource, a `VirtualMachineInstance`.
 
 Once the VM is running you can inspect its status:
 
@@ -63,7 +63,7 @@ $ ./virtctl console testvm
 
 If you opened the serial console within Katacoda and you can't escape from it by pressing `^]`, you can click on the `+` close to 'Terminal' to start a new shell there and be able to continue with the following steps in the shutdown and cleanup section.
 
-In environments where VNC client access is available, the graphical console of a VM can be accessed with the [virtctl vnc](https://kubevirt.io/user-guide/docs/latest/using-virtual-machines/graphical-and-console-access.html) command.
+In environments where VNC client access is available, the graphical console of a VM can be accessed with the [virtctl vnc](https://kubevirt.io/user-guide/virtual_machines/graphical_and_console_access/#accessing-the-graphical-console-vnc) command.
 
 #### Shutdown and cleanup
 
