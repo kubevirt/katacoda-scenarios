@@ -24,11 +24,16 @@ Now let's deploy KubeVirt by creating a Custom Resource that will trigger the 'o
 `kubectl create -f https://github.com/kubevirt/kubevirt/releases/download/${KUBEVIRT_VERSION}/kubevirt-cr.yaml`{{execute}}
 
 Let's check the deployment:
+
+`kubectl get kubevirt -n kubevirt`{{execute}}
+
+It will take a while until all the pods are running. Retry the command until the output states that kubevirt is "Deployed".
+
+Once the kubevirt resource is deployed, view the pods created by the deployment. 
+
 `kubectl get pods -n kubevirt`{{execute}}
 
-This will take a while until all the pods are running, retry the command until the output states that all fo them are running.
-
-Once it's ready, it will show something similar to:
+It will show something similar to:
 
 ~~~
 master $ kubectl get pods -n kubevirt
