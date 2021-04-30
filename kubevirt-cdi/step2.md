@@ -4,13 +4,21 @@
 
 At a high level, a PersistentVolumeClaim (PVC) is created. A custom controller watches for importer specific claims, and when discovered, starts an import process to create a raw image named *disk.img* with the desired content into the associated PVC.
 
-#### Install the CDI
-
 We will first explore each component and later we will install them. In this exercise we create a hostpath provisioner and storage class. Also, we will deploy the CDI component using the Operator.
 
-Download the storage definition and examine it:
-`wget https://raw.githubusercontent.com/kubevirt/kubevirt.github.io/master/labs/manifests/storage-setup.yml
-kubectl create -f storage-setup.yml`{{execute}}
+#### Install Hostpath Provisioner
+
+Download the hostpath-provisioner deployment YAML and apply it.
+
+`wget https://raw.githubusercontent.com/kubevirt/hostpath-provisioner/main/deploy/kubevirt-hostpath-provisioner.yaml
+kubectl create -f kubevirt-hostpath-provisioner.yaml
+kubectl annotate storageclass kubevirt-hostpath-provisioner storageclass.kubernetes.io/is-default-class=true`{{execute}}
+
+Verify you now have a default storage class. You should see "kubevirt-hostpath-provisioner (default)"
+
+`kubectl get storageclass`{{execute}}
+
+#### Install the CDI
 
 Grab latest version of CDI and apply both the Operator and the Custom Resource Definition (CR) that starts the deployment:
 
@@ -21,25 +29,47 @@ Deploy operator:
 `kubectl create -f https://github.com/kubevirt/containerized-data-importer/releases/download/$VERSION/cdi-operator.yaml`{{execute}}
 
 Create CRD to trigger operator deployment of CDI:
+
 `kubectl create -f https://github.com/kubevirt/containerized-data-importer/releases/download/$VERSION/cdi-cr.yaml`{{execute}}
+
+Check status of CDI deployment. You may repeat this command as needed until the cdi "PHASE" reads "Deployed"
+
+`kubectl get cdi -n cdi`{{execute}}
 
 Review the "cdi" pods that were added.
 
 `kubectl get pods -n cdi`{{execute}}
 
-Some of the pods will report as being in 'Error' mode, do not worry about them and continue with the lab.
-
 #### Use the CDI
 
-As an example, we will import a Fedora30 Cloud Image as a PVC and launch a Virtual Machine making use of it.
+As an example, we will import a Fedora34 Cloud Image as a PVC and launch a Virtual Machine making use of it.
 
-`kubectl create -f https://raw.githubusercontent.com/kubevirt/kubevirt.github.io/master/labs/manifests/pvc_fedora.yml`{{execute}}
+```
+cat <<EOF > pvc_fedora.yml
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: "fedora"
+  labels:
+    app: containerized-data-importer
+  annotations:
+    cdi.kubevirt.io/storage.import.endpoint: "https://mirror.23media.com/fedora/linux/releases/34/Cloud/x86_64/images/Fedora-Cloud-Base-34-1.2.x86_64.raw.xz"
+    kubevirt.io/provisionOnNode: node01
+spec:
+  accessModes:
+  - ReadWriteOnce
+  resources:
+    requests:
+      storage: 5500Mi
+EOF
+kubectl create -f pvc_fedora.yml
+```{{execute}}
 
 This will create the PVC with a proper annotation so that CDI controller detects it and launches an importer pod to gather the image specified in the *cdi.kubevirt.io/storage.import.endpoint* annotation.
 
 Grab the pod name to check later the logs. If the pod is not yet listed, wait a bit more because the Operator is still doing required actions.
 
-`kubectl get pod # Make note of the pod name assigned to the import process`{{execute}}
+`kubectl get pod`{{execute}}
 
 Then check the import process (it will be a long process and can take some time):
 
@@ -49,19 +79,15 @@ Notice that the importer downloaded the publicly available Fedora Cloud qcow ima
 
 If the importer pod completes in error, you may need to retry it or specify a different URL to the fedora cloud image. To retry, first delete the importer pod and the PVC, and then recreate the PVC.
 
-Let's create a Virtual Machine making use of it. Review the file *vm1_pvc.yml*.
+Let's create a virtual machine that makes use of our new PVC. Review the file *vm1_pvc.yml*.
 
 `wget https://raw.githubusercontent.com/kubevirt/kubevirt.github.io/master/labs/manifests/vm1_pvc.yml`{{execute}}
 
-We change the YAML definition of this Virtual Machine to inject the default public key of user in the cloud instance.
+We change the YAML definition of this Virtual Machine to inject the default public key of user in the cloud instance. This Katacoda scenario provides an environment with an ssh key already set up, so we will use the public key we find in the authorized_keys file.
 
-First we'll create an SSH key pair that we'll use to configure the machine and patch the VM definition to use it:
-
-`# Prepare SSH passwordless login
-rm -fv ~/.ssh/id_rsa
-ssh-keygen -N '' -f ~/.ssh/id_rsa
-PUBKEY=$(cat ~/.ssh/id_rsa.pub)
-sed -i "s%ssh-rsa.*%$PUBKEY%" vm1_pvc.yml`{{execute}}
+`
+PUBKEY=$(cat ~/.ssh/authorized_keys)
+sed -i "s%ssh-rsa YOUR_SSH_PUB_KEY_HERE%$PUBKEY%" vm1_pvc.yml`{{execute}}
 
 Now, we'll create the VM with the patched YAML:
 
