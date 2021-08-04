@@ -43,9 +43,9 @@ $ kubectl get vmis -o yaml testvm
 Once it's ready, the command above will print something like:
 
 ~~~
-master $ kubectl get vmis
+controlplane $ kubectl get vmis
 NAME      AGE       PHASE     IP           NODENAME
-testvm    1m        Running   10.32.0.11   master
+testvm    1m        Running   10.32.0.11   controlplane
 ~~~
 
 #### Accessing VMs (serial console & vnc)

@@ -37,7 +37,7 @@ Let's check the deployment:
 Once it's ready, it will show something similar to the information below (this will keep showing in the upper half of the terminal in the right side of the webpage):
 
 ~~~
-master $ kubectl get pods -n kubevirt
+controlplane $ kubectl get pods -n kubevirt
 NAME                               READY     STATUS    RESTARTS   AGE
 virt-api-7fc57db6dd-g4s4w          1/1       Running   0          3m
 virt-api-7fc57db6dd-zd95q          1/1       Running   0          3m
@@ -83,9 +83,9 @@ Once the VM is running you can inspect its status:
 Once it's ready, the command above will print something like:
 
 ~~~
-master $ kubectl get vmis
+controlplane $ kubectl get vmis
 NAME      AGE       PHASE     IP           NODENAME
-testvm    1m        Running   10.32.0.11   master
+testvm    1m        Running   10.32.0.11   controlplane
 ~~~
 
 While the PHASE is still `Scheduling` you can run the same commnad for checking again:

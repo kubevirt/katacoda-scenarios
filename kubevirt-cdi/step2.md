@@ -105,9 +105,9 @@ Finally, we will connect to vm1 Virtual Machine (VM) as a regular user would do,
 
 Check the IP address:
 
-```master $ kubectl get vmis
+```controlplane $ kubectl get vmis
 NAME      AGE       PHASE     IP           NODENAME
-testvm    1m        Running   10.32.0.11   master```
+testvm    1m        Running   10.32.0.11   controlplane```
 
 Now, connect via SSH
 
