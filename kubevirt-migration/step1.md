@@ -31,7 +31,7 @@ The testvm virtual machine should start running on node01. Check which node the 
 
 `kubectl get vmi`{{execute}}
 
-You should see something like:
+Once the VM reaches the Running phase, you should see something like:
 
 ~~~sh
 NAME     AGE   PHASE     IP           NODENAME
@@ -40,7 +40,7 @@ testvm   17s   Running   10.244.1.7   node01
 
 For more detailed information, you can use directly view the virt-launcher Pod(s) with:
 
-`kubectl get po -o wide`{{execute}}
+`kubectl get pods -o wide`{{execute}}
 
 ~~~sh
 NAME                         READY   STATUS    RESTARTS   AGE   IP           NODE     NOMINATED NODE   READINESS GATES

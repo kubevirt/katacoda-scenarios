@@ -78,7 +78,7 @@ VM testvm was scheduled to migrate
 
 Run the following multiple times to follow the migration:
 
-`kubectl get vmi,po -o wide`{{execute}}
+`kubectl get vmis,pods -o wide`{{execute}}
 
 KubeVirt will schedule and start a virt-launcher pod instance on the target node, "controlplane" in our case:
 
