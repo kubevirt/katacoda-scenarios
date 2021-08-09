@@ -1,8 +1,11 @@
 filters:
   ".*":
     reviewers:
+      - cwilkers
+      - jobbler
       - mazzystr
     approvers:
+      - cwilkers
       - mazzystr
     emeritus_approvers:
       - codificat # 25 Feb 2021
