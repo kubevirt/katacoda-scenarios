@@ -36,7 +36,7 @@ Once the kubevirt resource is deployed, view the pods created by the deployment.
 It will show something similar to:
 
 ~~~
-master $ kubectl get pods -n kubevirt
+controlplane $ kubectl get pods -n kubevirt
 NAME                               READY     STATUS    RESTARTS   AGE
 virt-api-7fc57db6dd-g4s4w          1/1       Running   0          3m
 virt-api-7fc57db6dd-zd95q          1/1       Running   0          3m

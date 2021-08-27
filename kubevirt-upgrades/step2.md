@@ -55,9 +55,9 @@ Anyways, we can check that the VM is still running
 `kubectl get vmis`{{execute}}
 
 ~~~
-master $ kubectl get vmis
+controlplane $ kubectl get vmis
 NAME      AGE       PHASE     IP           NODENAME
-testvm    1m        Running   10.32.0.11   master
+testvm    1m        Running   10.32.0.11   controlplane
 ~~~
 
 #### Final upgrades
