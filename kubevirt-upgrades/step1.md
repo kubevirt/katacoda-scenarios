@@ -60,7 +60,7 @@ kubectl wait --for condition=ready pod -l kubevirt.io=virt-handler -n kubevirt -
 
 And proceed with the VM creation:
 
-`kubectl apply -f https://raw.githubusercontent.com/kubevirt/demo/master/manifests/vm.yaml`{{execute}}
+`kubectl apply -f https://kubevirt.io/labs/manifests/vm.yaml`{{execute}}
 
 Using the command below for checking that the VM is defined:
 

@@ -1,8 +1,8 @@
 #### Deploy a VM
 
-The command below applies a YAML definition of a virtual machine into our current Kubernetes environment, defining the VM name, the resources required (disk, CPU, memory), etc. You can take a look at the [vm.yaml](https://raw.githubusercontent.com/kubevirt/demo/master/manifests/vm.yaml) file if you have interest in knowing more about a virtual machine definition:
+The command below applies a YAML definition of a virtual machine into our current Kubernetes environment, defining the VM name, the resources required (disk, CPU, memory), etc. You can take a look at the [vm.yaml](https://kubevirt.io/labs/manifests/vm.yaml) file if you have interest in knowing more about a virtual machine definition:
 
-`kubectl apply -f https://raw.githubusercontent.com/kubevirt/demo/master/manifests/vm.yaml`{{execute}}
+`kubectl apply -f https://kubevirt.io/labs/manifests/vm.yaml`{{execute}}
 
 We are creating a Virtual Machine in the same way as we would create any other Kubernetes resource thanks to what KubeVirt has enabled in our environment. Now we have a Virtual Machine as a Kubernetes resource.
 

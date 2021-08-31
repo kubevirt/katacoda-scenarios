@@ -21,7 +21,7 @@ feature gate has also been added to make live migration possible.
 This scenario will use the same VirtualMachine YAML definition from the first
 lab. Run the following code to create the VM.
 
-`kubectl apply -f https://raw.githubusercontent.com/kubevirt/demo/master/manifests/vm.yaml`{{execute}}
+`kubectl apply -f https://kubevirt.io/labs/manifests/vm.yaml`{{execute}}
 
 Run the following to start the VM.
 
