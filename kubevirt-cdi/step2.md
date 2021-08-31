@@ -81,7 +81,7 @@ If the importer pod completes in error, you may need to retry it or specify a di
 
 Let's create a virtual machine that makes use of our new PVC. Review the file *vm1_pvc.yml*.
 
-`wget https://raw.githubusercontent.com/kubevirt/kubevirt.github.io/master/labs/manifests/vm1_pvc.yml`{{execute}}
+`wget https://kubevirt.io/labs/manifests/vm1_pvc.yml`{{execute}}
 
 We change the YAML definition of this Virtual Machine to inject the default public key of user in the cloud instance. This Katacoda scenario provides an environment with an ssh key already set up, so we will use the public key we find in the authorized_keys file.
 
