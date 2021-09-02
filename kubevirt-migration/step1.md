@@ -8,13 +8,13 @@ ready).
 
 #### Check the kubevirt-config
 
-When KubeVirt finishes deploying, list out the ConfigMap "kubevirt-config" in
+When KubeVirt finishes deploying, list out the KubeVirt Custom Resource "kubevirt" in
 the "kubevirt" namespace.
 
 In addition to emulated virtualization (a requirement in this environment), a
 feature gate has also been added to make live migration possible.
 
-`kubectl -n kubevirt get configmap kubevirt-config -o yaml`{{execute}}
+`kubectl -n kubevirt get kubevirt kubevirt -o yaml`{{execute}}
 
 ### Launch the test VM
 
