@@ -19,7 +19,7 @@ Now let's deploy KubeVirt by creating a Custom Resource that will trigger the 'o
 
 `kubectl create -f https://github.com/kubevirt/kubevirt/releases/download/${KUBEVIRT_VERSION}/kubevirt-cr.yaml`{{execute}}
 
-This demo environment already runs within a virtualized environment, and to be able to run VMs here we need to pre-configure KubeVirt so it uses software-emulated virtualization instead of trying to use real hardware virtualization.
+Next, we need to configure KubeVirt to use software emulation for virtualization. This is necessary for the Katacoda environment, but results in poor performance, so avoid this step in production environments.
 
 `kubectl -n kubevirt patch kubevirt kubevirt --type=merge --patch '{"spec":{"configuration":{"developerConfiguration":{"useEmulation":true}}}}'`{{execute}}
 
