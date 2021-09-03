@@ -38,7 +38,7 @@ NAME     AGE   PHASE     IP           NODENAME
 testvm   17s   Running   10.244.1.7   node01
 ~~~
 
-For more detailed information, you can use directly view the virt-launcher Pod(s) with:
+For more detailed information, you can also view the virt-launcher Pod(s) with:
 
 `kubectl get pods -o wide`{{execute}}
 
