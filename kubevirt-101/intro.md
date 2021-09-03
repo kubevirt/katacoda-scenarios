@@ -1,5 +1,9 @@
-KubeVirt is a virtual machine management add-on for Kubernetes. The aim is to provide a common ground for virtualization solutions on top of Kubernetes.
+KubeVirt provides a unified development platform where developers can build, modify, and deploy applications residing in both Containers and Virtual Machines in a common environment.
 
-This scenario demonstrates how KubeVirt can be used to start a virtual machine.
+This scenario guides the user through all the steps required to install KubeVirt on a Kubernetes cluster and run a Virtual Machine.
 
-KubeVirt allows a user to run virtual machines on Kubernetes just like pods. Because KubeVirt integrates with the Kubernetes API and resource model, the same set of tools can be used to manage and monitor virtual machines.
+On completing this scenario, the user will learn the following skills:
+
+  * Installation of the latest KubeVirt using operators and the KubeVirt Custom Resource
+  * Installation of virtctl, the command-line client for managing Virtual Machines
+  * Use of kubectl and virtctl commands to create, start, stop, and report status of Virtual Machines
