@@ -23,13 +23,13 @@ To deploy the KubeVirt Operator run the following command:
 Let's wait for the operator to become ready:
 `kubectl wait --for condition=ready pod -l kubevirt.io=virt-operator -n kubevirt --timeout=100s`{{execute}}
 
-This demo environment already runs within a virtualized environment, and in order to be able to run VMs here we need to pre-configure KubeVirt so it uses software-emulated virtualization instead of trying to use real hardware virtualization.
-
-`kubectl create configmap kubevirt-config -n kubevirt --from-literal debug.useEmulation=true`{{execute}}
-
 Now let's deploy KubeVirt by creating a Custom Resource that will trigger the 'operator' and perform the deployment:
 
 `kubectl create -f https://github.com/kubevirt/kubevirt/releases/download/${KUBEVIRT_VERSION}/kubevirt-cr.yaml`{{execute}}
+
+Next, we need to configure KubeVirt to use software emulation for virtualization. This is necessary for the Katacoda environment, but results in poor performance, so avoid this step in production environments.
+
+`kubectl -n kubevirt patch kubevirt kubevirt --type=merge --patch '{"spec":{"configuration":{"developerConfiguration":{"useEmulation":true}}}}'`{{execute}}
 
 Let's check the deployment:
 `kubectl get pods -n kubevirt`{{execute}}
