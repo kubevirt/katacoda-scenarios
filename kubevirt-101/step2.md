@@ -23,8 +23,6 @@ To start a VM, `virtctl` should be used:
 
 `./virtctl start testvm`{{execute}}
 
-Alternatively you can use `kubectl edit vm testvm` to set `.spec.running: true`.
-
 Now you can check again the VM status:
 
 `kubectl get vms`{{execute}}
@@ -67,7 +65,7 @@ In environments where VNC client access is available, the graphical console of a
 
 #### Shutdown and cleanup
 
-Shutting down a VM works by either using `virtctl` or editing the VM.
+Shutting down a VM also employs the `virtctl` command:
 
 `./virtctl stop testvm`{{execute}}
 
