@@ -12,7 +12,7 @@ First, create the kubevirt application within ArgoCD by pointing to the reposito
 
 Create a hostpath-provisioner using the following commands:
 
-`argocd app create hostpath --repo https://github.com/cwilkers/kubevirt-gitops.git --path hostpath --dest-namespace kubevirt-hostpath-provisioner --dest-server https://kubernetes.default.svc`{{execute create-hostpath}}
+`argocd app create hostpath --repo https://github.com/cwilkers/kubevirt-gitops.git --path hpp --dest-namespace kubevirt-hostpath-provisioner --dest-server https://kubernetes.default.svc`{{execute create-hostpath}}
 
 `argocd app sync hostpath`{{execute sync-hostpath}}
 
