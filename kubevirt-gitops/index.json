@@ -1,0 +1,32 @@
+{
+  "pathwayTitle": "KubeVirt",
+  "title": "GitOps and KubeVirt",
+  "description": "The practice of GitOps combined with KubeVirt enables Virtual Infrastructure as Code. Deploy and experiment with ArgoCD and KubeVirt in a hosted sandboxed interactive environment.",
+  "time": "20min",
+  "difficulty": "intermediate",
+  "details": {
+    "intro": {
+      "text": "intro.md",
+      "code": "environment.sh"
+    },
+    "steps": [
+      {
+        "title": "Explore ArgoCD and use it to install KubeVirt components.",
+        "text": "step1.md"
+      },
+      {
+        "title": "Install and run a VM from a datavolume using gitops",
+        "text": "step2.md"
+      }
+    ],
+    "finish": {
+      "text": "summary.md"
+    }
+  },
+  "environment": {
+    "uilayout": "terminal"
+  },
+  "backend": {
+    "imageid": "kubernetes-cluster-running:1.18"
+  }
+}
