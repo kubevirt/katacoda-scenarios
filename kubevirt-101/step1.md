@@ -6,12 +6,17 @@ Before we can start, we need to wait for the Kubernetes cluster to be ready (a c
 
 Deploy the KubeVirt operator[^1] using the latest KubeVirt version.
 
-[^1] An Operator is a method of packaging, deploying and managing a Kubernetes application. A Kubernetes application is an application that is both deployed on Kubernetes and managed using the Kubernetes APIs and kubectl tooling. You can think of Operators as the runtime that manages this type of application on Kubernetes. If you want to learn more about Operators you can check the CoreOS Operators website: <https://coreos.com/operators/>
+[^1] An Operator is a method of packaging, deploying, and managing a Kubernetes application. A Kubernetes application is one that is deployed on Kubernetes and managed using the Kubernetes APIs and kubectl tooling. You can think of Operators as the runtime that manages this type of application on Kubernetes. If you want to learn more about Operators you can check the [Kubernetes documentation](https://kubernetes.io/docs/concepts/extend-kubernetes/operator/)
 
-We query GitHub's API to get the latest available release (click on the text to autoexecute the commands on the console):
+Normally, we would query GitHub's API to get the latest available release:
 
 `export KUBEVIRT_VERSION=$(curl -s https://api.github.com/repos/kubevirt/kubevirt/releases/latest | jq -r .tag_name)
-echo $KUBEVIRT_VERSION`{{execute}}
+echo $KUBEVIRT_VERSION`
+
+Note: Due to Katacoda supporting an older version of Kubernetes (1.18) than required for recent KubeVirt versions, we will instead set the KUBEVIRT_VERSION environment variable to 0.49.0.
+(click on the text to automatically execute the commands on the console):
+
+`export KUBEVIRT_VERSION=v0.49.0`{{execute}}
 
 Run the following command to deploy the KubeVirt Operator:
 
