@@ -1,5 +1,3 @@
-launch.sh
-
 # Need schedulable for migration
 kubectl taint node controlplane node-role.kubernetes.io/master:NoSchedule-
 
