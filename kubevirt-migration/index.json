@@ -12,11 +12,11 @@
     },
     "steps": [
       {
-        "title": "Create a VM and set up a service.",
+        "title": "Create a VM",
         "text": "step1.md"
       },
       {
-        "title": "Migrate the VM and follow the service.",
+        "title": "Migrate the VM",
         "text": "step2.md"
       }
     ],
