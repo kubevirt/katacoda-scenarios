@@ -19,7 +19,7 @@ prompt. First, hide the password in an environment variable:
 
 Next, ssh into testvm and run the hostname command:
 
-`sshpass -e ssh node01 -l cirros -p $SSHPORT hostname`{{execute}}
+`sshpass -e ssh node01 -l cirros -p $SSHPORT hostname -o StrictHostKeyChecking=no`{{execute}}
 
 If all went well, this should print the VM's hostname, "testvm".
 
