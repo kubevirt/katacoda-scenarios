@@ -14,6 +14,4 @@ curl -sLo virtctl https://github.com/kubevirt/kubevirt/releases/download/${KUBEV
 sudo install -m 0755  virtctl /usr/local/bin/virtctl
 rm -f virtctl
 
-sudo apt install sshpass
-
 echo "StrictHostKeyChecking=no" > ${HOME}/.ssh/config
