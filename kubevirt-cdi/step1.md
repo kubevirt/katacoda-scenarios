@@ -1,58 +1,47 @@
-### Wait for the Kubernetes cluster to be ready
+# Wait for KubeVirt to deploy
 
-Before we can start, we need to wait for the Kubernetes cluster to be ready (a command prompt will appear once it's ready).
+The setup for this scenario includes installation of KubeVirt and the `virtctl` utility.
 
-#### Deploy KubeVirt
+Before we can start, we need to wait for the KubeVirt initialization script to run. (a command prompt will appear once everything is ready).
 
-In this scenario, we'll go quickly over installing KubeVirt as it was covered already in the introduction scenario: 'First steps with KubeVirt'
+# Introduction to Containerized Data Importer
 
-We query GitHub's API to get the latest available release (click on the text to auto-execute the commands on the console):
+[CDI](https://github.com/kubevirt/containerized-data-importer) is a utility designed to import Virtual Machine images for use with Kubevirt.
 
-`export KUBEVIRT_VERSION=$(curl -s https://api.github.com/repos/kubevirt/kubevirt/releases/latest | jq -r .tag_name)
-echo $KUBEVIRT_VERSION`{{execute}}
+At a high level, a PersistentVolumeClaim (PVC) is created. A custom controller watches for importer specific claims, and when discovered, starts an import process to create a raw image named *disk.img* with the desired content into the associated PVC.
 
-Run the following command to deploy the KubeVirt Operator:
+We will first explore each component and later we will install them. In this exercise we create a hostpath provisioner and storage class. Also, we will deploy the CDI component using the Operator.
 
-`kubectl create -f https://github.com/kubevirt/kubevirt/releases/download/${KUBEVIRT_VERSION}/kubevirt-operator.yaml`{{execute}}
+# Install Hostpath Provisioner
 
-Now let's deploy KubeVirt by creating a Custom Resource that will trigger the 'operator' reaction and perform the deployment:
+Download the hostpath-provisioner deployment YAML and apply it.
 
-`kubectl create -f https://github.com/kubevirt/kubevirt/releases/download/${KUBEVIRT_VERSION}/kubevirt-cr.yaml`{{execute}}
+`wget https://raw.githubusercontent.com/kubevirt/hostpath-provisioner/main/deploy/kubevirt-hostpath-provisioner.yaml
+kubectl create -f kubevirt-hostpath-provisioner.yaml
+kubectl annotate storageclass kubevirt-hostpath-provisioner storageclass.kubernetes.io/is-default-class=true`{{execute}}
 
-Next, we need to configure KubeVirt to use software emulation for virtualization. This is necessary for the Katacoda environment, but results in poor performance, so avoid this step in production environments.
+Verify you now have a default storage class. You should see "kubevirt-hostpath-provisioner (default)"
 
-`kubectl -n kubevirt patch kubevirt kubevirt --type=merge --patch '{"spec":{"configuration":{"developerConfiguration":{"useEmulation":true}}}}'`{{execute}}
+`kubectl get storageclass`{{execute}}
 
-Let's check the deployment:
+# Install the CDI
 
-`kubectl get kubevirt -n kubevirt`{{execute}}
+Grab latest version of CDI and apply both the Operator and the Custom Resource Definition (CR) that starts the deployment:
 
-It will take a while until all the pods are running. Retry the command until the output states that kubevirt is "Deployed".
+`export VERSION=$(curl -s https://github.com/kubevirt/containerized-data-importer/releases/latest | grep -o "v[0-9]\.[0-9]*\.[0-9]*")`{{execute}}
 
-Once the kubevirt resource is deployed, view the pods created by the deployment. 
+Deploy operator:
 
-`kubectl get pods -n kubevirt`{{execute}}
+`kubectl create -f https://github.com/kubevirt/containerized-data-importer/releases/download/$VERSION/cdi-operator.yaml`{{execute}}
 
-It will show something similar to:
+Create CRD to trigger operator deployment of CDI:
 
-~~~
-controlplane $ kubectl get pods -n kubevirt
-NAME                               READY     STATUS    RESTARTS   AGE
-virt-api-7fc57db6dd-g4s4w          1/1       Running   0          3m
-virt-api-7fc57db6dd-zd95q          1/1       Running   0          3m
-virt-controller-6849d45bcc-88zd4   1/1       Running   0          3m
-virt-controller-6849d45bcc-cmfzk   1/1       Running   0          3m
-virt-handler-fvsqw                 1/1       Running   0          3m
-virt-operator-5649f67475-gmphg     1/1       Running   0          4m
-virt-operator-5649f67475-sw78k     1/1       Running   0          4m
-~~~
+`kubectl create -f https://github.com/kubevirt/containerized-data-importer/releases/download/$VERSION/cdi-cr.yaml`{{execute}}
 
-#### Install Virtctl
+Check status of CDI deployment. You may repeat this command as needed until the cdi "PHASE" reads "Deployed"
 
-`virtctl` is a client utility that helps interact with VM's (start/stop/console, etc):
+`kubectl get cdi -n cdi`{{execute}}
 
-`wget -O virtctl https://github.com/kubevirt/kubevirt/releases/download/${KUBEVIRT_VERSION}/virtctl-${KUBEVIRT_VERSION}-linux-amd64`{{execute}}
+Review the "cdi" pods that were added.
 
-`chmod +x virtctl`{{execute}}
-
-Now everything is ready to continue and prepare CDI for launching a VM.
+`kubectl get pods -n cdi`{{execute}}
