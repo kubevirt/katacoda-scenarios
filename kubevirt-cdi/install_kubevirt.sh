@@ -1,5 +1,9 @@
 #!/bin/bash
 
+# we need to use the controlplane for some pods due to low ram in env
+kubectl taint node controlplane node-role.kubernetes.io/control-plane:NoSchedule-
+kubectl taint node controlplane node-role.kubernetes.io/master:NoSchedule-
+
 export KUBEVIRT_VERSION=$(curl -s https://api.github.com/repos/kubevirt/kubevirt/releases/latest | jq -r .tag_name)
 echo Installing Kubevirt $KUBEVIRT_VERSION
 

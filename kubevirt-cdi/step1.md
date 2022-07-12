@@ -20,7 +20,14 @@ The Hostpath provisioner operator requires [cert-manager](https://github.com/cer
 
 ```
 kubectl apply -f https://github.com/jetstack/cert-manager/releases/download/v1.8.2/cert-manager.yaml
+```{{execute}}
+
+Wait for the cert-manager pods to come up to the _running_ state:
+
 ```
+kubectl -n cert-manager wait --for=condition=Available deployment/cert-manager
+kubectl -n cert-manager wait --for=condition=Available deployment/cert-manager-webhook
+```{{execute}}
 
 Apply the Hostpath provisioner manifests:
 
@@ -30,14 +37,14 @@ kubectl apply -f https://raw.githubusercontent.com/kubevirt/hostpath-provisioner
 kubectl apply -f https://raw.githubusercontent.com/kubevirt/hostpath-provisioner-operator/main/deploy/webhook.yaml
 
 kubectl apply -f https://raw.githubusercontent.com/kubevirt/hostpath-provisioner-operator/main/deploy/operator.yaml
-```
+```{{execute}}
 
 Once these manifests have had a moment to deploy their Custom Resource Definitions (CRDs), apply the Custom Resource (CR) that instantiates the Hostpath provisioner operator along with its "wait for first consumer" storage class:
 
 ```
 kubectl apply -f https://github.com/kubevirt/hostpath-provisioner-operator/raw/main/deploy/hostpathprovisioner_cr.yaml
 kubectl apply -f https://github.com/kubevirt/hostpath-provisioner-operator/raw/main/deploy/storageclass-wffc-csi.yaml
-```
+```{{execute}}
 
 Now annotate the resulting storage class to set it as the default for provisioning PVCs in the cluster:
 
@@ -51,7 +58,10 @@ Next we determine the latest version of CDI and apply both the Operator and the 
 
 
 
-`export VERSION=$(curl -Ls https://github.com/kubevirt/containerized-data-importer/releases/latest | grep -m 1 -o "v[0-9]\.[0-9]*\.[0-9]*")`{{execute}}
+```
+export VERSION=$(curl -Ls https://github.com/kubevirt/containerized-data-importer/releases/latest | grep -m 1 -o "v[0-9]\.[0-9]*\.[0-9]*")
+echo $VERSION
+```{{execute}}
 
 Deploy operator:
 
