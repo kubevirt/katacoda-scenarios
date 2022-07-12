@@ -10,7 +10,7 @@ After the vm resource has been created, you can manage the VMs with standard 'ku
 
 `kubectl get vms`{{execute}}
 
-`kubectl get vms -o yaml testvm`{{execute}}
+`kubectl get vms -o yaml testvm | grep -E 'running:.*|$'`{{execute}}
 
 Notice from the output that the VM is not running yet.
 
