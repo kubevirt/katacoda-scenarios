@@ -17,6 +17,8 @@ kubectl -n kubevirt patch kubevirt/kubevirt --type=merge --patch='{"spec": {"inf
 curl -sL https://raw.githubusercontent.com/kubevirt/hostpath-provisioner/main/deploy/kubevirt-hostpath-provisioner.yaml \
    | sed 's/v1beta1/v1/' | kubectl create -f -
 
+kubectl annotate storageclass kubevirt-hostpath-provisioner storageclass.kubernetes.io/is-default-class=true
+
 curl -sLo virtctl https://github.com/kubevirt/kubevirt/releases/download/${KUBEVIRT_VERSION}/virtctl-${KUBEVIRT_VERSION}-linux-amd64
 
 sudo install -m 0755  virtctl /usr/local/bin/virtctl
