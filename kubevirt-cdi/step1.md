@@ -36,13 +36,13 @@ kubectl apply -f https://raw.githubusercontent.com/kubevirt/hostpath-provisioner
 
 kubectl apply -f https://raw.githubusercontent.com/kubevirt/hostpath-provisioner-operator/main/deploy/webhook.yaml
 
-kubectl apply -f https://raw.githubusercontent.com/kubevirt/hostpath-provisioner-operator/main/deploy/operator.yaml
+kubectl -n hostpath-provisioner apply -f https://raw.githubusercontent.com/kubevirt/hostpath-provisioner-operator/main/deploy/operator.yaml
 ```{{execute}}
 
 Once these manifests have had a moment to deploy their Custom Resource Definitions (CRDs), apply the Custom Resource (CR) that instantiates the Hostpath provisioner operator along with its "wait for first consumer" storage class:
 
 ```
-kubectl apply -f https://github.com/kubevirt/hostpath-provisioner-operator/raw/main/deploy/hostpathprovisioner_cr.yaml
+kubectl -n hostpath-provisioner apply -f https://github.com/kubevirt/hostpath-provisioner-operator/raw/main/deploy/hostpathprovisioner_cr.yaml
 kubectl apply -f https://github.com/kubevirt/hostpath-provisioner-operator/raw/main/deploy/storageclass-wffc-csi.yaml
 ```{{execute}}
 
@@ -51,6 +51,12 @@ Now annotate the resulting storage class to set it as the default for provisioni
 `kubectl annotate sc hostpath-csi storageclass.kubernetes.io/is-default-class=true`{{execute}}
 
 `kubectl get storageclass`{{execute}}
+
+Before we continue, we need to make sure the Hostpath Provisioner has completely deployed:
+
+```
+ kubectl -n hostpath-provisioner wait hostpathprovisioner/hostpath-provisioner --for=condition=Available
+ ```{{execute}}
 
 # Install the CDI
 
