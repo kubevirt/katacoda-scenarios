@@ -42,8 +42,6 @@ cat <<EOF > vm1.yml
 apiVersion: kubevirt.io/v1
 kind: VirtualMachine
 metadata:
-  creationTimestamp: 2018-07-04T15:03:08Z
-  generation: 1
   labels:
     kubevirt.io/os: linux
   name: vm1
@@ -77,12 +75,15 @@ spec:
       - cloudInitNoCloud:
           userData: |
             #cloud-config
+            user: cirros
+            password: gocubsgo
             hostname: vm1
             ssh_pwauth: True
             disable_root: false
             ssh_authorized_keys:
             - ssh-rsa YOUR_SSH_PUB_KEY_HERE
         name: cloudinitdisk
+  EOF
 ```{{execute}}
 
 We change the YAML definition of this Virtual Machine to inject the default public key of user in the cloud instance. This scenario provides an environment with an ssh key already set up, so we will use the public key we find in the authorized_keys file.
@@ -109,13 +110,13 @@ Finally, we will connect to vm1 Virtual Machine (VM) as a regular user would do,
 Check the IP address:
 
 ```controlplane $ kubectl get vmis
-NAME      AGE       PHASE     IP           NODENAME
-testvm    1m        Running   10.32.0.11   controlplane```
+NAME      AGE       PHASE     IP             NODENAME
+testvm    1m        Running   192.168.1.16   controlplane```
 
 Now, connect via SSH
 
 ```sh
-ssh cirros@10.32.0.11
+ssh cirros@192.168.1.16
 ```
 
 This concludes this section of the lab.

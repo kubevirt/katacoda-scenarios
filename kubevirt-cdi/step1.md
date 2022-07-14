@@ -31,9 +31,12 @@ export VERSION=$(curl -Ls https://github.com/kubevirt/containerized-data-importe
 echo $VERSION
 ```{{execute}}
 
-Deploy operator:
+Deploy operator (and scale its replicas down to one due to the resource limitations of the environment):
 
-`kubectl create -f https://github.com/kubevirt/containerized-data-importer/releases/download/$VERSION/cdi-operator.yaml`{{execute}}
+```
+kubectl create -f https://github.com/kubevirt/containerized-data-importer/releases/download/$VERSION/cdi-operator.yaml
+kubectl -n cdi scale deployment/cdi-operator --replicas=1
+```{{execute}}
 
 Create CRD to trigger operator deployment of CDI:
 
