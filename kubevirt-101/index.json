@@ -1,7 +1,7 @@
 {
   "pathwayTitle": "KubeVirt",
   "title": "Take your first steps with KubeVirt",
-  "description": "KubeVirt is a virtual machine management add-on for Kubernetes. Deploy it and play with it in a hosted sandboxed interactive environment.",
+  "description": "KubeVirt is a virtual machine management add-on for Kubernetes. Deploy KubeVirt and a small virtual machine in this interactive scenario.",
   "time": "5min",
   "difficulty": "beginner",
   "details": {
