@@ -4,13 +4,5 @@
         "path": "kubevirt-101",
         "title": "Introduction to KubeVirt"
     },
-    {
-        "path": "kubevirt-cdi",
-        "title": "Manage disk images with CDI"
-    },
-    {
-        "path": "kubevirt-migration",
-        "title": "Migrate VMs between nodes"
-    }
     ]
 }
