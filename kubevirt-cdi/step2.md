@@ -1,97 +1,101 @@
-#### Introduction on Containerized Data Importer
+# Use CDI to upload a VM image
 
-[CDI](https://github.com/kubevirt/containerized-data-importer) is a utility designed to import Virtual Machine images for use with Kubevirt.
-
-At a high level, a PersistentVolumeClaim (PVC) is created. A custom controller watches for importer specific claims, and when discovered, starts an import process to create a raw image named *disk.img* with the desired content into the associated PVC.
-
-We will first explore each component and later we will install them. In this exercise we create a hostpath provisioner and storage class. Also, we will deploy the CDI component using the Operator.
-
-#### Install Hostpath Provisioner
-
-Download the hostpath-provisioner deployment YAML and apply it.
-
-`wget https://raw.githubusercontent.com/kubevirt/hostpath-provisioner/main/deploy/kubevirt-hostpath-provisioner.yaml
-kubectl create -f kubevirt-hostpath-provisioner.yaml
-kubectl annotate storageclass kubevirt-hostpath-provisioner storageclass.kubernetes.io/is-default-class=true`{{execute}}
-
-Verify you now have a default storage class. You should see "kubevirt-hostpath-provisioner (default)"
-
-`kubectl get storageclass`{{execute}}
-
-#### Install the CDI
-
-Grab latest version of CDI and apply both the Operator and the Custom Resource Definition (CR) that starts the deployment:
-
-`export VERSION=$(curl -s https://github.com/kubevirt/containerized-data-importer/releases/latest | grep -o "v[0-9]\.[0-9]*\.[0-9]*")`{{execute}}
-
-Deploy operator:
-
-`kubectl create -f https://github.com/kubevirt/containerized-data-importer/releases/download/$VERSION/cdi-operator.yaml`{{execute}}
-
-Create CRD to trigger operator deployment of CDI:
-
-`kubectl create -f https://github.com/kubevirt/containerized-data-importer/releases/download/$VERSION/cdi-cr.yaml`{{execute}}
-
-Check status of CDI deployment. You may repeat this command as needed until the cdi "PHASE" reads "Deployed"
-
-`kubectl get cdi -n cdi`{{execute}}
-
-Review the "cdi" pods that were added.
-
-`kubectl get pods -n cdi`{{execute}}
-
-#### Use the CDI
-
-As an example, we will import a Fedora34 Cloud Image as a PVC and launch a Virtual Machine making use of it.
+As an example, we will import a CirrOS Cloud Image as a PVC and launch a Virtual Machine making use of it.
 
 ```
-cat <<EOF > pvc_fedora.yml
+cat <<EOF > pvc_cirros.yml
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: "fedora"
+  name: "cirros"
   labels:
     app: containerized-data-importer
   annotations:
-    cdi.kubevirt.io/storage.import.endpoint: "https://mirror.23media.com/fedora/linux/releases/34/Cloud/x86_64/images/Fedora-Cloud-Base-34-1.2.x86_64.raw.xz"
+    cdi.kubevirt.io/storage.import.endpoint: "http://download.cirros-cloud.net/0.5.2/cirros-0.5.2-x86_64-disk.img"
     kubevirt.io/provisionOnNode: node01
 spec:
   accessModes:
   - ReadWriteOnce
   resources:
     requests:
-      storage: 5500Mi
+      storage: 120Mi
 EOF
-kubectl create -f pvc_fedora.yml
+kubectl create -f pvc_cirros.yml
 ```{{execute}}
 
-This will create the PVC with a proper annotation so that CDI controller detects it and launches an importer pod to gather the image specified in the *cdi.kubevirt.io/storage.import.endpoint* annotation.
+This will create the PVC with a proper annotation so that the CDI controller detects it and launches an importer pod to gather the image specified in the *cdi.kubevirt.io/storage.import.endpoint* annotation.
 
-Grab the pod name to check later the logs. If the pod is not yet listed, wait a bit more because the Operator is still doing required actions.
+Grab the pod name to check later the logs. If the pod is not yet listed, wait a bit more because the operator is still doing required actions.
 
 `kubectl get pod`{{execute}}
 
-Then check the import process (it will be a long process and can take some time):
+Then check the import process:
 
-`kubectl logs -f $(kubectl get pods -o name)`{{execute}}
+`kubectl logs importer-cirros -f`{{execute}}
 
-Notice that the importer downloaded the publicly available Fedora Cloud qcow image. Once the importer pod completes, this PVC is ready for use in KubeVirt.
+Notice that the importer downloads the publicly available CirrOS qcow image. Once the importer pod completes, this PVC is ready for use in KubeVirt.
 
-If the importer pod completes in error, you may need to retry it or specify a different URL to the fedora cloud image. To retry, first delete the importer pod and the PVC, and then recreate the PVC.
+Let's create a virtual machine that makes use of our new PVC.
 
-Let's create a virtual machine that makes use of our new PVC. Review the file *vm1_pvc.yml*.
+```
+cat <<EOF > vm1.yml
+apiVersion: kubevirt.io/v1
+kind: VirtualMachine
+metadata:
+  labels:
+    kubevirt.io/os: linux
+  name: vm1
+spec:
+  running: true
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        kubevirt.io/domain: vm1
+    spec:
+      domain:
+        cpu:
+          cores: 1
+        devices:
+          disks:
+          - disk:
+              bus: virtio
+            name: disk0
+          - cdrom:
+              bus: sata
+              readonly: true
+            name: cloudinitdisk
+        resources:
+          requests:
+            memory: 128M
+      volumes:
+      - name: disk0
+        persistentVolumeClaim:
+          claimName: cirros
+      - cloudInitNoCloud:
+          userData: |
+            #cloud-config
+            user: cirros
+            password: gocubsgo
+            hostname: vm1
+            ssh_pwauth: True
+            disable_root: false
+            ssh_authorized_keys:
+            - ssh-rsa YOUR_SSH_PUB_KEY_HERE
+        name: cloudinitdisk
+  EOF
+```{{execute}}
 
-`wget https://kubevirt.io/labs/manifests/vm1_pvc.yml`{{execute}}
+We change the YAML definition of this Virtual Machine to inject the default public key of user in the cloud instance. This scenario provides an environment with an ssh key already set up, so we will use the public key we find in the authorized_keys file.
 
-We change the YAML definition of this Virtual Machine to inject the default public key of user in the cloud instance. This Katacoda scenario provides an environment with an ssh key already set up, so we will use the public key we find in the authorized_keys file.
-
-`
-PUBKEY=$(cat ~/.ssh/authorized_keys)
-sed -i "s%ssh-rsa YOUR_SSH_PUB_KEY_HERE%$PUBKEY%" vm1_pvc.yml`{{execute}}
+```
+PUBKEY=$(cat ~/.ssh/id_rsa.pub)
+sed -i "s%ssh-rsa YOUR_SSH_PUB_KEY_HERE%${PUBKEY}%" vm1.yml
+```{{execute}}
 
 Now, we'll create the VM with the patched YAML:
 
-`kubectl create -f vm1_pvc.yml`{{execute}}
+`kubectl create -f vm1.yml`{{execute}}
 
 This will create and start a Virtual Machine named vm1. We can use the following command to check our Virtual Machine is running and to `gather its IP`. You are looking for the IP address beside the `virt-launcher` pod.
 
@@ -106,13 +110,13 @@ Finally, we will connect to vm1 Virtual Machine (VM) as a regular user would do,
 Check the IP address:
 
 ```controlplane $ kubectl get vmis
-NAME      AGE       PHASE     IP           NODENAME
-testvm    1m        Running   10.32.0.11   controlplane```
+NAME      AGE       PHASE     IP             NODENAME
+testvm    1m        Running   192.168.1.16   controlplane```
 
 Now, connect via SSH
 
 ```sh
-ssh fedora@10.32.0.11
+ssh cirros@192.168.1.16
 ```
 
 This concludes this section of the lab.

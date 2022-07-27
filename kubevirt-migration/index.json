@@ -1,21 +1,22 @@
 {
   "pathwayTitle": "KubeVirt",
   "title": "Live Migration in KubeVirt",
-  "description": "Live migration is a virtualization feature supported by KubeVirt that allows moving VMs between nodes, preserving running services. Deploy it and play with it in a hosted sandboxed interactive environment.",
+  "description": "Live migration is a virtualization feature supported by KubeVirt that allows moving VMs between nodes, preserving running services. Deploy and migrate a small VM in this interactive scenario.",
   "time": "15min",
   "difficulty": "beginner",
   "details": {
     "intro": {
       "text": "intro.md",
-      "code": "environment.sh"
+      "background": "install_kubevirt.sh",
+      "foreground": "foreground.sh"
     },
     "steps": [
       {
-        "title": "Create a VM and set up a service.",
+        "title": "Create a VM",
         "text": "step1.md"
       },
       {
-        "title": "Migrate the VM and follow the service.",
+        "title": "Migrate the VM",
         "text": "step2.md"
       }
     ],
@@ -27,6 +28,6 @@
     "uilayout": "terminal"
   },
   "backend": {
-    "imageid": "kubernetes-cluster-running:1.18"
+    "imageid": "kubernetes-kubeadm-2nodes"
   }
 }

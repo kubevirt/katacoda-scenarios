@@ -1,23 +1,23 @@
 {
   "pathwayTitle": "KubeVirt",
-  "title": "First steps with KubeVirt",
-  "description": "KubeVirt is a virtual machine management add-on for Kubernetes. Deploy it and play with it in a hosted sandboxed interactive environment.",
+  "title": "Take your first steps with KubeVirt",
+  "description": "KubeVirt is a virtual machine management add-on for Kubernetes. Deploy KubeVirt and a small virtual machine in this interactive scenario.",
   "time": "5min",
   "difficulty": "beginner",
   "details": {
     "steps": [
       {
-        "title": "Launch cluster and deploy KubeVirt",
+        "title": "Deploy KubeVirt",
         "text": "step1.md"
       },
       {
-        "title": "Create and use your first VM",
+        "title": "Create and run your first VM",
         "text": "step2.md"
       }
     ],
     "intro": {
       "text": "intro.md",
-      "code": "set-env.sh"
+      "foreground": "setup.sh"
     },
     "finish": {
       "text": "finish.md"
@@ -27,6 +27,6 @@
     "uilayout": "terminal"
   },
   "backend": {
-    "imageid": "kubernetes-cluster-running:1.18"
+    "imageid": "kubernetes-kubeadm-2nodes"
   }
 }
