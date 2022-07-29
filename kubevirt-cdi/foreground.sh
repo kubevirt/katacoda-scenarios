@@ -1,3 +1,7 @@
+until [ -e /usr/local/bin/virtctl ]
+do
+    sleep 5
+done
 until kubectl -n kubevirt wait --for=jsonpath='{.status.phase}'=Deployed kubevirt/kubevirt --timeout 9m
 do
     sleep 30

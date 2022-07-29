@@ -7,7 +7,7 @@
   "details": {
     "intro": {
       "text": "intro.md",
-      "background": "install_kubevirt.sh",
+      "background": "background.sh",
       "foreground": "foreground.sh"
     },
     "steps": [
@@ -28,6 +28,6 @@
     "uilayout": "terminal"
   },
   "backend": {
-    "imageid": "kubernetes-kubeadm-2nodes"
+    "imageid": "ubuntu20.04-4GB"
   }
 }
