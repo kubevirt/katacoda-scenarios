@@ -12,15 +12,11 @@ The setup for this scenario includes installation of KubeVirt and the `virtctl` 
 
 Before we can start, we need to wait for the KubeVirt initialization script to run. (a command prompt will appear once everything is ready).
 
-# Install Hostpath Provisioner
+# Check Default Storage Class
 
-Before we can install CDI, we have some prerequisites, namely a supported storage class and provisioner. For this example, we use the Hostpath provisioner which provisions PVCs using node local storage. This is an option for proof of concept exercises like this one, but should not be used in production because it does not support RWX nor accessing a volume across nodes.
-
-The setup for this scenario includes installation of the Hostpath Provisioner.
+Before we can install CDI, we have some prerequisites, namely a supported storage class and provisioner. For this example, we make use of the `local-path` _StorageClass_ provided by _k3s_ which provisions PVCs using node local storage. This is an option for proof of concept exercises like this one, but should not be used in production because it does not support accessing a volume across nodes.
 
 `kubectl get storageclass`{{execute}}
-
-Before we continue, we need to make sure the Hostpath Provisioner has completely deployed:
 
 # Install the Containerized Data Importer
 
