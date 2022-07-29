@@ -106,21 +106,22 @@ vm1    57s   Running   10.42.0.21   ubuntu     True
 
 To make the following commands clickable, we save the IP into a variable:
 
-`IP=$(kubectl get vmi testvm -o jsonpath='{.status.interfaces[0].ipAddress}')`{{execute}}
+`IP=$(kubectl get vmi vm1 -o jsonpath='{.status.interfaces[0].ipAddress}')`{{execute}}
 
 Now, connect via SSH
 
 `ssh cirros@${IP}`{{execute}}
 
-Use the default password of `gocubsgo` to log in.
+Use the default password of `gocubsgo`{{execute}} to log in.
 
 Log out again, (type `exit`) and we will set up passwordless login to the VM. The following command will require the default cirros password again.
 
 `ssh-copy-id -i ~/.ssh/id_rsa.pub cirros@${IP}`{{execute}}
 
 Log in once more to verify the password is no longer required.
+This time, we will include the hostname command so we do not have to bother with exiting the shell once logged in.
 
-`ssh cirros@${IP}`{{execute}}
+`ssh cirros@${IP} hostname`{{execute}}
 
 Now, to prove that configuration written to this VM is not ephemeral, we will shut down the VM and restart it.
 
@@ -138,20 +139,19 @@ Start the VM back up
 
 Note the new IP address of the VM:
 
-`IP=$(kubectl get vmi testvm -o jsonpath='{.status.interfaces[0].ipAddress}')`{{execute}}
-
+`IP=$(kubectl get vmi vm1 -o jsonpath='{.status.interfaces[0].ipAddress}')`{{execute}}
 
 ```
 NAME   AGE   PHASE     IP           NODENAME   READY
 vm1    13s   Running   10.42.0.22   ubuntu     True
 ```
 
-`ssh cirros@${IP}`{{execute}}
+`ssh cirros@${IP} hostname`{{execute}}
 
 ```
 Warning: Permanently added '10.42.0.22' (ECDSA) to the list of known hosts.
-$ 
-```{{}}
+vm1
+```
 
 You should now be logged into the VM without a password as before, demonstrating that the ssh key persisted through a stop/start.
 
