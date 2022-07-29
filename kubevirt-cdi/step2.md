@@ -89,11 +89,11 @@ This will create and start a Virtual Machine named vm1. We can use the following
 
 `kubectl get pod -o wide`{{execute}}
 
-Wait for the Virtual Machine to boot and to be available for login. You may monitor its progress through the console. The speed at which the VM boots depends on whether baremetal hardware is used. It is much slower when nested virtualization is used, which is likely the case if you are completing this lab on an instance on a cloud provider.
+Wait for the Virtual Machine to boot and to be available for login.
+Note that the speed at which the VM boots depends on the virtualization hardware and underlying storage speed.
+Due to the nested virtualization employed in this scenario, it may take some time for the VM to fully boot.
 
-From here, there's some playing around with the VM, wait until it has started (you can check the console to see the boot progress)
-
-Finally, we will connect to vm1 Virtual Machine (VM) as a regular user would do, i.e. via ssh. This can be achieved by just sshing to the gathered IP.
+Finally, we will connect to the `vm1` VM as a regular user would do, i.e. via ssh.
 
 Check the IP address:
 

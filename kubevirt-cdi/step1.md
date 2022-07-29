@@ -4,7 +4,7 @@
 
 At a high level, a PersistentVolumeClaim (PVC) is created. A custom controller watches for importer specific claims, and when discovered, starts an import process to create a raw image named _disk.img_ with the desired content into the associated PVC.
 
-In this exercise we start by deploying the CDI operator. Then, we import a CirrOS disk image and use it to start a VM.
+In this exercise we start by deploying the CDI operator. Then, we import a [CirrOS](https://github.com/cirros-dev/cirros) disk image and use it to start a VM.
 
 # Wait for KubeVirt to deploy
 
@@ -27,7 +27,7 @@ export VERSION=$(curl -Ls https://github.com/kubevirt/containerized-data-importe
 echo $VERSION
 ```{{execute}}
 
-Deploy operator (and scale its replicas down to one due to the resource limitations of the environment):
+Deploy the operator (and scale its replicas down to one due to the resource limitations of the environment):
 
 ```
 kubectl create -f https://github.com/kubevirt/containerized-data-importer/releases/download/$VERSION/cdi-operator.yaml
@@ -45,6 +45,8 @@ Check status of CDI deployment. It may take some time before the cdi "PHASE" rea
 To have _kubectl_ do the checking for you and let you know when the operator finishes its deployment, use the _wait_ command:
 
 `kubectl wait -n cdi --for=jsonpath='{.status.phase}'=Deployed cdi/cdi`{{execute}}
+
+At times, the environment this scenario runs in may be under heavy load; if the above command errors out, wait a moment and re-run.
 
 Review the "cdi" pods that were added.
 
