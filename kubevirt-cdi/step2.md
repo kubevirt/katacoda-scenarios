@@ -80,43 +80,79 @@ spec:
             hostname: vm1
             ssh_pwauth: True
             disable_root: false
-            ssh_authorized_keys:
-            - ssh-rsa YOUR_SSH_PUB_KEY_HERE
         name: cloudinitdisk
-  EOF
+EOF
+kubectl create -f vm1.yml
 ```{{execute}}
 
-We change the YAML definition of this Virtual Machine to inject the default public key of user in the cloud instance. This scenario provides an environment with an ssh key already set up, so we will use the public key we find in the authorized_keys file.
-
-```
-PUBKEY=$(cat ~/.ssh/id_rsa.pub)
-sed -i "s%ssh-rsa YOUR_SSH_PUB_KEY_HERE%${PUBKEY}%" vm1.yml
-```{{execute}}
-
-Now, we'll create the VM with the patched YAML:
-
-`kubectl create -f vm1.yml`{{execute}}
-
-This will create and start a Virtual Machine named vm1. We can use the following command to check our Virtual Machine is running and to `gather its IP`. You are looking for the IP address beside the `virt-launcher` pod.
+This will create and start a Virtual Machine named vm1. We can use the following command to check our Virtual Machine is running and to gather its IP address. You are looking for the IP address beside the `virt-launcher` pod.
 
 `kubectl get pod -o wide`{{execute}}
 
-Wait for the Virtual Machine to boot and to be available for login. You may monitor its progress through the console. The speed at which the VM boots depends on whether baremetal hardware is used. It is much slower when nested virtualization is used, which is likely the case if you are completing this lab on an instance on a cloud provider.
+Wait for the Virtual Machine to boot and to be available for login.
+Note that the speed at which the VM boots depends on the virtualization hardware and underlying storage speed.
+Due to the nested virtualization employed in this scenario, it may take some time for the VM to fully boot.
 
-From here, there's some playing around with the VM, wait until it has started (you can check the console to see the boot progress)
-
-Finally, we will connect to vm1 Virtual Machine (VM) as a regular user would do, i.e. via ssh. This can be achieved by just ssh to the gathered IP.
+Finally, we will connect to the `vm1` VM as a regular user would do, i.e. via ssh.
 
 Check the IP address:
 
-```controlplane $ kubectl get vmis
-NAME      AGE       PHASE     IP             NODENAME
-testvm    1m        Running   192.168.1.16   controlplane```
+`kubectl get vmi`{{execute}}
+
+```
+NAME   AGE   PHASE     IP           NODENAME   READY
+vm1    57s   Running   10.42.0.21   ubuntu     True
+```
+
+To make the following commands clickable, we save the IP into a variable:
+
+`IP=$(kubectl get vmi vm1 -o jsonpath='{.status.interfaces[0].ipAddress}')`{{execute}}
 
 Now, connect via SSH
 
-```sh
-ssh cirros@192.168.1.16
+`ssh cirros@${IP}`{{execute}}
+
+Use the default password of `gocubsgo`{{execute}} to log in.
+
+Log out again, (type `exit`) and we will set up passwordless login to the VM. The following command will require the default cirros password again.
+
+`ssh-copy-id -i ~/.ssh/id_rsa.pub cirros@${IP}`{{execute}}
+
+Log in once more to verify the password is no longer required.
+This time, we will include the hostname command so we do not have to bother with exiting the shell once logged in.
+
+`ssh cirros@${IP} hostname`{{execute}}
+
+Now, to prove that configuration written to this VM is not ephemeral, we will shut down the VM and restart it.
+
+`virtctl stop vm1`{{execute}}
+
+Wait a moment, and verify the VM is stopped:
+
+`kubectl get vmi`{{execute}}
+
+`No resources found in default namespace.`{{}}
+
+Start the VM back up
+
+`virtctl start vm1`{{execute}}
+
+Note the new IP address of the VM:
+
+`IP=$(kubectl get vmi vm1 -o jsonpath='{.status.interfaces[0].ipAddress}')`{{execute}}
+
 ```
+NAME   AGE   PHASE     IP           NODENAME   READY
+vm1    13s   Running   10.42.0.22   ubuntu     True
+```
+
+`ssh cirros@${IP} hostname`{{execute}}
+
+```
+Warning: Permanently added '10.42.0.22' (ECDSA) to the list of known hosts.
+vm1
+```
+
+You should now be logged into the VM without a password as before, demonstrating that the ssh key persisted through a stop/start.
 
 This concludes this section of the lab.

@@ -4,7 +4,7 @@
 
 At a high level, a PersistentVolumeClaim (PVC) is created. A custom controller watches for importer specific claims, and when discovered, starts an import process to create a raw image named _disk.img_ with the desired content into the associated PVC.
 
-In this exercise we start by deploying the CDI operator. Then, we import a CirrOS disk image and use it to start a VM.
+In this exercise we start by deploying the CDI operator. Then, we import a [CirrOS](https://github.com/cirros-dev/cirros) disk image and use it to start a VM.
 
 # Wait for KubeVirt to deploy
 
@@ -12,15 +12,11 @@ The setup for this scenario includes installation of KubeVirt and the `virtctl` 
 
 Before we can start, we need to wait for the KubeVirt initialization script to run. (a command prompt will appear once everything is ready).
 
-# Install Hostpath Provisioner
+# Check Default Storage Class
 
-Before we can install CDI, we have some prerequisites, namely a supported storage class and provisioner. For this example, we use the Hostpath provisioner which provisions PVCs using node local storage. This is an option for proof of concept exercises like this one, but should not be used in production because it does not support RWX nor accessing a volume across nodes.
-
-The setup for this scenario includes installation of the Hostpath Provisioner.
+Before we can install CDI, we have some prerequisites, namely a supported storage class and provisioner. For this example, we make use of the `local-path` _StorageClass_ provided by _k3s_ which provisions PVCs using node local storage. This is an option for proof of concept exercises like this one, but should not be used in production because it does not support accessing a volume across nodes.
 
 `kubectl get storageclass`{{execute}}
-
-Before we continue, we need to make sure the Hostpath Provisioner has completely deployed:
 
 # Install the Containerized Data Importer
 
@@ -31,7 +27,7 @@ export VERSION=$(curl -Ls https://github.com/kubevirt/containerized-data-importe
 echo $VERSION
 ```{{execute}}
 
-Deploy operator (and scale its replicas down to one due to the resource limitations of the environment):
+Deploy the operator (and scale its replicas down to one due to the resource limitations of the environment):
 
 ```
 kubectl create -f https://github.com/kubevirt/containerized-data-importer/releases/download/$VERSION/cdi-operator.yaml
@@ -49,6 +45,8 @@ Check status of CDI deployment. It may take some time before the cdi "PHASE" rea
 To have _kubectl_ do the checking for you and let you know when the operator finishes its deployment, use the _wait_ command:
 
 `kubectl wait -n cdi --for=jsonpath='{.status.phase}'=Deployed cdi/cdi`{{execute}}
+
+At times, the environment this scenario runs in may be under heavy load; if the above command errors out, wait a moment and re-run.
 
 Review the "cdi" pods that were added.
 

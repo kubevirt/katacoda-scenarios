@@ -17,7 +17,8 @@
     ],
     "intro": {
       "text": "intro.md",
-      "foreground": "setup.sh"
+      "foreground": "foreground.sh",
+      "background": "background.sh"
     },
     "finish": {
       "text": "finish.md"
@@ -27,6 +28,6 @@
     "uilayout": "terminal"
   },
   "backend": {
-    "imageid": "kubernetes-kubeadm-2nodes"
+    "imageid": "ubuntu20.04-4GB"
   }
 }

@@ -7,7 +7,7 @@
   "details": {
     "intro": {
       "text": "intro.md",
-      "background": "install_kubevirt.sh",
+      "background": "background.sh",
       "foreground": "foreground.sh"
     },
     "steps": [
