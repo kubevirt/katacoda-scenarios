@@ -10,9 +10,9 @@ Wait until you see the command prompt to continue.
 
 For upgrading to the latest KubeVirt version, first we will install a specific older version of the operator.
 
-Let's stick to use the release `v0.17.0`:
+Let's stick to use the release `v0.56.1`:
 
-`export KUBEVIRT_VERSION=v0.17.0`{{execute}}
+`export KUBEVIRT_VERSION=v0.56.1`{{execute}}
 
 Similar to <https://katacoda.com/kubevirt/scenarios/kubevirt-101> we're going to follow the same steps:
 
