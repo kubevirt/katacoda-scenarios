@@ -2,7 +2,7 @@
 
 [CDI](https://github.com/kubevirt/containerized-data-importer) is a utility designed to import Virtual Machine images for use with Kubevirt.
 
-At a high level, a PersistentVolumeClaim (PVC) is created. A custom controller watches for importer specific claims, and when discovered, starts an import process to create a raw image named _disk.img_ with the desired content into the associated PVC.
+The process for importing disk images into KubeVirt involves a helper Custom Resource (CR) called a DataVolume (DV). DataVolumes handle the provisioning of PersistentVolumeClaims (PVCs) for KubeVirt. A custom controller watches for new DVs, and when one is discovered, starts an import process to create a new PVC into which it will import the desired content.
 
 In this exercise we start by deploying the CDI operator. Then, we import a [CirrOS](https://github.com/cirros-dev/cirros) disk image and use it to start a VM.
 

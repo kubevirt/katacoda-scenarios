@@ -1,11 +1,6 @@
 #!/bin/bash
 
-apt-get install -y jq
-
-curl -sfL https://get.k3s.io | sh -
-
-mkdir -m 750 ~/.kube
-cp /etc/rancher/k3s/k3s.yaml ~/.kube/config
+export KUBECONFIG=/etc/rancher/k3s/k3s.yaml
 
 export KUBEVIRT_VERSION=$(curl -s https://api.github.com/repos/kubevirt/kubevirt/releases/latest | jq -r .tag_name)
 echo Installing KubeVirt $KUBEVIRT_VERSION
