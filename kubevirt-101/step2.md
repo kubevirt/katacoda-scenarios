@@ -61,7 +61,7 @@ Now that the VM is running you can access its serial console:
 
 If you opened the serial console within the Killercoda course environment and you can't escape from it by pressing _^]_, you can click on the _+_ at the top of the terminal window to start a new shell. You should be able to continue with the following steps in the shutdown and cleanup section.
 
-In environments where VNC client access is available, the graphical console of a VM can be accessed with the [virtctl vnc](https://kubevirt.io/user-guide/virtual_machines/graphical_and_console_access/#accessing-the-graphical-console-vnc) command.
+In environments where VNC client access is available, the graphical console of a VM can be accessed with the [virtctl vnc](https://kubevirt.io/user-guide/virtual_machines/accessing_virtual_machines/#accessing-the-graphical-console-vnc) command.
 
 # Shutdown and cleanup
 
