@@ -16,7 +16,9 @@ Before we can start, we need to wait for the KubeVirt initialization script to r
 
 Before we can install CDI, we have some prerequisites, namely a supported storage class and provisioner. For this example, we make use of the `local-path` _StorageClass_ provided by _k3s_ which provisions PVCs using node local storage. This is an option for proof of concept exercises like this one, but should not be used in production because it does not support accessing a volume across nodes.
 
-`kubectl get storageclass`{{execute}}
+```
+kubectl get storageclass
+```{{execute}}
 
 # Install the Containerized Data Importer
 
@@ -36,18 +38,26 @@ kubectl -n cdi scale deployment/cdi-operator --replicas=1
 
 Create CRD to trigger operator deployment of CDI:
 
-`kubectl create -f https://github.com/kubevirt/containerized-data-importer/releases/download/$VERSION/cdi-cr.yaml`{{execute}}
+```
+kubectl create -f https://github.com/kubevirt/containerized-data-importer/releases/download/$VERSION/cdi-cr.yaml
+```{{execute}}
 
 Check status of CDI deployment. It may take some time before the cdi "PHASE" reads "Deployed"
 
-`kubectl get cdi -n cdi`{{execute}}
+```
+kubectl get cdi -n cdi
+```{{execute}}
 
 To have _kubectl_ do the checking for you and let you know when the operator finishes its deployment, use the _wait_ command:
 
-`kubectl wait -n cdi --for=jsonpath='{.status.phase}'=Deployed cdi/cdi`{{execute}}
+```
+kubectl wait -n cdi --for=jsonpath='{.status.phase}'=Deployed cdi/cdi
+```{{execute}}
 
 At times, the environment this scenario runs in may be under heavy load; if the above command errors out, wait a moment and re-run.
 
 Review the "cdi" pods that were added.
 
-`kubectl -n cdi get pods`{{execute}}
+```
+kubectl -n cdi get pods
+```{{execute}}

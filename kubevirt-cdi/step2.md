@@ -106,41 +106,59 @@ vm1    57s   Running   10.42.0.21   ubuntu     True
 
 To make the following commands clickable, we save the IP into a variable:
 
-`IP=$(kubectl get vmi vm1 -o jsonpath='{.status.interfaces[0].ipAddress}')`{{execute}}
+```
+IP=$(kubectl get vmi vm1 -o jsonpath='{.status.interfaces[0].ipAddress}')
+```{{execute}}
 
 The following command will require the default cirros password again.
 
-`ssh-copy-id -i ~/.ssh/id_rsa.pub cirros@${IP}`{{execute}}
+```
+ssh-copy-id -i ~/.ssh/id_rsa.pub cirros@${IP}
+```{{execute}}
 
 Log in once more to verify the password is no longer required.
 This time, we will include the hostname command so we do not have to bother with exiting the shell once logged in.
 
-`ssh cirros@${IP} hostname`{{execute}}
+```
+ssh cirros@${IP} hostname
+```{{execute}}
 
 Now, to prove that configuration written to this VM is not ephemeral, we will shut down the VM and restart it.
 
-`virtctl stop vm1`{{execute}}
+```
+virtctl stop vm1
+```{{execute}}
 
 Wait a moment, and verify the VM is stopped:
 
-`kubectl get vmi`{{execute}}
+```
+kubectl get vmi
+```{{execute}}
 
-`No resources found in default namespace.`{{}}
+```
+No resources found in default namespace.
+```{{}}
 
 Start the VM back up
 
-`virtctl start vm1`{{execute}}
+```
+virtctl start vm1
+```{{execute}}
 
 Note the new IP address of the VM:
 
-`IP=$(kubectl get vmi vm1 -o jsonpath='{.status.interfaces[0].ipAddress}')`{{execute}}
+```
+IP=$(kubectl get vmi vm1 -o jsonpath='{.status.interfaces[0].ipAddress}')
+```{{execute}}
 
 ```
 NAME   AGE   PHASE     IP           NODENAME   READY
 vm1    13s   Running   10.42.0.22   ubuntu     True
 ```
 
-`ssh cirros@${IP} hostname`{{execute}}
+```
+ssh cirros@${IP} hostname
+```{{execute}}
 
 ```
 Warning: Permanently added '10.42.0.22' (ECDSA) to the list of known hosts.
