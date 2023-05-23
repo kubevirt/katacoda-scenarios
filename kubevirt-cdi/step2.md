@@ -1,29 +1,29 @@
 # Use CDI to upload a VM image
 
-As an example, we will import a CirrOS Cloud Image as a PVC and launch a Virtual Machine making use of it.
+As an example, we will import a CirrOS Cloud Image as a DV and launch a Virtual Machine making use of it.
 
 ```
-cat <<EOF > pvc_cirros.yml
-apiVersion: v1
-kind: PersistentVolumeClaim
+kubectl create -f - <<EOF
+apiVersion: cdi.kubevirt.io/v1beta1
+kind: DataVolume
 metadata:
   name: "cirros"
-  labels:
-    app: containerized-data-importer
   annotations:
-    cdi.kubevirt.io/storage.import.endpoint: "http://download.cirros-cloud.net/0.5.2/cirros-0.5.2-x86_64-disk.img"
-    kubevirt.io/provisionOnNode: node01
+    cdi.kubevirt.io/storage.bind.immediate.requested: "true"
 spec:
-  accessModes:
-  - ReadWriteOnce
-  resources:
-    requests:
-      storage: 120Mi
+  source:
+    http:
+      url: "https://download.cirros-cloud.net/0.4.0/cirros-0.4.0-x86_64-disk.img" # S3 or GCS
+  pvc:
+    accessModes:
+    - ReadWriteOnce
+    resources:
+      requests:
+        storage: "64Mi"
 EOF
-kubectl create -f pvc_cirros.yml
 ```{{execute}}
 
-This will create the PVC with a proper annotation so that the CDI controller detects it and launches an importer pod to gather the image specified in the *cdi.kubevirt.io/storage.import.endpoint* annotation.
+This will create the DV with a source that reads from a URL, and a destination PVC that is 64 MiB in size.
 
 Grab the pod name to check later the logs. If the pod is not yet listed, wait a bit more because the operator is still doing required actions.
 
@@ -61,8 +61,8 @@ spec:
           - disk:
               bus: virtio
             name: disk0
-          - cdrom:
-              bus: sata
+          - disk:
+              bus: virtio
               readonly: true
             name: cloudinitdisk
         resources:
@@ -73,13 +73,7 @@ spec:
         persistentVolumeClaim:
           claimName: cirros
       - cloudInitNoCloud:
-          userData: |
-            #cloud-config
-            user: cirros
-            password: gocubsgo
-            hostname: vm1
-            ssh_pwauth: True
-            disable_root: false
+          userDataBase64: SGkuXG4=
         name: cloudinitdisk
 EOF
 kubectl create -f vm1.yml
@@ -95,6 +89,12 @@ Due to the nested virtualization employed in this scenario, it may take some tim
 
 Finally, we will connect to the `vm1` VM as a regular user would do, i.e. via ssh.
 
+`virtctl ssh -l cirros vm1`{{execute}}
+
+Use the default password of `gocubsgo`{{execute}} to log in.
+
+Log out again, (type `exit`) and we will set up passwordless login to the VM. To work with ssh-copy-id, we will set up an ssh connection through the local client instead of through virtctl this time.
+
 Check the IP address:
 
 `kubectl get vmi`{{execute}}
@@ -106,47 +106,59 @@ vm1    57s   Running   10.42.0.21   ubuntu     True
 
 To make the following commands clickable, we save the IP into a variable:
 
-`IP=$(kubectl get vmi vm1 -o jsonpath='{.status.interfaces[0].ipAddress}')`{{execute}}
+```
+IP=$(kubectl get vmi vm1 -o jsonpath='{.status.interfaces[0].ipAddress}')
+```{{execute}}
 
-Now, connect via SSH
+The following command will require the default cirros password again.
 
-`ssh cirros@${IP}`{{execute}}
-
-Use the default password of `gocubsgo`{{execute}} to log in.
-
-Log out again, (type `exit`) and we will set up passwordless login to the VM. The following command will require the default cirros password again.
-
-`ssh-copy-id -i ~/.ssh/id_rsa.pub cirros@${IP}`{{execute}}
+```
+ssh-copy-id -i ~/.ssh/id_rsa.pub cirros@${IP}
+```{{execute}}
 
 Log in once more to verify the password is no longer required.
 This time, we will include the hostname command so we do not have to bother with exiting the shell once logged in.
 
-`ssh cirros@${IP} hostname`{{execute}}
+```
+ssh cirros@${IP} hostname
+```{{execute}}
 
 Now, to prove that configuration written to this VM is not ephemeral, we will shut down the VM and restart it.
 
-`virtctl stop vm1`{{execute}}
+```
+virtctl stop vm1
+```{{execute}}
 
 Wait a moment, and verify the VM is stopped:
 
-`kubectl get vmi`{{execute}}
+```
+kubectl get vmi
+```{{execute}}
 
-`No resources found in default namespace.`{{}}
+```
+No resources found in default namespace.
+```{{}}
 
 Start the VM back up
 
-`virtctl start vm1`{{execute}}
+```
+virtctl start vm1
+```{{execute}}
 
 Note the new IP address of the VM:
 
-`IP=$(kubectl get vmi vm1 -o jsonpath='{.status.interfaces[0].ipAddress}')`{{execute}}
+```
+IP=$(kubectl get vmi vm1 -o jsonpath='{.status.interfaces[0].ipAddress}')
+```{{execute}}
 
 ```
 NAME   AGE   PHASE     IP           NODENAME   READY
 vm1    13s   Running   10.42.0.22   ubuntu     True
 ```
 
-`ssh cirros@${IP} hostname`{{execute}}
+```
+ssh cirros@${IP} hostname
+```{{execute}}
 
 ```
 Warning: Permanently added '10.42.0.22' (ECDSA) to the list of known hosts.

@@ -2,7 +2,7 @@
 
 [CDI](https://github.com/kubevirt/containerized-data-importer) is a utility designed to import Virtual Machine images for use with Kubevirt.
 
-At a high level, a PersistentVolumeClaim (PVC) is created. A custom controller watches for importer specific claims, and when discovered, starts an import process to create a raw image named _disk.img_ with the desired content into the associated PVC.
+The process for importing disk images into KubeVirt involves a helper Custom Resource (CR) called a DataVolume (DV). DataVolumes handle the provisioning of PersistentVolumeClaims (PVCs) for KubeVirt. A custom controller watches for new DVs, and when one is discovered, starts an import process to create a new PVC into which it will import the desired content.
 
 In this exercise we start by deploying the CDI operator. Then, we import a [CirrOS](https://github.com/cirros-dev/cirros) disk image and use it to start a VM.
 
@@ -16,7 +16,9 @@ Before we can start, we need to wait for the KubeVirt initialization script to r
 
 Before we can install CDI, we have some prerequisites, namely a supported storage class and provisioner. For this example, we make use of the `local-path` _StorageClass_ provided by _k3s_ which provisions PVCs using node local storage. This is an option for proof of concept exercises like this one, but should not be used in production because it does not support accessing a volume across nodes.
 
-`kubectl get storageclass`{{execute}}
+```
+kubectl get storageclass
+```{{execute}}
 
 # Install the Containerized Data Importer
 
@@ -36,18 +38,26 @@ kubectl -n cdi scale deployment/cdi-operator --replicas=1
 
 Create CRD to trigger operator deployment of CDI:
 
-`kubectl create -f https://github.com/kubevirt/containerized-data-importer/releases/download/$VERSION/cdi-cr.yaml`{{execute}}
+```
+kubectl create -f https://github.com/kubevirt/containerized-data-importer/releases/download/$VERSION/cdi-cr.yaml
+```{{execute}}
 
 Check status of CDI deployment. It may take some time before the cdi "PHASE" reads "Deployed"
 
-`kubectl get cdi -n cdi`{{execute}}
+```
+kubectl get cdi -n cdi
+```{{execute}}
 
 To have _kubectl_ do the checking for you and let you know when the operator finishes its deployment, use the _wait_ command:
 
-`kubectl wait -n cdi --for=jsonpath='{.status.phase}'=Deployed cdi/cdi`{{execute}}
+```
+kubectl wait -n cdi --for=jsonpath='{.status.phase}'=Deployed cdi/cdi
+```{{execute}}
 
 At times, the environment this scenario runs in may be under heavy load; if the above command errors out, wait a moment and re-run.
 
 Review the "cdi" pods that were added.
 
-`kubectl -n cdi get pods`{{execute}}
+```
+kubectl -n cdi get pods
+```{{execute}}
