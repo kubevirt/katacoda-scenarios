@@ -10,7 +10,7 @@
 
 export KUBECONFIG=/etc/rancher/k3s/k3s.yaml
 
-export KUBEVIRT_VERSION=$(curl -s https://api.github.com/repos/kubevirt/kubevirt/releases/latest | jq -r .tag_name)
+export KUBEVIRT_VERSION=v0.56.0
 echo Installing KubeVirt $KUBEVIRT_VERSION
 
 kubectl create -f https://github.com/kubevirt/kubevirt/releases/download/${KUBEVIRT_VERSION}/kubevirt-operator.yaml
