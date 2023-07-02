@@ -137,7 +137,7 @@ kubectl get vmi
 
 ```
 No resources found in default namespace.
-```{{}}
+```
 
 Start the VM back up
 
