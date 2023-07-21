@@ -35,8 +35,8 @@ When no `imageTag` value is set in the KubeVirt CR, the system assumes that the 
 
 Let's upgrade to the newer version after the upgrade done in the Method 1:
 
-`export KUBEVIRT_VERSION=v0.57.0
-kubectl apply -f https://github.com/kubevirt/kubevirt/releases/download/${KUBEVIRT_VERSION}/kubevirt-operator.yaml`{{execute}}
+`export KUBEVIRT_VERSION=v0.57.0`{{execute}}
+`kubectl apply -f https://github.com/kubevirt/kubevirt/releases/download/${KUBEVIRT_VERSION}/kubevirt-operator.yaml`{{execute}}
 
 **NOTE:** Compared to the first step of the scenario now we are using **apply** instead of **create** to deploy the newer version because the operator already exists.
 
@@ -86,7 +86,7 @@ kubectl get deployment.apps virt-operator -n kubevirt -o jsonpath='{.spec.templa
 
 Shutting down a VM works by either using `virtctl` or editing the VM.
 
-`./virtctl stop testvm`{{execute}}
+`virtctl stop testvm`{{execute}}
 
 Finally, the VM can be deleted using:
 
