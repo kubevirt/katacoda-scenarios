@@ -15,8 +15,7 @@ kubectl -n kubevirt patch kubevirt/kubevirt --type=merge --patch='{"spec": {"inf
 
 curl -sLo virtctl https://github.com/kubevirt/kubevirt/releases/download/${KUBEVIRT_VERSION}/virtctl-${KUBEVIRT_VERSION}-linux-amd64
 
-sudo install -m  virtctl /usr/local/bin/virtctl
+sudo install -m 0755 virtctl /usr/local/bin/virtctl
 
-chmod +x virtctl
 
 echo "StrictHostKeyChecking=no" > ${HOME}/.ssh/config

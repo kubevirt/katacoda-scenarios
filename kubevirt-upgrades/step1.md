@@ -24,7 +24,7 @@ Notice from the output that the VM is not running yet.
 
 To start a VM, `virtctl` should be used:
 
-`./virtctl start testvm`{{execute}}
+`virtctl start testvm`{{execute}}
 
 Now you can check again the VM status:
 
