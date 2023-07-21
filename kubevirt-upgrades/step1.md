@@ -1,15 +1,7 @@
 ### Wait for the Kubernetes cluster to be ready
 #### Deploy a VM
 
-Once all the containers are with the status "Running" you can execute the command below for applying a YAML definition of a virtual machine into our current Kubernetes environment:
-
-First, let's wait for all the pods to be ready like previously provided example:
-
-`kubectl wait --for condition=ready pod -l kubevirt.io=virt-api -n kubevirt --timeout=100s
-kubectl wait --for condition=ready pod -l kubevirt.io=virt-controller -n kubevirt --timeout=100s
-kubectl wait --for condition=ready pod -l kubevirt.io=virt-handler -n kubevirt --timeout=100s`{{execute}}
-
-And proceed with the VM creation:
+Let proceed with the VM creation:
 
 `kubectl apply -f https://kubevirt.io/labs/manifests/vm.yaml`{{execute}}
 
