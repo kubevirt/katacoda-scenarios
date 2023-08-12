@@ -1,4 +1,5 @@
 ### Wait for the Kubernetes cluster to be ready
+
 #### Deploy a VM
 
 Let proceed with the VM creation:
@@ -9,9 +10,6 @@ Using the command below for checking that the VM is defined:
 
 `kubectl get vms`{{execute}}
 
-Notice from the output that the VM is not running yet.
-
-To start a VM, `virtctl` should be used:
 Notice from the output that the VM is not running yet.
 
 To start a VM, `virtctl` should be used:
