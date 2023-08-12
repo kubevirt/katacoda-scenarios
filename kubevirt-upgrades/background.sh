@@ -17,5 +17,4 @@ curl -sLo virtctl https://github.com/kubevirt/kubevirt/releases/download/${KUBEV
 
 sudo install -m 0755 virtctl /usr/local/bin/virtctl
 
-
 echo "StrictHostKeyChecking=no" > ${HOME}/.ssh/config
