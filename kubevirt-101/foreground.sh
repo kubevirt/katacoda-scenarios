@@ -1,4 +1,4 @@
-until [ -e "/usr/local/bin/kubectl" ]
+until [ -f "$HOME/.kube/config" ]
 do
   echo waiting for k3s to install
   sleep 5
