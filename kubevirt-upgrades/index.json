@@ -17,18 +17,17 @@
     ],
     "intro": {
       "text": "intro.md",
-      "code": "set-env.sh"
+      "background": "background.sh",
+      "foreground": "foreground.sh"
     },
     "finish": {
       "text": "finish.md"
     }
   },
   "environment": {
-    "uilayout": "terminal",
-    "showdashboard": true,
-    "icon": "fa-kubernetes"
+    "uilayout": "terminal"
   },
   "backend": {
-    "imageid": "kubernetes-kubeadm-2nodes"
+    "imageid": "kubernetes-k3s-1node-4GB"
   }
 }
