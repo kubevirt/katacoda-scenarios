@@ -27,6 +27,6 @@
     "uilayout": "terminal"
   },
   "backend": {
-    "imageid": "kubernetes-k3s-1node-4GB"
+    "imageid": "ubuntu-4GB"
   }
 }
