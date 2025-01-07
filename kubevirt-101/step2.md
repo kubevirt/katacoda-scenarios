@@ -15,7 +15,7 @@ kubectl get vms
 ```{{execute}}
 
 ```
-kubectl get vms -o yaml testvm | grep -E 'running:.*|$'
+kubectl get vms -o yaml testvm | grep -E 'runStrategy:.*|$'
 ```{{execute}}
 
 Notice from the output that the VM is not running yet.
